@@ -1,18 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <SideMenuBar />
+    <Dashboard />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Dashboard from "@/components/Dashboard.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
 
 export default {
   name: "home",
   components: {
-    HelloWorld
+    Dashboard,
+    SideMenuBar
   }
 };
 </script>
+
+<style scoped>
+.home {
+  background:#e8e9ec;
+  height: 635px;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+</style>
