@@ -1,31 +1,44 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
+    <InfoBar />
+    <!-- <div id="nav">
+      <router-link to="/"><i class="fa fa-home"></i></router-link>|
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />
+    <router-view /> -->
+    <Home />
   </div>
 </template>
 
+<script>
+import InfoBar from "@/components/InfoBar";
+import Home from "@/views/Home";
+
+export default {
+  name: "about",
+  components: {
+    InfoBar,
+    Home
+  }
+};
+</script>
+
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
