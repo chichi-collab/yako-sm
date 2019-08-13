@@ -3,7 +3,7 @@
 import { app, protocol, BrowserWindow } from "electron";
 import {
   createProtocol,
-  installVueDevtools
+  // installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -13,23 +13,38 @@ let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: "app", privileges: { secure: true, standard: true } }
+  {
+    scheme: "app",
+    privileges: {
+      secure: true,
+      standard: true
+    }
+  }
 ]);
 
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1140,
+    height: 680,
+    minWidth: 1140,
+    minHeight: 680,
+    maxWidth: 1140,
+    maxHeight: 680,
     webPreferences: {
       nodeIntegration: true
     }
   });
 
+  // disable default menu
+  win.setMenuBarVisibility(false);
+  win.removeMenu();
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    // Open the DevTools. 
+    // if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development
