@@ -27,37 +27,37 @@
             <div>
               <span>Id</span>
               <br />
-              <input type="text" name="id-number" id />
+              <input type="text" v-model="id" />
             </div>
             <div>
               <span>Expense Type</span>
               <br />
-              <input type="text" name="first-name" id />
+              <input type="text" v-model="expenseType" />
             </div>
             <div>
               <span>Name</span>
               <br />
-              <input type="text" name="last-name" id />
+              <input type="text" v-model="name" />
             </div>
             <div>
               <span>Status</span>
               <br />
-              <input type="text" name="class" id />
+              <input type="text" v-model="status" />
             </div>
             <div>
               <span>Amount Taken</span>
               <br />
-              <input type="text" name="gender" id />
+              <input type="text" v-model="amountTaken" />
             </div>
             <div>
               <span>Reason</span>
               <br />
-              <input type="text" name="birthdate" id />
+              <input type="text" v-model="Reason" />
             </div>
             <div>
               <span>Date</span>
               <br />
-              <input type="text" name="gender" id />
+              <input type="text" v-model="date" />
             </div>
           </div>
           <div class="btn-container">

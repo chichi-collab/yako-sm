@@ -29,57 +29,57 @@
               <div>
                 <span>Id Number</span>
                 <br />
-                <input type="text" name="id-number" id />
+                <input type="text" v-model="id" />
               </div>
               <div>
                 <span>First Name</span>
                 <br />
-                <input type="text" name="first-name" id />
+                <input type="text" v-model="firstName" />
               </div>
               <div>
                 <span>Last Name</span>
                 <br />
-                <input type="text" name="last-name" id />
+                <input type="text" v-model="lastName" />
               </div>
               <div>
                 <span>Class</span>
                 <br />
-                <input type="text" name="class" id />
+                <input type="text" v-model="teacherClass" />
               </div>
               <div>
                 <span>Gender</span>
                 <br />
-                <input type="text" name="gender" id />
+                <input type="text" v-model="gender" />
               </div>
               <div>
                 <span>Date of Birth</span>
                 <br />
-                <input type="text" name="birthdate" id />
+                <input type="text" v-model="birthdate" />
               </div>
               <div>
                 <span>Gender</span>
                 <br />
-                <input type="text" name="gender" id />
+                <input type="text" v-model="gender" />
               </div>
               <div>
                 <span>Subject</span>
                 <br />
-                <input type="text" name="subject" id />
+                <input type="text" v-model="subject" />
               </div>
               <div>
                 <span>Religion</span>
                 <br />
-                <input type="text" name="religion" id />
+                <input type="text" v-model="religion" />
               </div>
               <div>
                 <span>Email</span>
                 <br />
-                <input type="text" name="email" id />
+                <input type="text" v-model="email" />
               </div>
               <div>
                 <span>Contact</span>
                 <br />
-                <input type="text" name="contact" id />
+                <input type="text" v-model="contact" />
               </div>
             </div>
             <div class="btn-container">

@@ -40,37 +40,37 @@
             <div>
               <span>Id Number</span>
               <br />
-              <input type="text" name="id-number" id />
+              <input type="text" v-model="id" />
             </div>
             <div>
               <span>Student Name</span>
               <br />
-              <input type="text" name="first-name" id />
+              <input type="text" v-model="studentName" />
             </div>
             <div>
               <span>Parent Name</span>
               <br />
-              <input type="text" name="last-name" id />
+              <input type="text" v-model="parentName" />
             </div>
             <div>
               <span>Fees Paid</span>
               <br />
-              <input type="text" name="class" id />
+              <input type="text" v-model="feesPaid" />
             </div>
             <div>
               <span>Class</span>
               <br />
-              <input type="text" name="gender" id />
+              <input type="text" v-model="studentClass" />
             </div>
             <div>
               <span>Parent No</span>
               <br />
-              <input type="text" name="birthdate" id />
+              <input type="text" v-model="parentNo" />
             </div>
             <div>
               <span>Date</span>
               <br />
-              <input type="text" name="gender" id />
+              <input type="text" v-model="date" />
             </div>
           </div>
           <div class="btn-container">
