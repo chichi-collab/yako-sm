@@ -76,10 +76,10 @@ export default {
   padding: 15px 30px 15px 25px;
 }
 
-#side-menu-bar .logout {
+.logout {
   position: absolute;
   top: 620px;
-  width: 250px; 
+  width: 250px;
 }
 
 #side-menu-bar .fa-chart-bar {

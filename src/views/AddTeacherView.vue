@@ -1,27 +1,27 @@
 <template>
-  <div class="home">
+  <div class="add-teacher">
     <SideMenuBar />
-    <Dashboard />
+    <AddTeacher />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Dashboard from "@/components/Dashboard.vue";
+import AddTeacher from "@/components/AddTeacher.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 export default {
-  name: "home",
+  name: "ateachers",
   components: {
-    Dashboard,
+    AddTeacher,
     SideMenuBar
   }
 };
 </script>
 
 <style scoped>
-.home {
-  background: #e8e9ec;
+.add-teacher {
+  background:#e8e9ec;
   height: 635px;
   display: grid;
   grid-template-columns: 250px 1fr;

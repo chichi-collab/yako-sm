@@ -2,23 +2,23 @@
   <div id="app">
     <InfoBar />
     <!-- <div id="nav">
-      <router-link to="/"><i class="fa fa-home"></i></router-link>|
+      <router-link to="/"><i class="fa fa-TeacherDetailsView"></i></router-link>|
       <router-link to="/about">About</router-link>
     </div>
     <router-view /> -->
-    <Home />
+    <Classrooms />
   </div>
 </template>
 
 <script>
 import InfoBar from "@/components/InfoBar";
-import Home from "@/views/Home";
+import Classrooms from "@/views/Classrooms";
 
 export default {
-  name: "about",
+  name: "app",
   components: {
     InfoBar,
-    Home
+    Classrooms
   }
 };
 </script>
@@ -40,5 +40,4 @@ body * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
 }
-
 </style>
