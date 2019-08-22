@@ -5,21 +5,63 @@
       <!-- side menu bar -->
       <div id="side-menu-bar">
         <nav>
-          <router-link to="/" class="active">
-            <i class="fa fa-chart-bar"></i> Dashboard
+          <router-link to="/">
+            <i class="fa fa-chart-bar"></i>
+            Dashboard
           </router-link>
-          <router-link to="/teachers">
-            <i class="fa fa-user-tie"></i> Teachers
-          </router-link>
-          <router-link to="/students">
-            <i class="fa fa-user-graduate"></i> Students
-          </router-link>
+          <div>
+            <a href="#" v-on:click.prevent="toggleTeachersSubmenu">
+              <i class="fa fa-user-tie"></i> Teachers
+              <i
+                :class="{ 'fa-caret-up': showTeachersSubmenu, 'fa-caret-down': !showTeachersSubmenu }"
+                class="fa"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <div v-if="showTeachersSubmenu">
+              <ul class="menu list pl0 pa0 ma0 submenu">
+                <router-link to="/teachers">All Teachers</router-link>
+                <router-link to="/addTeacher">Add Teacher</router-link>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <a href="#" v-on:click.prevent="toggleStudentSubmenu">
+              <i class="fa fa-user-graduate"></i> Students
+              <i
+                :class="{ 'fa-caret-up': showStudentSubmenu, 'fa-caret-down': !showStudentSubmenu }"
+                class="fa"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <div v-if="showStudentSubmenu">
+              <ul class="menu list pl0 pa0 ma0 submenu">
+                <router-link to="/students">All Students</router-link>
+                <router-link to="/admitStudent">Admit Student</router-link>
+              </ul>
+            </div>
+          </div>
           <router-link to="/parents">
             <i class="fa fa-users"></i> Parents
           </router-link>
-          <router-link to="/account">
-            <i class="fa fa-credit-card"></i> Account
-          </router-link>
+          <div>
+            <a href="#" v-on:click.prevent="toggleExpenseSubmenu">
+              <i class="fa fa-credit-card"></i> Account
+              <i
+                :class="{ 'fa-caret-up': showExpenseSubmenu, 'fa-caret-down': !showExpenseSubmenu }"
+                class="fa"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <div v-if="showExpenseSubmenu">
+              <ul class="menu list pl0 pa0 ma0 submenu">
+                <router-link to="/account">Fees Collection</router-link>
+                <router-link to="/addFeesPayment">Add Fees Payment</router-link>
+                <router-link to="/expenses">Expenses</router-link>
+                <router-link to="/addExpenses">Add Expenses</router-link>
+              </ul>
+            </div>
+          </div>
           <router-link to="/classrooms">
             <i class="fa fa-user-friends"></i> Classrooms
           </router-link>
@@ -29,9 +71,22 @@
           <router-link to="/attendance">
             <i class="fa fa-user-check"></i> Attendance
           </router-link>
-          <router-link to="/examReports">
-            <i class="fa fa-file"></i> Exam Report
-          </router-link>
+          <div id="exam-report">
+            <a href="#" v-on:click.prevent="toggleExamReportSubmenu">
+              <i class="fa fa-file"></i> Exam Report
+              <i
+                :class="{ 'fa-caret-up': showExamReportSubmenu, 'fa-caret-down': !showExamReportSubmenu }"
+                class="fa"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <div v-if="showExamReportSubmenu">
+              <ul class="menu list pl0 pa0 ma0 submenu">
+                <router-link to="/examReport">Add Marks</router-link>
+                <router-link to="/printReport">Print Exam Report</router-link>
+              </ul>
+            </div>
+          </div>
           <router-link to="/transport">
             <i class="fa fa-truck"></i> Transport
           </router-link>
@@ -53,6 +108,40 @@ export default {
   name: "app",
   components: {
     InfoBar
+  },
+  data() {
+    return {
+      showTeachersSubmenu: false,
+      showStudentSubmenu: false,
+      showExpenseSubmenu: false,
+      showExamReportSubmenu: false
+    };
+  },
+  methods: {
+    toggleTeachersSubmenu() {
+      this.showTeachersSubmenu = !this.showTeachersSubmenu;
+      this.showStudentSubmenu = false;
+      this.showExpenseSubmenu = false;
+      this.showExamReportSubmenu = false;
+    },
+    toggleStudentSubmenu() {
+      this.showStudentSubmenu = !this.showStudentSubmenu;
+      this.showTeachersSubmenu = false;
+      this.showExpenseSubmenu = false;
+      this.showExamReportSubmenu = false;
+    },
+    toggleExpenseSubmenu() {
+      this.showExpenseSubmenu = !this.showExpenseSubmenu;
+      this.showStudentSubmenu = false;
+      this.showTeachersSubmenu = false;
+      this.showExamReportSubmenu = false;
+    },
+    toggleExamReportSubmenu() {
+      this.showExamReportSubmenu = !this.showExamReportSubmenu;
+      this.showStudentSubmenu = false;
+      this.showExpenseSubmenu = false;
+      this.showTeachersSubmenu = false;
+    }
   }
 };
 </script>
@@ -64,6 +153,10 @@ body {
   height: 100%;
   width: 100%;
   border-radius: 50%;
+}
+
+.toggle {
+  display: none;
 }
 
 body * {
@@ -95,28 +188,48 @@ body * {
 #side-menu-bar nav a {
   display: block;
   text-decoration: none;
-  padding: 15px 30px;
+  padding: 7px 30px;
   color: #eaedf3;
   font-weight: 300;
   transition: all 0.3s ease-in-out;
 }
 
-#side-menu-bar nav a:hover {
-  background: #282639;
-  border-left: 5px solid #92cf48;
-  padding: 15px 30px 15px 25px;
+#side-menu-bar .submenu {
+  margin-left: 35px;
 }
 
-#side-menu-bar nav .active {
+#side-menu-bar nav a:hover {
+  background: #282639;
+  /* border-left: 5px solid #92cf48; */
+  padding: 5px 30px 5px 25px;
+}
+
+#side-menu-bar nav a.router-link-exact-active {
   background: #282639;
   border-left: 5px solid #92cf48;
-  padding: 15px 30px 15px 25px;
+  padding: 5px 30px 5px 25px;
 }
 
 .logout {
   position: absolute;
   top: 620px;
   width: 250px;
+}
+
+#side-menu-bar .fa-caret-up {
+  margin-left: 70px;
+}
+
+#side-menu-bar .fa-caret-down {
+  margin-left: 70px;
+}
+
+#exam-report .fa-caret-down {
+  margin-left: 35px;
+}
+
+#exam-report .fa-caret-up {
+  margin-left: 35px;
 }
 
 #side-menu-bar .fa-chart-bar {
