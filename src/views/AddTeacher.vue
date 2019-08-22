@@ -1,11 +1,11 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">Admit Student</p>
+    <p class="content-title">Add New Teacher</p>
     <div class="content">
-      <!-- All Students -->
+      <!-- All Teachers -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">Student Information</span>
+          <span class="window-title">Teacher Information</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
             <a href>
@@ -25,7 +25,7 @@
         <form action>
           <div class="input-container">
             <div>
-              <span>Number</span>
+              <span>Id Number</span>
               <br />
               <input type="text" v-model="id" />
             </div>
@@ -42,7 +42,7 @@
             <div>
               <span>Class</span>
               <br />
-              <input type="text" v-model="studentClass" />
+              <input type="text" v-model="teacherClass" />
             </div>
             <div>
               <span>Gender</span>
@@ -55,27 +55,27 @@
               <input type="text" v-model="birthdate" />
             </div>
             <div>
+              <span>Gender</span>
+              <br />
+              <input type="text" v-model="gender" />
+            </div>
+            <div>
+              <span>Subject</span>
+              <br />
+              <input type="text" v-model="subject" />
+            </div>
+            <div>
               <span>Religion</span>
               <br />
               <input type="text" v-model="religion" />
             </div>
             <div>
-              <span>Parent Name</span>
+              <span>Email</span>
               <br />
-              <input type="text" v-model="parentName" />
+              <input type="text" v-model="email" />
             </div>
             <div>
-              <span>Parent No</span>
-              <br />
-              <input type="text" v-model="parentNo" />
-            </div>
-            <div>
-              <span>Relation</span>
-              <br />
-              <input type="text" v-model="relation" />
-            </div>
-            <div>
-              <span>Address</span>
+              <span>Contact</span>
               <br />
               <input type="text" v-model="contact" />
             </div>
@@ -92,7 +92,7 @@
 
 <script>
 export default {
-  name: "AddStudent"
+  name: "addTeacher"
 };
 </script>
 
@@ -132,7 +132,7 @@ export default {
 }
 
 .container-for-table .line {
-  border-top: 1px sol#eee;
+  border-top: 1px solid #eee;
 }
 
 .control-box {

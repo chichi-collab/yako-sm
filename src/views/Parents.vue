@@ -9,7 +9,7 @@
 import ParentLists from "@/components/ParentLists.vue";
 
 export default {
-  name: "about",
+  name: "parents",
   components: {
     ParentLists
   }

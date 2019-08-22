@@ -55,10 +55,10 @@
             </a>
             <div v-if="showExpenseSubmenu">
               <ul class="menu list pl0 pa0 ma0 submenu">
-                <router-link to="/account">Fees Collection</router-link>
+                <router-link to="/feesCollection">Fees Collection</router-link>
                 <router-link to="/addFeesPayment">Add Fees Payment</router-link>
                 <router-link to="/expenses">Expenses</router-link>
-                <router-link to="/addExpenses">Add Expenses</router-link>
+                <router-link to="/addExpense">Add Expense</router-link>
               </ul>
             </div>
           </div>
@@ -82,7 +82,7 @@
             </a>
             <div v-if="showExamReportSubmenu">
               <ul class="menu list pl0 pa0 ma0 submenu">
-                <router-link to="/examReport">Add Marks</router-link>
+                <router-link to="/addMarks">Add Marks</router-link>
                 <router-link to="/printReport">Print Exam Report</router-link>
               </ul>
             </div>
@@ -90,7 +90,7 @@
           <router-link to="/transport">
             <i class="fa fa-truck"></i> Transport
           </router-link>
-          <router-link to="/" class="logout">
+          <router-link to="/logout" class="logout">
             <i class="fa fa-sign-out-alt"></i> Logout
           </router-link>
         </nav>
@@ -188,7 +188,7 @@ body * {
 #side-menu-bar nav a {
   display: block;
   text-decoration: none;
-  padding: 7px 30px;
+  padding: 10px 30px;
   color: #eaedf3;
   font-weight: 300;
   transition: all 0.3s ease-in-out;
@@ -201,13 +201,13 @@ body * {
 #side-menu-bar nav a:hover {
   background: #282639;
   /* border-left: 5px solid #92cf48; */
-  padding: 5px 30px 5px 25px;
+  padding: 10px 30px 10px 25px;
 }
 
 #side-menu-bar nav a.router-link-exact-active {
   background: #282639;
   border-left: 5px solid #92cf48;
-  padding: 5px 30px 5px 25px;
+  padding: 10px 30px 10px 25px;
 }
 
 .logout {

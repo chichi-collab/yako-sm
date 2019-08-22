@@ -3,12 +3,18 @@ import Router from "vue-router";
 
 // view to route
 import Home from "./views/Home.vue";
-import Account from "./views/Account.vue";
-import Teachers from "./views/Teachers.vue";
+import Teachers from "./views/Teachers";
+import AddTeacher from "./views/AddTeacher.vue";
 import Students from "./views/Students.vue";
+import AdmitStudent from "./views/AdmitStudent.vue";
 import Parents from "./views/Parents.vue";
+import FeesCollection from "./views/FeesCollection.vue";
+import AddFeesPayment from "./views/AddFeesPayment.vue";
+import Expenses from "./views/ExpensesList.vue";
+import AddExpense from "./views/AddExpense.vue";
 import Classrooms from "./views/Classrooms.vue";
-import ExamReports from "./views/ExamReports.vue";
+import AddMarks from "./views/AddMarks.vue";
+import PrintReport from "./views/PrintReport.vue";
 import Attendance from "./views/Attendance.vue";
 import Subject from "./views/Subject.vue";
 
@@ -28,9 +34,19 @@ export default new Router({
       component: Teachers
     },
     {
+      path: "/addTeacher",
+      name: "addTeacher",
+      component: AddTeacher
+    },
+    {
       path: "/students",
       name: "students",
       component: Students
+    },
+    {
+      path: "/admitStudent",
+      name: "admitStudent",
+      component: AdmitStudent
     },
     {
       path: "/parents",
@@ -38,9 +54,24 @@ export default new Router({
       component: Parents
     },
     {
-      path: "/account",
-      name: "account",
-      component: Account
+      path: "/feesCollection",
+      name: "feesCollection",
+      component: FeesCollection
+    },
+    {
+      path: "/addFeesPayment",
+      name: "addFeesPayment",
+      component: AddFeesPayment
+    },
+    {
+      path: "/expenses",
+      name: "expenses",
+      component: Expenses
+    },
+    {
+      path: "/addExpense",
+      name: "addExpense",
+      component: AddExpense
     },
     {
       path: "/classrooms",
@@ -58,9 +89,14 @@ export default new Router({
       component: Attendance
     },
     {
-      path: "/examReports",
-      name: "examReports",
-      component: ExamReports
+      path: "/addMarks",
+      name: "addMarks",
+      component: AddMarks
+    },
+    {
+      path: "/printReport",
+      name: "printReport",
+      component: PrintReport
     },
     {
       path: "/about",
