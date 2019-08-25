@@ -50,9 +50,9 @@
               <tr>
                 <th>Id</th>
                 <th>Student Name</th>
-                <th>Class Mark</th>
-                <th>Exam Mark</th>
                 <th>Overall Mark</th>
+                <th>Attendance</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -65,12 +65,12 @@
                 <td>1</td>
                 <td>Random dude</td>
                 <td>
-                  <input type="text" name="religion" id />
+                  9.0
                 </td>
                 <td>
-                  <input type="text" name="religion" id />
+                  64
                 </td>
-                <td>+2.01</td>
+                <td>Promoted</td>
                 <td>
                   <div class="action-box prevent-select">
                     <a href>
