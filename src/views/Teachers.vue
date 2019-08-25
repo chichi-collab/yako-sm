@@ -55,13 +55,13 @@
                 <td>+2.01</td>
                 <td>
                   <div class="action-box prevent-select">
-                    <a href>
+                    <router-link to="/teachers/teacherDetails">
                       <i class="fa fa-eye"></i>
-                    </a>
-                    <a href>
+                    </router-link>
+                    <router-link to="/teachers/editTeacherDetails">
                       <i class="fa fa-user-edit"></i>
-                    </a>
-                    <a href>
+                    </router-link>
+                    <a>
                       <i class="fa fa-trash-alt"></i>
                     </a>
                   </div>
