@@ -55,11 +55,6 @@
               <input type="text" v-model="birthdate" />
             </div>
             <div>
-              <span>Gender</span>
-              <br />
-              <input type="text" v-model="gender" />
-            </div>
-            <div>
               <span>Subject</span>
               <br />
               <input type="text" v-model="subject" />
