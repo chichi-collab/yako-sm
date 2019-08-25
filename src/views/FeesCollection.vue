@@ -25,13 +25,12 @@
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Parent Name</th>
+                <th>Student</th>
+                <th>Parent</th>
                 <th>Class</th>
                 <th>Fees Owning</th>
                 <th>Fees Paid</th>
-                <th>Parent No</th>
+                <th>Contact</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
@@ -43,9 +42,6 @@
             <tbody>
               <tr>
                 <td>1</td>
-                <td>
-                  <div class="user-img"></div>
-                </td>
                 <td>O. Yeboah</td>
                 <td>Male</td>
                 <td>JHS 1</td>
