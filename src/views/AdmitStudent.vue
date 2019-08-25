@@ -25,7 +25,7 @@
         <form action>
           <div class="input-container">
             <div>
-              <span>Number</span>
+              <span>Id</span>
               <br />
               <input type="text" v-model="id" />
             </div>
