@@ -38,7 +38,12 @@
           <div class="line"></div>
           <div class="input-container">
             <div>
-              <span>Id Number</span>
+              <span>Id</span>
+              <br />
+              <input type="text" v-model="id" />
+            </div>
+            <div>
+              <span>Student Id</span>
               <br />
               <input type="text" v-model="id" />
             </div>
