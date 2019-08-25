@@ -16,14 +16,20 @@ import Classrooms from "./views/Classrooms.vue";
 import AddMarks from "./views/AddMarks.vue";
 import PrintReport from "./views/PrintReport.vue";
 import Attendance from "./views/Attendance.vue";
-import Subject from "./views/Subject.vue";
+import NoticeBoard from "./views/NoticeBoard.vue";
+
+// components to route
+import EditStudentDetails from "./components/EditStudentDetails.vue";
+import EditTeacherDetails from "./components/EditTeacherDetails.vue";
+import TeacherDetails from "./components/TeacherDetails.vue";
 
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  // mode: "history",
   base: process.env.BASE_URL,
-  routes: [{
+  routes: [
+    {
       path: "/",
       name: "home",
       component: Home
@@ -32,6 +38,16 @@ export default new Router({
       path: "/teachers",
       name: "teachers",
       component: Teachers
+    },
+    {
+      path: "/teachers/editTeacherDetails",
+      name: "editTeacherDetails",
+      component: EditTeacherDetails
+    },
+    {
+      path: "/teachers/teacherDetails",
+      name: "teacherDetails",
+      component: TeacherDetails
     },
     {
       path: "/addTeacher",
@@ -79,9 +95,9 @@ export default new Router({
       component: Classrooms
     },
     {
-      path: "/subject",
-      name: "subject",
-      component: Subject
+      path: "/noticeBoard",
+      name: "noticeBoard",
+      component: NoticeBoard
     },
     {
       path: "/attendance",
@@ -97,6 +113,11 @@ export default new Router({
       path: "/printReport",
       name: "printReport",
       component: PrintReport
+    },
+    {
+      path: "/editStudentDetails",
+      name: "EditStudentDetails",
+      component: EditStudentDetails
     },
     {
       path: "/about",
