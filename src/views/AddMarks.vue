@@ -35,11 +35,14 @@
               </div>
             </div>
             <div>
-              <span>Sort by</span>
+              <span>Select Subject</span>
               <br />
-              <div class="sort-by">
-                <input type="button" value="Id" />
-                <input type="button" value="Student Name" />
+              <div class="select-subject">
+                <select v-model="subject">
+                  <option v-for="subject in subjects" :key="subject.id">
+                    {{ subject }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
@@ -102,7 +105,8 @@ export default {
       searchItem: "One",
       sortBy: "Id",
       classMark: "",
-      examMark: ""
+      examMark: "",
+      subjects: ["English", "Math", "Science"]
     };
   }
 };
@@ -185,9 +189,15 @@ export default {
   color: rgb(14, 233, 25);
 }
 
-.sort-by {
-  display: flex;
-  margin-top: 5px;
+.select-subject select {
+  border-radius: 5px;
+  background: #e8e9ec;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
   width: 250px;
 }
 
