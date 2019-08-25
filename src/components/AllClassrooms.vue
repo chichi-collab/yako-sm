@@ -2,10 +2,10 @@
   <div class="contain-area">
     <p class="content-title">Classrooms List</p>
     <div class="content">
-      <!-- All Classrooms -->
+      <!-- All Teachers -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">All Classrooms</span>
+          <span class="window-title">Classrooms Information</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
             <a href>
@@ -20,16 +20,40 @@
           </div>
         </div>
         <div class="line"></div>
+
+        <!-- form here -->
+        <form action>
+          <div class="tfees-container">
+            <div>
+              <span>Class</span>
+              <br />
+              <div class="search-area">
+                <input type="search" :placeholder="searchItem" />
+                <a href="#">
+                  <i class="fa fa-color fa-search"></i>
+                </a>
+              </div>
+            </div>
+            <div>
+              <span>Head Teacher</span>
+              <br />
+              <div class="head-teacher-name">
+                <span>Okai Yeboah</span>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="line"></div>
         <div class="tbl-header">
           <table cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Teacher Name</th>
-                <th>Gender</th>
-                <th>Class</th>
-                <th>Subject</th>
-                <th>Contact</th>
+                <th>Students</th>
+                <th>Overall Mark</th>
+                <th>Attendance </th>
+                <th>Fees Owing</th>
+                <th>Actions</th>
               </tr>
             </thead>
           </table>
@@ -39,11 +63,27 @@
             <tbody>
               <tr>
                 <td>1</td>
-                <td>O. Yeboah</td>
-                <td>Male</td>
-                <td>JHS 1</td>
-                <td>None</td>
+                <td>Random dude</td>
+                <td>
+                  None
+                </td>
+                <td>
+                  None
+                </td>
                 <td>+2.01</td>
+                <td>
+                  <div class="action-box prevent-select">
+                    <a href>
+                      <i class="fa fa-save"></i>
+                    </a>
+                    <a href>
+                      <i class="fa fa-edit"></i>
+                    </a>
+                    <a href>
+                      <i class="fa fa-trash-alt"></i>
+                    </a>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -55,7 +95,15 @@
 
 <script>
 export default {
-  name: "AllClassrooms"
+  name: "AddFeesPayment",
+  data() {
+    return {
+      searchItem: "One",
+      sortBy: "Id",
+      classMark: "",
+      examMark: ""
+    };
+  }
 };
 </script>
 
@@ -136,17 +184,159 @@ export default {
   color: rgb(14, 233, 25);
 }
 
+.head-teacher-name {
+  background: #282639;
+  color: #fff;
+  margin-top: 12px;
+  padding: 3px;
+  font-weight: bold;
+  font-size: 17px;
+  border-radius: 5px;
+  width: 100%;
+  height: 25px;
+}
+
+form {
+  margin: 10px;
+  font-size: 15px;
+  font-weight: 300;
+  color: #707070;
+}
+
+.input-container {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 30px;
+  grid-row-gap: 20px;
+}
+
+.tfees-container {
+  display: grid;
+  grid-template-columns: 260px 113px;
+  grid-column-gap: 30px;
+  grid-row-gap: 20px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  border-radius: 5px;
+  background: #e8e9ec;
+  outline: none;
+  border: none;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.btn-container {
+  display: grid;
+  grid-template-columns: 113px 113px;
+  grid-column-gap: 30px;
+  margin-top: 30px;
+}
+
+input[type="button"] {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  height: 30px;
+  padding: 5px;
+  color: #fff;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.search-area {
+  background: #e8e9ec;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  width: 250px;
+  height: 30px;
+  border-radius: 30px;
+  margin-top: 10px;
+  margin-right: 30px;
+  padding: 2px;
+}
+
+.search-area input[type="search"] {
+  color: #707070;
+  background: transparent;
+  outline: none;
+  border: none;
+  width: 82%;
+  margin: 5px 5px 1px 10px;
+}
+
+.search-area .fa-search {
+  color: #192060;
+  margin-top: 5px;
+}
+
+.reset-btn {
+  background: #ffe711;
+}
+
+.save-btn {
+  background: #3686ff;
+}
+
+.update-btn {
+  background: rgb(14, 233, 25);
+}
+
+.action-box {
+  float: right;
+  display: grid;
+  margin-right: 75px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 3px;
+  padding: 2px;
+  height: 20px;
+}
+
+.action-box .fa-trash-alt {
+  font-size: 12px;
+  color: rgb(204, 34, 34);
+}
+
+.action-box .fa-save {
+  font-size: 14px;
+  color: rgb(224, 203, 7);
+}
+
+.action-box .fa-trash-alt:hover {
+  color: rgb(236, 16, 16);
+}
+
+.action-box .fa-save:hover {
+  color: rgb(246, 222, 4);
+}
+
+.action-box .fa-edit:hover {
+  color: rgb(14, 233, 25);
+}
+
+.action-box .fa-edit {
+  color: rgb(16, 172, 24);
+}
+
 table {
   width: 100%;
   table-layout: fixed;
 }
-
 .tbl-header {
   background-color: rgba(255, 255, 255, 0.3);
 }
-
 .tbl-content {
-  height: 500px;
+  height: 400px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -177,11 +367,9 @@ td {
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
-
 ::-webkit-scrollbar-thumb {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
