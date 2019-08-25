@@ -30,7 +30,6 @@
                 <th>Gender</th>
                 <th>Class</th>
                 <th>Address</th>
-                <th>Fees Owning</th>
                 <th>Parent</th>
                 <th>Parent No</th>
                 <th>Actions</th>
@@ -49,7 +48,6 @@
                 <td>O. Yeboah</td>
                 <td>Male</td>
                 <td>JHS 1</td>
-                <td>None</td>
                 <td>None</td>
                 <td>1233</td>
                 <td>+2.01</td>
