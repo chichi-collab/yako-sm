@@ -1,11 +1,15 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">Edit Teacher Details</p>
+    <p class="content-title">
+      <router-link to="/teachers">
+        <i class="fa fa-arrow-left"></i>
+      </router-link>
+    </p>
     <div class="content">
       <!-- All Teachers -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">About Rita Donkor</span>
+          <span class="window-title">Edit Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
             <a href>
@@ -57,11 +61,6 @@
                 <input type="text" v-model="birthdate" />
               </div>
               <div>
-                <span>Gender</span>
-                <br />
-                <input type="text" v-model="gender" />
-              </div>
-              <div>
                 <span>Subject</span>
                 <br />
                 <input type="text" v-model="subject" />
@@ -95,7 +94,13 @@
 
 <script>
 export default {
-  name: "EditTeacherDetails"
+  name: "EditTeacherDetails",
+  methods: {
+    goToTeachers: function() {
+      // alert();
+      this.$router.push({ path: "/teachers" });
+    }
+  }
 };
 </script>
 
