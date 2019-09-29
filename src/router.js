@@ -19,10 +19,10 @@ import Attendance from "./views/Attendance.vue";
 import NoticeBoard from "./views/NoticeBoard.vue";
 import Login from "./views/Login.vue";
 
-// components to route
-import EditStudentDetails from "./components/EditStudentDetails.vue";
-import EditTeacherDetails from "./components/EditTeacherDetails.vue";
-import TeacherDetails from "./components/TeacherDetails.vue";
+// screens to route
+import EditStudentDetails from "./views/screens/EditStudentDetails.vue";
+import EditTeacherDetails from "./views/screens/EditTeacherDetails.vue";
+import TeacherDetails from "./views/screens/TeacherDetails.vue";
 
 Vue.use(Router);
 
@@ -132,7 +132,7 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+        import(/* webpackChunkName: "about" */ "./views/screens/About.vue")
     }
   ]
 });
