@@ -1,14 +1,24 @@
 <template>
-  <div class="all-teachers">
-    <p>Notice Board</p>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="notice-board">noticeBoard</div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
 
 export default {
-  name: "noticeBoard"  
+  name: "noticeBoard",
+  components: {
+    InfoBar,
+    SideMenuBar
+  }
 };
 </script>
 

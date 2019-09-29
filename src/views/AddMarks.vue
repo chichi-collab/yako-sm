@@ -1,96 +1,100 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Add Student Marks</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">Student Marks</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
-          </div>
-        </div>
-        <div class="line"></div>
-
-        <!-- form here -->
-        <form action>
-          <div class="tfees-container">
-            <div>
-              <span>Class</span>
-              <br />
-              <div class="search-area">
-                <input type="search" :placeholder="searchItem" />
-                <a href="#">
-                  <i class="fa fa-color fa-search"></i>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Add Student Marks</p>
+        <div class="content">
+          <!-- All Teachers -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Student Marks</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
                 </a>
               </div>
             </div>
-            <div>
-              <span>Select Subject</span>
-              <br />
-              <div class="select-subject">
-                <select v-model="subject">
-                  <option v-for="subject in subjects" :key="subject.id">
-                    {{ subject }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div class="line"></div>
-        <div class="tbl-header">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Student Name</th>
-                <th>Class Mark</th>
-                <th>Exam Mark</th>
-                <th>Overall Mark</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="tbl-content">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Random dude</td>
-                <td>
-                  <input type="text" v-model="classMark" />
-                </td>
-                <td>
-                  <input type="text" v-model="examMark" />
-                </td>
-                <td>+2.01</td>
-                <td>
-                  <div class="action-box prevent-select">
-                    <a href>
-                      <i class="fa fa-save"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-trash-alt"></i>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form action>
+              <div class="tfees-container">
+                <div>
+                  <span>Class</span>
+                  <br />
+                  <div class="search-area">
+                    <input type="search" :placeholder="searchItem" />
+                    <a href="#">
+                      <i class="fa fa-color fa-search"></i>
                     </a>
                   </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+                <div>
+                  <span>Select Subject</span>
+                  <br />
+                  <div class="select-subject">
+                    <select v-model="subject">
+                      <option v-for="subject in subjects" :key="subject.id">{{ subject }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="line"></div>
+            <div class="tbl-header">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Student Name</th>
+                    <th>Class Mark</th>
+                    <th>Exam Mark</th>
+                    <th>Overall Mark</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tbl-content">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Random dude</td>
+                    <td>
+                      <input type="text" v-model="classMark" />
+                    </td>
+                    <td>
+                      <input type="text" v-model="examMark" />
+                    </td>
+                    <td>+2.01</td>
+                    <td>
+                      <div class="action-box prevent-select">
+                        <a href>
+                          <i class="fa fa-save"></i>
+                        </a>
+                        <a href>
+                          <i class="fa fa-edit"></i>
+                        </a>
+                        <a href>
+                          <i class="fa fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -98,8 +102,15 @@
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
   name: "AddFeesPayment",
+  components: {
+    InfoBar,
+    SideMenuBar
+  },
   data() {
     return {
       searchItem: "One",
@@ -122,6 +133,7 @@ export default {
 }
 
 .content-title {
+  color: #282639;
   margin-bottom: 5px;
 }
 

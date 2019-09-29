@@ -1,78 +1,91 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Add New Expense</p>
-    <div class="content">
-      <!-- All Expenses -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">Expense Information</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Add New Expense</p>
+        <div class="content">
+          <!-- All Expenses -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Expense Information</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
+            </div>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form action>
+              <div class="input-container">
+                <div>
+                  <span>Id</span>
+                  <br />
+                  <input type="text" v-model="id" />
+                </div>
+                <div>
+                  <span>Expense Type</span>
+                  <br />
+                  <input type="text" v-model="expenseType" />
+                </div>
+                <div>
+                  <span>Name</span>
+                  <br />
+                  <input type="text" v-model="name" />
+                </div>
+                <div>
+                  <span>Status</span>
+                  <br />
+                  <input type="text" v-model="status" />
+                </div>
+                <div>
+                  <span>Amount Taken</span>
+                  <br />
+                  <input type="text" v-model="amountTaken" />
+                </div>
+                <div>
+                  <span>Reason</span>
+                  <br />
+                  <input type="text" v-model="Reason" />
+                </div>
+                <div>
+                  <span>Date</span>
+                  <br />
+                  <input type="text" v-model="date" />
+                </div>
+              </div>
+              <div class="btn-container">
+                <input type="button" value="Save" class="save-btn" />
+                <input type="button" value="Reset" class="reset-btn" />
+              </div>
+            </form>
           </div>
         </div>
-        <div class="line"></div>
-
-        <!-- form here -->
-        <form action>
-          <div class="input-container">
-            <div>
-              <span>Id</span>
-              <br />
-              <input type="text" v-model="id" />
-            </div>
-            <div>
-              <span>Expense Type</span>
-              <br />
-              <input type="text" v-model="expenseType" />
-            </div>
-            <div>
-              <span>Name</span>
-              <br />
-              <input type="text" v-model="name" />
-            </div>
-            <div>
-              <span>Status</span>
-              <br />
-              <input type="text" v-model="status" />
-            </div>
-            <div>
-              <span>Amount Taken</span>
-              <br />
-              <input type="text" v-model="amountTaken" />
-            </div>
-            <div>
-              <span>Reason</span>
-              <br />
-              <input type="text" v-model="Reason" />
-            </div>
-            <div>
-              <span>Date</span>
-              <br />
-              <input type="text" v-model="date" />
-            </div>
-          </div>
-          <div class="btn-container">
-            <input type="button" value="Save" class="save-btn" />
-            <input type="button" value="Reset" class="reset-btn" />
-          </div>
-        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
-  name: "AddExpense"
+  name: "AddExpense",
+  components: {
+    InfoBar,
+    SideMenuBar
+  }
 };
 </script>
 
@@ -86,6 +99,7 @@ export default {
 }
 
 .content-title {
+  color: #282639;
   margin-bottom: 5px;
 }
 

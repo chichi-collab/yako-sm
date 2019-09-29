@@ -1,68 +1,74 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Expenses</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">All Expenses List</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Expenses</p>
+        <div class="content">
+          <!-- All Teachers -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">All Expenses List</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
+            </div>
+            <div class="line"></div>
+            <div class="tbl-header">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Expense Type</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Amount Taken</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tbl-content">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Lucy Addae</td>
+                    <td>O. Yeboah</td>
+                    <td>Male</td>
+                    <td>JHS 1</td>
+                    <td>None</td>
+                    <td>None</td>
+                    <td>
+                      <div class="action-box prevent-select">
+                        <a href>
+                          <i class="fa fa-eye"></i>
+                        </a>
+                        <a href>
+                          <i class="fa fa-user-edit"></i>
+                        </a>
+                        <a href>
+                          <i class="fa fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="line"></div>
-        <div class="tbl-header">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Expense Type</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Amount Taken</th>
-                <th>Reason</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="tbl-content">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Lucy Addae</td>
-                <td>O. Yeboah</td>
-                <td>Male</td>
-                <td>JHS 1</td>
-                <td>None</td>
-                <td>None</td>
-                <td>
-                  <div class="action-box prevent-select">
-                    <a href>
-                      <i class="fa fa-eye"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-user-edit"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-trash-alt"></i>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -70,8 +76,15 @@
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
-  name: "ExpensesList"
+  name: "ExpensesList",
+  components: {
+    InfoBar,
+    SideMenuBar
+  }
 };
 </script>
 

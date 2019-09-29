@@ -17,6 +17,7 @@ import AddMarks from "./views/AddMarks.vue";
 import PrintReport from "./views/PrintReport.vue";
 import Attendance from "./views/Attendance.vue";
 import NoticeBoard from "./views/NoticeBoard.vue";
+import Login from "./views/Login.vue";
 
 // components to route
 import EditStudentDetails from "./components/EditStudentDetails.vue";
@@ -31,6 +32,11 @@ export default new Router({
   routes: [
     {
       path: "/",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/home",
       name: "home",
       component: Home
     },

@@ -1,93 +1,128 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Add New Teacher</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">Teacher Information</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Add New Teacher</p>
+        <div class="content">
+          <!-- All Teachers -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Teacher Information</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
+            </div>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form action>
+              <div class="input-container">
+                <div>
+                  <span>Id Number</span>
+                  <br />
+                  <input type="text" v-model="id" />
+                </div>
+                <div>
+                  <span>First Name</span>
+                  <br />
+                  <input type="text" v-model="firstName" />
+                </div>
+                <div>
+                  <span>Last Name</span>
+                  <br />
+                  <input type="text" v-model="lastName" />
+                </div>
+                <div>
+                  <span>Class</span>
+                  <br />
+                  <input type="text" v-model="teacherClass" />
+                </div>
+                <div>
+                  <span>Gender</span>
+                  <br />
+                  <input type="text" v-model="gender" />
+                </div>
+                <div>
+                  <span>Date of Birth</span>
+                  <br />
+                  <input type="text" v-model="birthdate" />
+                </div>
+                <div>
+                  <span>Religion</span>
+                  <br />
+                  <input type="text" v-model="religion" />
+                </div>
+                <div>
+                  <span>Email</span>
+                  <br />
+                  <input type="text" v-model="email" />
+                </div>
+                <div>
+                  <span>Contact</span>
+                  <br />
+                  <input type="text" v-model="contact" />
+                </div>
+                <div>
+                  <span>Head Tutor</span>
+                  <br />
+                  <input
+                    type="checkbox"
+                    v-model="isHeadTutor"
+                    :checked="headTutorChecked"
+                    @change="toggleHeadTutorCheck"
+                  />
+                </div>
+                <div v-if="headTutorChecked" class="select-subject">
+                  <span>Class</span>
+                  <select v-model="subject">
+                    <option v-for="subject in subjects" :key="subject.id">{{ subject }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="btn-container">
+                <input type="button" value="Save" class="save-btn" />
+                <input type="button" value="Reset" class="reset-btn" />
+              </div>
+            </form>
           </div>
         </div>
-        <div class="line"></div>
-        
-        <!-- form here -->
-        <form action>
-          <div class="input-container">
-            <div>
-              <span>Id Number</span>
-              <br />
-              <input type="text" v-model="id" />
-            </div>
-            <div>
-              <span>First Name</span>
-              <br />
-              <input type="text" v-model="firstName" />
-            </div>
-            <div>
-              <span>Last Name</span>
-              <br />
-              <input type="text" v-model="lastName" />
-            </div>
-            <div>
-              <span>Class</span>
-              <br />
-              <input type="text" v-model="teacherClass" />
-            </div>
-            <div>
-              <span>Gender</span>
-              <br />
-              <input type="text" v-model="gender" />
-            </div>
-            <div>
-              <span>Date of Birth</span>
-              <br />
-              <input type="text" v-model="birthdate" />
-            </div>
-            <div>
-              <span>Subject</span>
-              <br />
-              <input type="text" v-model="subject" />
-            </div>
-            <div>
-              <span>Religion</span>
-              <br />
-              <input type="text" v-model="religion" />
-            </div>
-            <div>
-              <span>Email</span>
-              <br />
-              <input type="text" v-model="email" />
-            </div>
-            <div>
-              <span>Contact</span>
-              <br />
-              <input type="text" v-model="contact" />
-            </div>
-          </div>
-          <div class="btn-container">
-              <input type="button" value="Save" class="save-btn">
-              <input type="button" value="Reset" class="reset-btn">
-          </div>
-        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
-  name: "addTeacher"
+  name: "addTeacher",
+  components: {
+    InfoBar,
+    SideMenuBar
+  },
+  data() {
+    return {
+      headTutorChecked: false,
+      subjects: ["One", "JHS", "KG"]
+    };
+  },
+  methods: {
+    toggleHeadTutorCheck() {
+      this.headTutorChecked = !this.headTutorChecked;
+    }
+  }
 };
 </script>
 
@@ -101,6 +136,7 @@ export default {
 }
 
 .content-title {
+  color: #282639;
   margin-bottom: 5px;
 }
 
@@ -195,6 +231,15 @@ input[type="text"] {
   margin-top: 5px;
 }
 
+input[type="checkbox"] {
+  border-radius: 5px;
+  height: 30px;
+  color: #707070;
+  font-weight: 100;
+  width: 30px;
+  margin-top: 5px;
+}
+
 .btn-container {
   display: grid;
   grid-template-columns: 113px 113px;
@@ -214,11 +259,23 @@ input[type="button"] {
   margin-top: 5px;
 }
 
+.select-subject select {
+  border-radius: 5px;
+  background: #e8e9ec;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
+}
+
 .reset-btn {
-    background: #ffe711;
+  background: #ffe711;
 }
 
 .save-btn {
-    background: #3686ff;
+  background: #3686ff;
 }
 </style>

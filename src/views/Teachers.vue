@@ -1,74 +1,80 @@
 <template>
-  <div class="teacher-list">
-    <p class="content-title">Teacher List</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">All Teachers</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="teacher-list">
+        <p class="content-title">Teacher List</p>
+        <div class="content">
+          <!-- All Teachers -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">All Teachers</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
+            </div>
+            <div class="line"></div>
+            <div class="tbl-header">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Class</th>
+                    <th>Address</th>
+                    <th>Birthdate</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tbl-content">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      <div class="user-img"></div>
+                    </td>
+                    <td>O. Yeboah</td>
+                    <td>Male</td>
+                    <td>JHS 1</td>
+                    <td>None</td>
+                    <td>None</td>
+                    <td>1233</td>
+                    <td>+2.01</td>
+                    <td>
+                      <div class="action-box prevent-select">
+                        <router-link to="/teachers/teacherDetails">
+                          <i class="fa fa-eye"></i>
+                        </router-link>
+                        <router-link to="/teachers/editTeacherDetails">
+                          <i class="fa fa-user-edit"></i>
+                        </router-link>
+                        <a>
+                          <i class="fa fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="line"></div>
-        <div class="tbl-header">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Class</th>
-                <th>Address</th>
-                <th>Birthdate</th>
-                <th>Contact</th>
-                <th>Email</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="tbl-content">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div class="user-img"></div>
-                </td>
-                <td>O. Yeboah</td>
-                <td>Male</td>
-                <td>JHS 1</td>
-                <td>None</td>
-                <td>None</td>
-                <td>1233</td>
-                <td>+2.01</td>
-                <td>
-                  <div class="action-box prevent-select">
-                    <router-link to="/teachers/teacherDetails">
-                      <i class="fa fa-eye"></i>
-                    </router-link>
-                    <router-link to="/teachers/editTeacherDetails">
-                      <i class="fa fa-user-edit"></i>
-                    </router-link>
-                    <a>
-                      <i class="fa fa-trash-alt"></i>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -76,8 +82,15 @@
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
-  name: "teachers"
+  name: "teachers",
+  components: {
+    InfoBar,
+    SideMenuBar
+  }
 };
 </script>
 

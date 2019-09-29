@@ -1,28 +1,12 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Add Fees Payment</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">Payment Information</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
-          </div>
-        </div>
-        <div class="line"></div>
-
-        <!-- form here -->
-        <form action>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Add Fees Payment</p>
+        <div class="content">
+          <!--  -->
           <div class="tfees-container">
             <div>
               <span>Total Fees</span>
@@ -32,65 +16,86 @@
             <div>
               <span></span>
               <br />
-            <input type="button" value="Update Fees" class="update-btn" />
+              <input type="button" value="Update Fees" class="update-btn" />
             </div>
           </div>
           <div class="line"></div>
-          <div class="input-container">
-            <div>
-              <span>Id</span>
-              <br />
-              <input type="text" v-model="id" />
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Payment Information</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
             </div>
-            <div>
-              <span>Student Id</span>
-              <br />
-              <input type="text" v-model="id" />
-            </div>
-            <div>
-              <span>Student Name</span>
-              <br />
-              <input type="text" v-model="studentName" />
-            </div>
-            <div>
-              <span>Parent Name</span>
-              <br />
-              <input type="text" v-model="parentName" />
-            </div>
-            <div>
-              <span>Fees Paid</span>
-              <br />
-              <input type="text" v-model="feesPaid" />
-            </div>
-            <div>
-              <span>Class</span>
-              <br />
-              <input type="text" v-model="studentClass" />
-            </div>
-            <div>
-              <span>Parent No</span>
-              <br />
-              <input type="text" v-model="parentNo" />
-            </div>
-            <div>
-              <span>Date</span>
-              <br />
-              <input type="text" v-model="date" />
-            </div>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form action>
+              <div class="input-container">
+                <div>
+                  <span>Id</span>
+                  <br />
+                  <input type="text" v-model="id" />
+                </div>
+                <div>
+                  <span>Student Id</span>
+                  <br />
+                  <input type="text" v-model="id" />
+                </div>
+                <div>
+                  <span>Student Name</span>
+                  <br />
+                  <input type="text" v-model="studentName" />
+                </div>
+
+                <div>
+                  <span>Class</span>
+                  <br />
+                  <input type="text" v-model="studentClass" />
+                </div>
+                <div>
+                  <span>Fees Paid</span>
+                  <br />
+                  <input type="text" v-model="feesPaid" />
+                </div>
+
+                <div>
+                  <span>Date</span>
+                  <br />
+                  <input type="text" v-model="date" />
+                </div>
+              </div>
+              <div class="btn-container">
+                <input type="button" value="Save" class="save-btn" />
+                <input type="button" value="Reset" class="reset-btn" />
+              </div>
+            </form>
           </div>
-          <div class="btn-container">
-            <input type="button" value="Save" class="save-btn" />
-            <input type="button" value="Reset" class="reset-btn" />
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
 export default {
-  name: "AddFeesPayment"
+  name: "AddFeesPayment",
+  components: {
+    InfoBar,
+    SideMenuBar
+  }
 };
 </script>
 
@@ -111,7 +116,7 @@ export default {
   background: #fff;
   width: 100%;
   border-radius: 5px;
-  height: 410px;
+  height: 330px;
 }
 
 .title-bar {
@@ -188,10 +193,14 @@ form {
 
 .tfees-container {
   display: grid;
+  height: 70px;
   grid-template-columns: 260px 113px;
   grid-column-gap: 30px;
   grid-row-gap: 20px;
   margin-bottom: 20px;
+  padding: 5px;
+  background: #fff;
+  border-radius: 5px;
 }
 
 input[type="text"] {

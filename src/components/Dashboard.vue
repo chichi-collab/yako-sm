@@ -57,7 +57,9 @@
             </div>
           </div>
           <div class="line"></div>
-          <span>hello</span>
+          <!-- <div class="bar-chart">
+            <BarChart />
+          </div>-->
         </div>
 
         <!-- Event Calendar -->
@@ -78,7 +80,7 @@
             </div>
           </div>
           <div class="line"></div>
-          <span>hello</span>
+          <cal />
         </div>
 
         <!-- Notice Board -->
@@ -132,7 +134,8 @@ export default {
   name: "Dashboard",
   props: {
     msg: String
-  }
+  },
+  components: {}
 };
 </script>
 
@@ -142,10 +145,11 @@ export default {
   margin-top: 15px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;;
+  background: #e8e9ec;
 }
 
 .content-title {
+  color: #282639;
   margin-bottom: 5px;
 }
 
@@ -233,6 +237,13 @@ export default {
   width: 405px;
   border-radius: 5px;
   height: 225px;
+}
+
+.bar-chart {
+  background: #fff;
+  width: 405px;
+  border-radius: 5px;
+  height: 25px;
 }
 
 .title-bar {

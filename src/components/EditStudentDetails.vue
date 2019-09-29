@@ -109,6 +109,7 @@ export default {
 }
 
 .content-title {
+  color: #282639;
   margin-bottom: 5px;
 }
 

@@ -1,90 +1,104 @@
 <template>
-  <div class="contain-area">
-    <p class="content-title">Attendance of Students</p>
-    <div class="content">
-      <!-- All Teachers -->
-      <div class="container-for-table">
-        <div class="title-bar">
-          <span class="window-title">Attendance Information</span>
-          <!-- control box for window container -->
-          <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
-          </div>
-        </div>
-        <div class="line"></div>
-
-        <!-- form here -->
-        <form action>
-          <div class="tfees-container">
-            <div>
-              <span>Class</span>
-              <br />
-              <div class="search-area">
-                <input type="search" :placeholder="searchItem" />
-                <a href="#">
-                  <i class="fa fa-color fa-search"></i>
+  <div>
+    <InfoBar />
+    <div class="split-screen">
+      <SideMenuBar />
+      <div class="contain-area">
+        <p class="content-title">Attendance of Students</p>
+        <div class="content">
+          <!-- All Teachers -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Attendance Information</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <a href>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-sync-alt"></i>
+                </a>
+                <a href>
+                  <i class="fa fa-times"></i>
                 </a>
               </div>
             </div>
-            <div>
-              <span>Attendance for</span>
-              <br />
-              <div class="attendance-for">
-                <span>{{ day }}/{{ month }}/ {{ year }}</span>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form action>
+              <div class="tfees-container">
+                <div>
+                  <span>Class</span>
+                  <br />
+                  <div class="search-area">
+                    <input type="search" :placeholder="searchItem" />
+                    <a href="#">
+                      <i class="fa fa-color fa-search"></i>
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <span>Attendance for</span>
+                  <br />
+                  <div class="attendance-for">
+                    <span>{{ day }}/{{ month }}/ {{ year }}</span>
+                  </div>
+                </div>
               </div>
+            </form>
+            <div class="line"></div>
+            <div class="tbl-header">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Students</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Total Attendance</th>
+                  </tr>
+                </thead>
+              </table>
             </div>
+            <div class="tbl-content">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Random dude</td>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
+                    <td>+2.01</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <input type="button" value="Save Attendance" class="save-btn" />
           </div>
-        </form>
-        <div class="line"></div>
-        <div class="tbl-header">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Students</th>
-                <th>Present</th>
-                <th>Absent</th>
-                <th>Total Attendance</th>
-              </tr>
-            </thead>
-          </table>
         </div>
-        <div class="tbl-content">
-          <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Random dude</td>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>+2.01</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <input type="button" value="Save Attendance" class="save-btn" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import InfoBar from "@/components/InfoBar.vue";
+import SideMenuBar from "@/components/SideMenuBar.vue";
+
+// date utils
 import { day, month, year } from "../utils/date";
 
 export default {
   name: "attendance",
+  components: {
+    InfoBar,
+    SideMenuBar
+  },
   data() {
     return {
       searchItem: "One",
