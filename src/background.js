@@ -1,8 +1,8 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import {
-  createProtocol,
+  createProtocol
   // installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -10,6 +10,9 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+
+// modal screens
+let teacherDetailsWin;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -36,13 +39,35 @@ function createWindow() {
     }
   });
 
+  teacherDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 450,
+    minWidth: 700,
+    minHeight: 450,
+    maxWidth: 700,
+    maxHeight: 450,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
   // disable default menu
   win.setMenuBarVisibility(false);
   win.removeMenu();
 
+  teacherDetailsWin.setMenuBarVisibility(false);
+  teacherDetailsWin.removeMenu();
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+
+    teacherDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/teachers/teacherDetails"
+    );
     // Open the DevTools.
     // if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
@@ -53,6 +78,11 @@ function createWindow() {
 
   win.on("closed", () => {
     win = null;
+  });
+
+  teacherDetailsWin.on("close", e => {
+    e.preventDefault();
+    teacherDetailsWin.hide();
   });
 }
 
@@ -91,6 +121,11 @@ app.on("ready", async () => {
     // }
   }
   createWindow();
+});
+
+ipcMain.on("toggle-teacher-details", (event, arg) => {
+  teacherDetailsWin.show();
+  teacherDetailsWin.webContents.send("id", arg);
 });
 
 // Exit cleanly on request from parent process in development mode.

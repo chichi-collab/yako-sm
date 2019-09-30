@@ -1,10 +1,5 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">
-      <router-link to="/teachers">
-        <i class="fa fa-arrow-left"></i>
-      </router-link>
-    </p>
     <div class="content">
       <!-- All Teachers -->
       <div class="container-for-table">
@@ -27,12 +22,8 @@
 
         <!-- form here -->
         <div class="profile-container">
-          <div class="user-img-area">
-            <router-link to="/teachers/editTeacherDetails">
-              <i class="fa fa-user-edit"></i>
-            </router-link>
-            <div class="user-img"></div>
-          </div>
+          <div class="user-img"></div>
+
           <div class="input-container">
             <div>
               <span>Id Number</span>
@@ -112,12 +103,23 @@
 </template>
 
 <script>
+// node_modules
+const { remote, ipcRenderer } = require("electron");
+
 export default {
   name: "teacherDetails",
+  created() {
+    ipcRenderer.on("id", (event, arg) => {
+      this.teacherId = arg;
+    });
+  },
+  data() {
+    return { teacherId: "" };
+  },
   methods: {
     goToTeachers: function() {
       // alert();
-      this.$router.push({ path: "/teachers" });
+      // this.$router.push({ path: "/teachers" });
     }
   }
 };
@@ -218,6 +220,7 @@ export default {
   border-radius: 50%;
   padding: 5px;
   margin: 10px;
+  margin-top: 25px;
 }
 
 .input-container {
@@ -240,12 +243,5 @@ export default {
   border-radius: 5px;
   width: 100%;
   height: 25px;
-}
-
-.user-img-area .fa-user-edit {
-  position: relative;
-  left: 175px;
-  top: 230px;
-  color: #ffe711;
 }
 </style>

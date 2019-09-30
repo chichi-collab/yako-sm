@@ -55,12 +55,12 @@
                     <td>JHS 1</td>
                     <td>None</td>
                     <td>None</td>
-                    <td>1233</td>
+                    <td @click="openTeacherDetails(1)">1233</td>
                     <td>+2.01</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <router-link to="/teachers/teacherDetails">
-                          <i class="fa fa-eye"></i>
+                        <router-link  to="" >
+                          <i @click="openTeacherDetails(1)" class="fa fa-eye"></i>
                         </router-link>
                         <router-link to="/teachers/editTeacherDetails">
                           <i class="fa fa-user-edit"></i>
@@ -82,14 +82,23 @@
 </template>
 
 <script>
+// components
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
+
+// packages
+import { ipcRenderer } from "electron";
 
 export default {
   name: "teachers",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  methods: {
+    openTeacherDetails(id) {
+      ipcRenderer.send("toggle-teacher-details", id);
+    }
   }
 };
 </script>
