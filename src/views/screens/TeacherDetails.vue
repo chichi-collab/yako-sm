@@ -7,15 +7,9 @@
           <span class="window-title">Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <a>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+            <font-awesome-icon icon="times" class="fa fa-times" />
           </div>
         </div>
         <div class="line"></div>
@@ -104,7 +98,7 @@
 
 <script>
 // node_modules
-const { remote, ipcRenderer } = require("electron");
+const { ipcRenderer } = require("electron");
 
 export default {
   name: "teacherDetails",

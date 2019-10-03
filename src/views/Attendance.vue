@@ -12,30 +12,25 @@
               <span class="window-title">Attendance Information</span>
               <!-- control box for window container -->
               <div class="control-box prevent-select">
-                <a href>
-                  <i class="fa fa-angle-down"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-sync-alt"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-times"></i>
-                </a>
+                <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
             <div class="line"></div>
 
             <!-- form here -->
-            <form action>
+            <form>
               <div class="tfees-container">
                 <div>
                   <span>Class</span>
                   <br />
                   <div class="search-area">
                     <input type="search" :placeholder="searchItem" />
-                    <a href="#">
-                      <i class="fa fa-color fa-search"></i>
-                    </a>
+                    <font-awesome-icon
+                      icon="search"
+                      class="fa fa-color fa-search"
+                    />
                   </div>
                 </div>
                 <div>

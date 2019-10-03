@@ -2,18 +2,21 @@
   <!-- side menu bar -->
   <div id="side-menu-bar">
     <nav>
-      <router-link to="/">
-        <i class="fa fa-chart-bar"></i>
-        Dashboard
+      <router-link to="/home">
+        <font-awesome-icon icon="chart-bar" class="fa fa-chart-bar" /> Dashboard
       </router-link>
       <div>
         <a href="#" v-on:click.prevent="toggleTeachersSubmenu">
-          <i class="fa fa-user-tie"></i> Teachers
-          <i
-            :class="{ 'fa-caret-up': showTeachersSubmenu, 'fa-caret-down': !showTeachersSubmenu }"
+          <font-awesome-icon icon="user-tie" class="fa fa-user-tie" /> Teachers
+          <font-awesome-icon
+            icon="caret-down"
+            :class="{
+              'fa-caret-up': showTeachersSubmenu,
+              'fa-caret-down': !showTeachersSubmenu
+            }"
             class="fa"
             aria-hidden="true"
-          ></i>
+          />
         </a>
         <div v-if="showTeachersSubmenu">
           <ul class="submenu">
@@ -24,12 +27,17 @@
       </div>
       <div>
         <a href="#" v-on:click.prevent="toggleStudentSubmenu">
-          <i class="fa fa-user-graduate"></i> Students
-          <i
-            :class="{ 'fa-caret-up': showStudentSubmenu, 'fa-caret-down': !showStudentSubmenu }"
+          <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />
+          Students
+          <font-awesome-icon
+            icon="caret-down"
+            :class="{
+              'fa-caret-up': showStudentSubmenu,
+              'fa-caret-down': !showStudentSubmenu
+            }"
             class="fa"
             aria-hidden="true"
-          ></i>
+          />
         </a>
         <div v-if="showStudentSubmenu">
           <ul class="submenu">
@@ -39,16 +47,21 @@
         </div>
       </div>
       <router-link to="/parents">
-        <i class="fa fa-users"></i> Parents
+        <font-awesome-icon icon="users" class="fa fa-users" /> Parents
       </router-link>
       <div>
         <a href="#" v-on:click.prevent="toggleExpenseSubmenu">
-          <i class="fa fa-credit-card"></i> Account
-          <i
-            :class="{ 'fa-caret-up': showExpenseSubmenu, 'fa-caret-down': !showExpenseSubmenu }"
+          <font-awesome-icon icon="credit-card" class="fa fa-credit-card" />
+          Account
+          <font-awesome-icon
+            icon="caret-down"
+            :class="{
+              'fa-caret-up': showExpenseSubmenu,
+              'fa-caret-down': !showExpenseSubmenu
+            }"
             class="fa"
             aria-hidden="true"
-          ></i>
+          />
         </a>
         <div v-if="showExpenseSubmenu">
           <ul class="submenu">
@@ -60,22 +73,29 @@
         </div>
       </div>
       <router-link to="/classrooms">
-        <i class="fa fa-user-friends"></i> Classrooms
+        <font-awesome-icon icon="user-friends" class="fa fa-user-friends" />
+        Classrooms
       </router-link>
       <router-link to="/noticeBoard">
-        <i class="fa fa-file-alt"></i> Notice Board
+        <font-awesome-icon icon="file-alt" class="fa fa-file-alt" /> Notice
+        Board
       </router-link>
       <router-link to="/attendance">
-        <i class="fa fa-user-check"></i> Attendance
+        <font-awesome-icon icon="user-check" class="fa fa-user-check" />
+        Attendance
       </router-link>
       <div id="exam-report">
         <a href="#" v-on:click.prevent="toggleExamReportSubmenu">
-          <i class="fa fa-file"></i> Exam Report
-          <i
-            :class="{ 'fa-caret-up': showExamReportSubmenu, 'fa-caret-down': !showExamReportSubmenu }"
+          <font-awesome-icon icon="file" class="fa fa-file" /> Exam Report
+          <font-awesome-icon
+            icon="caret-down"
+            :class="{
+              'fa-caret-up': showExamReportSubmenu,
+              'fa-caret-down': !showExamReportSubmenu
+            }"
             class="fa"
             aria-hidden="true"
-          ></i>
+          />
         </a>
         <div v-if="showExamReportSubmenu">
           <ul class="submenu">
@@ -88,7 +108,8 @@
         <i class="fa fa-truck"></i> Transport
       </router-link>-->
       <router-link to="/logout" class="logout">
-        <i class="fa fa-sign-out-alt"></i> Logout
+        <font-awesome-icon icon="sign-out-alt" class="fa fa-sign-out-alt" />
+        Logout
       </router-link>
     </nav>
   </div>

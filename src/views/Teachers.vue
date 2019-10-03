@@ -12,15 +12,9 @@
               <span class="window-title">All Teachers</span>
               <!-- control box for window container -->
               <div class="control-box prevent-select">
-                <a href>
-                  <i class="fa fa-angle-down"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-sync-alt"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-times"></i>
-                </a>
+                <font-awesome-icon icon="angle-down" class="fa-angle-down" />
+                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" />
+                <font-awesome-icon icon="times" class="fa-times" />
               </div>
             </div>
             <div class="line"></div>
@@ -55,19 +49,17 @@
                     <td>JHS 1</td>
                     <td>None</td>
                     <td>None</td>
-                    <td @click="openTeacherDetails(1)">1233</td>
+                    <td>1233</td>
                     <td>+2.01</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <router-link  to="" >
-                          <i @click="openTeacherDetails(1)" class="fa fa-eye"></i>
-                        </router-link>
-                        <router-link to="/teachers/editTeacherDetails">
-                          <i class="fa fa-user-edit"></i>
-                        </router-link>
-                        <a>
-                          <i class="fa fa-trash-alt"></i>
-                        </a>
+                        <font-awesome-icon
+                          icon="eye"
+                          @click="openTeacherDetails(1)"
+                          class="fa-eye"
+                        />
+                        <font-awesome-icon icon="user-edit" class="fa-user-edit" />
+                        <font-awesome-icon icon="trash-alt" class="fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -98,6 +90,7 @@ export default {
   methods: {
     openTeacherDetails(id) {
       ipcRenderer.send("toggle-teacher-details", id);
+      console.log("toggle-teacher-details", id);
     }
   }
 };
@@ -273,8 +266,10 @@ section {
 }
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 ::-webkit-scrollbar-thumb {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 </style>

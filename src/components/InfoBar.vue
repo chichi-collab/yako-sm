@@ -15,21 +15,15 @@
       <span class="tm">TM</span>
       <div class="search-area">
         <input type="search" name id placeholder="Search here..." />
-        <a href="#">
-          <i class="fa fa-color fa-search"></i>
-        </a>
+        <font-awesome-icon icon="search" class="fa fa-color fa-search" />
       </div>
       <div class="user-notification">
         <div class="grey-circle">
-          <a href="#">
-            <i class="fa fa-color fa-envelope"></i>
-          </a>
+          <font-awesome-icon icon="envelope" class="fa fa-color fa-envelope" />
         </div>
         <span class="counter">13</span>
         <div class="grey-circle">
-          <a href="3">
-            <i class="fa fa-color fa-bell"></i>
-          </a>
+          <font-awesome-icon icon="bell" class="fa fa-color fa-bell" />
         </div>
         <span class="counter-yellow">13</span>
         <div class="pipe"></div>
@@ -39,9 +33,10 @@
           <br />
           <span class="user-type">Admin</span>
         </div>
-        <a href="#">
-          <i class="fa fa-color fa-angle-down"></i>
-        </a>
+        <font-awesome-icon
+          icon="angle-down"
+          class="fa fa-color fa-angle-down"
+        />
       </div>
     </div>
   </div>

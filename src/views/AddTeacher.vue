@@ -12,15 +12,9 @@
               <span class="window-title">Teacher Information</span>
               <!-- control box for window container -->
               <div class="control-box prevent-select">
-                <a href>
-                  <i class="fa fa-angle-down"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-sync-alt"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-times"></i>
-                </a>
+                <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
             <div class="line"></div>
@@ -86,7 +80,9 @@
                 <div v-if="headTutorChecked" class="select-subject">
                   <span>Class</span>
                   <select v-model="subject">
-                    <option v-for="subject in subjects" :key="subject.id">{{ subject }}</option>
+                    <option v-for="subject in subjects" :key="subject.id">{{
+                      subject
+                    }}</option>
                   </select>
                 </div>
               </div>

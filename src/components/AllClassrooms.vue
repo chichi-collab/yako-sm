@@ -8,15 +8,9 @@
           <span class="window-title">Classrooms Information</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <a href>
-              <i class="fa fa-angle-down"></i>
-            </a>
-            <a href>
-              <i class="fa fa-sync-alt"></i>
-            </a>
-            <a href>
-              <i class="fa fa-times"></i>
-            </a>
+            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+            <font-awesome-icon icon="times" class="fa fa-times" />
           </div>
         </div>
         <div class="line"></div>
@@ -51,7 +45,7 @@
                 <th>Id</th>
                 <th>Students</th>
                 <th>Overall Mark</th>
-                <th>Attendance </th>
+                <th>Attendance</th>
                 <th>Fees Owing</th>
                 <th>Actions</th>
               </tr>
@@ -64,24 +58,20 @@
               <tr>
                 <td>1</td>
                 <td>Random dude</td>
-                <td>
-                  None
-                </td>
-                <td>
-                  None
-                </td>
+                <td>None</td>
+                <td>None</td>
                 <td>+2.01</td>
                 <td>
                   <div class="action-box prevent-select">
-                    <a href>
-                      <i class="fa fa-save"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <a href>
-                      <i class="fa fa-trash-alt"></i>
-                    </a>
+                    <font-awesome-icon icon="save" class="fa fa-save" />
+                    <font-awesome-icon
+                      icon="user-edit"
+                      class="fa fa-user-edit"
+                    />
+                    <font-awesome-icon
+                      icon="trash-alt"
+                      class="fa fa-trash-alt"
+                    />
                   </div>
                 </td>
               </tr>

@@ -69,7 +69,7 @@ function createWindow() {
       process.env.WEBPACK_DEV_SERVER_URL + "/#/teachers/teacherDetails"
     );
     // Open the DevTools.
-    // if (!process.env.IS_TEST) win.webContents.openDevTools();
+    if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development

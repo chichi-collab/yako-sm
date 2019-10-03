@@ -5,9 +5,7 @@
       <div class="row-number">
         <div class="row-card">
           <div>
-            <a href="#">
-              <i class="fa fa-users"></i>
-            </a>
+            <font-awesome-icon icon="users" class="fa fa-users" />
             <br />
             <span class="col-pst">Parents</span>
           </div>
@@ -16,9 +14,10 @@
         </div>
         <div class="row-card">
           <div>
-            <a href="#">
-              <i class="fa fa-user-graduate"></i>
-            </a>
+            <font-awesome-icon
+              icon="user-graduate"
+              class="fa fa-user-graduate"
+            />
             <br />
             <span class="col-pst">Students</span>
           </div>
@@ -27,9 +26,7 @@
         </div>
         <div class="row-card">
           <div>
-            <a href="#">
-              <i class="fa fa-user-tie"></i>
-            </a>
+            <font-awesome-icon icon="user-tie" class="fa fa-user-tie" />
             <br />
             <span class="col-pst">Teachers</span>
           </div>
@@ -45,15 +42,9 @@
             <span class="window-title">Fees Collection and Expenses</span>
             <!-- control box for window container -->
             <div class="control-box prevent-select">
-              <a href>
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <a href>
-                <i class="fa fa-sync-alt"></i>
-              </a>
-              <a href>
-                <i class="fa fa-times"></i>
-              </a>
+              <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+              <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+              <font-awesome-icon icon="times" class="fa fa-times" />
             </div>
           </div>
           <div class="line"></div>
@@ -68,19 +59,12 @@
             <span class="window-title">Event Calendar</span>
             <!-- control box for window container -->
             <div class="control-box prevent-select">
-              <a href>
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <a href>
-                <i class="fa fa-sync-alt"></i>
-              </a>
-              <a href>
-                <i class="fa fa-times"></i>
-              </a>
+              <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+              <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+              <font-awesome-icon icon="times" class="fa fa-times" />
             </div>
           </div>
           <div class="line"></div>
-          <cal />
         </div>
 
         <!-- Notice Board -->
@@ -89,15 +73,9 @@
             <span class="window-title">Notice Board</span>
             <!-- control box for window container -->
             <div class="control-box prevent-select">
-              <a href>
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <a href>
-                <i class="fa fa-sync-alt"></i>
-              </a>
-              <a href>
-                <i class="fa fa-times"></i>
-              </a>
+              <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+              <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+              <font-awesome-icon icon="times" class="fa fa-times" />
             </div>
           </div>
           <div class="line"></div>
@@ -110,15 +88,9 @@
             <span class="window-title">Recent Activities</span>
             <!-- control box for window container -->
             <div class="control-box prevent-select">
-              <a href>
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <a href>
-                <i class="fa fa-sync-alt"></i>
-              </a>
-              <a href>
-                <i class="fa fa-times"></i>
-              </a>
+              <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+              <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+              <font-awesome-icon icon="times" class="fa fa-times" />
             </div>
           </div>
           <div class="line"></div>

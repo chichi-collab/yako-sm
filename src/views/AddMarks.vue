@@ -12,15 +12,9 @@
               <span class="window-title">Student Marks</span>
               <!-- control box for window container -->
               <div class="control-box prevent-select">
-                <a href>
-                  <i class="fa fa-angle-down"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-sync-alt"></i>
-                </a>
-                <a href>
-                  <i class="fa fa-times"></i>
-                </a>
+                <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
             <div class="line"></div>
@@ -43,7 +37,9 @@
                   <br />
                   <div class="select-subject">
                     <select v-model="subject">
-                      <option v-for="subject in subjects" :key="subject.id">{{ subject }}</option>
+                      <option v-for="subject in subjects" :key="subject.id">{{
+                        subject
+                      }}</option>
                     </select>
                   </div>
                 </div>
@@ -79,15 +75,15 @@
                     <td>+2.01</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <a href>
-                          <i class="fa fa-save"></i>
-                        </a>
-                        <a href>
-                          <i class="fa fa-edit"></i>
-                        </a>
-                        <a href>
-                          <i class="fa fa-trash-alt"></i>
-                        </a>
+                        <font-awesome-icon icon="save" class="fa fa-save" />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          class="fa fa-user-edit"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa fa-trash-alt"
+                        />
                       </div>
                     </td>
                   </tr>
