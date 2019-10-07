@@ -33,10 +33,19 @@
           <br />
           <span class="user-type">Admin</span>
         </div>
-        <font-awesome-icon
+        <div class="dropdown">
+          <font-awesome-icon
           icon="angle-down"
+          @click="toggleShow"
           class="fa fa-color fa-angle-down"
+          id="font-awesome"
         />
+        <div v-if='showMenu' class="menu">
+          <div class="menu-item" v-for="item in this.caretList" v-bind:key="item" @click="itemClicked(item)">
+            {{item}}
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,7 +53,33 @@
 
 <script>
 export default {
-  name: "InfoBar"
+  name: "InfoBar",
+  data () {
+    return {
+      showMenu : false,
+      caretItem: 'Settings',
+      caretList : [
+        'Settings',
+        'Name',
+        'LogOut',
+        'Info'
+      ],
+    }
+  },
+  methods: {
+    toggleShow() {
+      this.showMenu = !this.showMenu;
+      console.log(this.showMenu);
+    },
+    changeItem(item){
+      this.caretItem = item;
+    },
+    itemClicked(item){
+      this.toggleShow();
+      this.changeItem(item);
+    },
+
+  }
 };
 </script>
 
@@ -94,7 +129,7 @@ export default {
 }
 
 .school-name {
-  margin: 10px 0 10px 30px;
+  margin: 10px 0 10px 25px;
   color: #fff;
 }
 
@@ -103,7 +138,7 @@ export default {
   font-weight: 300;
   width: 150px;
   color: #707070;
-  margin: 10px 10px 10px 55px;
+  margin: 10px 0px 10px 20px;
   vertical-align: center;
 }
 
@@ -130,7 +165,8 @@ export default {
   height: 25px;
   border-radius: 50px;
   margin-top: 10px;
-  margin-right: 30px;
+  margin-left: -50px;
+  margin-right: 10px;
   padding: 2px;
 }
 
@@ -175,7 +211,7 @@ export default {
   height: 30px;
   border-radius: 50%;
   padding: 5px;
-  margin: 7px 14px 8px 0px;
+  margin: 7px 10px 8px 0px;
 }
 
 .counter {
@@ -209,7 +245,7 @@ export default {
 }
 
 .user-area {
-  margin: 3px 10px 0px 0px;
+  margin: 3px 15px 0px 0px;
 }
 
 .user-name {
@@ -245,4 +281,38 @@ export default {
 .fa-envelope {
   color: #192060;
 }
+
+.font-awesome {
+  display: flex;
+
+}
+
+.menu {
+  text-align: left;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: .25rem;
+	cursor: pointer;
+	display:flex;
+	flex-direction: column;
+	list-style: none;
+	position: absolute;
+  margin-right: 1px;
+  
+}
+
+.menu-item {
+	color: #212529;
+	padding: 10px 80px 0px 3px;
+  font-size: 15px;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.menu-item:hover {
+	background-color: #F4F6F6;
+	cursor: pointer;
+}
+
+
 </style>
