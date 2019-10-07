@@ -130,5 +130,6 @@ input[type="checkbox"]:checked {
   margin: 15px;
   margin-left: 260px;
   cursor: pointer;
+  outline: none;
 }
 </style>
