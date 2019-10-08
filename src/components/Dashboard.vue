@@ -48,9 +48,9 @@
             </div>
           </div>
           <div class="line"></div>
-          <!-- <div class="bar-chart">
+          <div class="bar-chart">
             <BarChart />
-          </div>-->
+          </div>
         </div>
 
         <!-- Event Calendar -->
@@ -102,12 +102,16 @@
 </template>
 
 <script>
+import BarChart from "@/components/BarChart.vue";
+
 export default {
   name: "Dashboard",
   props: {
     msg: String
   },
-  components: {}
+  components: {
+    BarChart
+  }
 };
 </script>
 
