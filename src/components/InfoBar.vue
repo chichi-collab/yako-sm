@@ -59,10 +59,9 @@ export default {
       showMenu : false,
       caretItem: 'Settings',
       caretList : [
+        'Profile',
         'Settings',
-        'Name',
-        'LogOut',
-        'Info'
+        'About software',
       ],
     }
   },
@@ -129,7 +128,7 @@ export default {
 }
 
 .school-name {
-  margin: 10px 0 10px 25px;
+  margin: 10px 0 10px 30px;
   color: #fff;
 }
 
@@ -138,7 +137,7 @@ export default {
   font-weight: 300;
   width: 150px;
   color: #707070;
-  margin: 10px 0px 10px 20px;
+  margin: 10px 10px 10px 55px;
   vertical-align: center;
 }
 
@@ -165,8 +164,8 @@ export default {
   height: 25px;
   border-radius: 50px;
   margin-top: 10px;
-  margin-left: -50px;
-  margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 30px;
   padding: 2px;
 }
 
@@ -211,7 +210,7 @@ export default {
   height: 30px;
   border-radius: 50%;
   padding: 5px;
-  margin: 7px 10px 8px 0px;
+  margin: 7px 14px 8px 0px;
 }
 
 .counter {
@@ -241,11 +240,10 @@ export default {
   position: relative;
   font-weight: 200;
   top: 5px;
-  left: -15px;
 }
 
 .user-area {
-  margin: 3px 15px 0px 0px;
+  margin: 3px 10px 0px 0px;
 }
 
 .user-name {
@@ -298,6 +296,7 @@ export default {
 	flex-direction: column;
 	list-style: none;
 	position: absolute;
+  right: 5px;
   margin-right: 1px;
   
 }
