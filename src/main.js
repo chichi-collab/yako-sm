@@ -66,6 +66,11 @@ library.add(
 // register FontAwesomeIcon as a global component
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
+// v-calendar import and use
+import VCalendar from "v-calendar";
+
+Vue.use(VCalendar);
+
 Vue.config.productionTip = false;
 
 new Vue({

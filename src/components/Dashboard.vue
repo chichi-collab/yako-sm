@@ -14,10 +14,7 @@
         </div>
         <div class="row-card">
           <div>
-            <font-awesome-icon
-              icon="user-graduate"
-              class="fa fa-user-graduate"
-            />
+            <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />
             <br />
             <span class="col-pst">Students</span>
           </div>
@@ -65,6 +62,9 @@
             </div>
           </div>
           <div class="line"></div>
+          <div class="calendar">
+            <Calendar />
+          </div>
         </div>
 
         <!-- Notice Board -->
@@ -103,6 +103,7 @@
 
 <script>
 import BarChart from "@/components/BarChart.vue";
+import Calendar from "@/components/Calendar.vue";
 
 export default {
   name: "Dashboard",
@@ -110,7 +111,8 @@ export default {
     msg: String
   },
   components: {
-    BarChart
+    BarChart,
+    Calendar
   }
 };
 </script>
