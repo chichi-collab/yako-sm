@@ -58,7 +58,7 @@
                           @click="openTeacherDetails(1)"
                           class="fa-eye"
                         />
-                        <font-awesome-icon icon="user-edit" class="fa-user-edit" />
+                        <font-awesome-icon icon="user-edit" @click="openEditTeacherDetails(1)" class="fa-user-edit" />
                         <font-awesome-icon icon="trash-alt" class="fa-trash-alt" />
                       </div>
                     </td>
@@ -90,6 +90,10 @@ export default {
   methods: {
     openTeacherDetails(id) {
       ipcRenderer.send("toggle-teacher-details", id);
+      console.log("toggle-teacher-details", id);
+    },
+    openEditTeacherDetails(id) {
+      ipcRenderer.send("toggle-edit-teacher-details", id);
       console.log("toggle-teacher-details", id);
     }
   }

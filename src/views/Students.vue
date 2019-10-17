@@ -51,9 +51,10 @@
                     <td>+2.01</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <font-awesome-icon icon="eye" class="fa fa-eye" />
+                        <font-awesome-icon icon="eye" class="fa fa-eye" @click="openStudentDetails(1)" />
                         <font-awesome-icon
                           icon="user-edit"
+                          @click="openEditStudentDetails(1)"
                           class="fa fa-user-edit"
                         />
                         <font-awesome-icon
@@ -77,11 +78,24 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// packages
+import { ipcRenderer } from "electron";
+
 export default {
   name: "AllStudents",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  methods: {
+    openStudentDetails(id) {
+      ipcRenderer.send("toggle-student-details", id);
+      console.log("toggle-teacher-details", id);
+    },
+    openEditStudentDetails(id) {
+      ipcRenderer.send("toggle-edit-student-details", id);
+      console.log("toggle-teacher-details", id);
+    }
   }
 };
 </script>
