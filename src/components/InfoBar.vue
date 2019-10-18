@@ -68,7 +68,6 @@ export default {
   methods: {
     toggleShow() {
       this.showMenu = !this.showMenu;
-      console.log(this.showMenu);
     },
     changeItem(item){
       this.caretItem = item;
