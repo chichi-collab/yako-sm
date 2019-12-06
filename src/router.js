@@ -68,12 +68,12 @@ export default new Router({
     },
     {
       path: "/students/studentDetails",
-      name: "students",
+      name: "studentsDetails",
       component: StudentDetails
     },
     {
       path: "/students/editStudentDetails",
-      name: "students",
+      name: "editStudentDetails",
       component: EditStudentDetails
     },
     {
