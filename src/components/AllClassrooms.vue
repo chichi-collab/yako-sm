@@ -103,7 +103,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -211,7 +211,7 @@ form {
 
 input[type="text"] {
   border-radius: 5px;
-  background: #e8e9ec;
+  background: #f3f3f3;
   outline: none;
   border: none;
   height: 30px;
@@ -243,7 +243,7 @@ input[type="button"] {
 }
 
 .search-area {
-  background: #e8e9ec;
+  background: #f3f3f3;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -338,7 +338,7 @@ th {
   font-weight: 500;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
 
@@ -349,7 +349,7 @@ td {
   font-weight: 300;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
 }
 
 /* for custom scrollbar for webkit browser*/

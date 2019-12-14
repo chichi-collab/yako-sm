@@ -65,7 +65,7 @@ body * {
 }
 
 .split-screen {
-  background: #e8e9ec;
+  background: #f3f3f3;
   height: 635px;
   display: grid;
   grid-template-columns: 250px 1fr;

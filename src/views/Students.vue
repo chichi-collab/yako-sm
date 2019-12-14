@@ -106,7 +106,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -232,7 +232,7 @@ th {
   font-weight: 500;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
 td {
@@ -242,7 +242,7 @@ td {
   font-weight: 300;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
 }
 
 .user-img {

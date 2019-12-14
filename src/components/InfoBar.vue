@@ -117,7 +117,7 @@ export default {
 }
 
 .pipe {
-  border-right: 2px solid #e8e9ec;
+  border-right: 2px solid #f3f3f3;
   height: 30px;
   margin: 8px 14px 10px 0px;
 }
@@ -154,7 +154,7 @@ export default {
 }
 
 .search-area {
-  background: #e8e9ec;
+  background: #f3f3f3;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -182,7 +182,7 @@ export default {
 }
 
 .grey-circle {
-  background: #e8e9ec;
+  background: #f3f3f3;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
