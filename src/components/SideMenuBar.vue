@@ -44,10 +44,10 @@
         </a>
         <div v-if="showStudentSubmenu">
           <ul class="submenu">
-            <span @click="menuToExpand('students')">
+            <span >
               <router-link to="/students">All Students</router-link>
             </span>
-            <span @click="menuToExpand('students')">
+            <span >
               <router-link to="/admitStudent">Admit Student</router-link>
             </span>
           </ul>
