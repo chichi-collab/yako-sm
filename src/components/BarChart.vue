@@ -8,7 +8,7 @@
 import Chart from "chart.js";
 
 // data imports
-import feesExpenseData from "../../models/data/chart-data";
+import feesExpenseData from "../../models/data/fees-expense-data";
 
 export default {
   mounted() {
@@ -22,6 +22,8 @@ export default {
         data: chartData.data,
         options: chartData.options
       });
+
+      console.log(myChart);
     }
   },
   data() {
