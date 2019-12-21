@@ -20,10 +20,10 @@
         </a>
         <div v-if="showTeachersSubmenu">
           <ul class="submenu">
-            <span @click="menuToExpand('teachers')">
+            <span>
               <router-link to="/teachers">All Teachers</router-link>
             </span>
-            <span @click="menuToExpand('dashboard')">
+            <span>
               <router-link to="/addTeacher">Add Teacher</router-link>
             </span>
           </ul>
