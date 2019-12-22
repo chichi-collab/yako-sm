@@ -51,16 +51,17 @@
                     <td>+2.01</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <font-awesome-icon icon="eye" class="fa fa-eye" @click="openStudentDetails(1)" />
+                        <font-awesome-icon
+                          icon="eye"
+                          class="fa fa-eye"
+                          @click="openStudentDetails(1)"
+                        />
                         <font-awesome-icon
                           icon="user-edit"
                           @click="openEditStudentDetails(1)"
                           class="fa fa-user-edit"
                         />
-                        <font-awesome-icon
-                          icon="trash-alt"
-                          class="fa fa-trash-alt"
-                        />
+                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -217,24 +218,28 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 500px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 th {
   padding: 10px;
   text-align: left;
   font-weight: 500;
   font-size: 12px;
-  color: #707070;
+  color: #fff;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
+
 td {
   padding-left: 10px;
   text-align: left;

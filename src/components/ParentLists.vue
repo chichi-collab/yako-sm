@@ -175,15 +175,18 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 500px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 th {
   padding: 5px;
   text-align: left;
@@ -199,7 +202,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+  color: #fff;
   height: 30px;
   border-bottom: 1px solid #f3f3f3;
 }

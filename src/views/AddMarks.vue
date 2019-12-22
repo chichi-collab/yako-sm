@@ -37,9 +37,11 @@
                   <br />
                   <div class="select-subject">
                     <select v-model="subject">
-                      <option v-for="subject in subjects" :key="subject.id">{{
+                      <option v-for="subject in subjects" :key="subject.id">
+                        {{
                         subject
-                      }}</option>
+                        }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -76,14 +78,8 @@
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="save" class="fa fa-save" />
-                        <font-awesome-icon
-                          icon="user-edit"
-                          class="fa fa-user-edit"
-                        />
-                        <font-awesome-icon
-                          icon="trash-alt"
-                          class="fa fa-trash-alt"
-                        />
+                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
+                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -345,9 +341,11 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 400px;
   overflow-x: auto;
@@ -360,7 +358,7 @@ th {
   text-align: left;
   font-weight: 500;
   font-size: 12px;
-  color: #707070;
+  color: #fff;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
