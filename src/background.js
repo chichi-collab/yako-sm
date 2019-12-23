@@ -34,6 +34,7 @@ function createWindow() {
     minHeight: 680,
     maxWidth: 1140,
     maxHeight: 680,
+    fullscreen: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -57,6 +58,8 @@ function createWindow() {
   // disable default menu
   win.setMenuBarVisibility(false);
   win.removeMenu();
+
+  win.setResizable(false);
 
   teacherDetailsWin.setMenuBarVisibility(false);
   teacherDetailsWin.removeMenu();
