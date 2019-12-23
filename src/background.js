@@ -12,7 +12,10 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 let win;
 
 // modal screens
-let teacherDetailsWin;
+let teacherDetailsWin,
+  editTeacherDetailsWin,
+  editStudentDetailsWin,
+  studentDetailsWin;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -42,11 +45,56 @@ function createWindow() {
 
   teacherDetailsWin = new BrowserWindow({
     width: 700,
-    height: 450,
+    height: 600,
     minWidth: 700,
-    minHeight: 450,
+    minHeight: 600,
     maxWidth: 700,
-    maxHeight: 450,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
+  editTeacherDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
+  editStudentDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
+  studentDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
     webPreferences: {
       nodeIntegration: true
     },
@@ -64,13 +112,39 @@ function createWindow() {
   teacherDetailsWin.setMenuBarVisibility(false);
   teacherDetailsWin.removeMenu();
 
+  editTeacherDetailsWin.setMenuBarVisibility(false);
+  editTeacherDetailsWin.removeMenu();
+
+  editStudentDetailsWin.setMenuBarVisibility(false);
+  editStudentDetailsWin.removeMenu();
+
+  studentDetailsWin.setMenuBarVisibility(false);
+  studentDetailsWin.removeMenu();
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
 
+    // Load url of teachers details
     teacherDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/teachers/teacherDetails"
     );
+
+    // load url of edit teachers details
+    editTeacherDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/teachers/editTeacherDetails"
+    );
+
+    // Load url of student details
+    studentDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/students/studentDetails"
+    );
+
+    // load url of edit student details
+    editStudentDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/students/editStudentDetails"
+    );
+
     // Open the DevTools.
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
@@ -86,6 +160,21 @@ function createWindow() {
   teacherDetailsWin.on("close", e => {
     e.preventDefault();
     teacherDetailsWin.hide();
+  });
+
+  editTeacherDetailsWin.on("close", e => {
+    e.preventDefault();
+    editTeacherDetailsWin.hide();
+  });
+
+  studentDetailsWin.on("close", e => {
+    e.preventDefault();
+    studentDetailsWin.hide();
+  });
+
+  editStudentDetailsWin.on("close", e => {
+    e.preventDefault();
+    editStudentDetailsWin.hide();
   });
 }
 
@@ -129,6 +218,21 @@ app.on("ready", async () => {
 ipcMain.on("toggle-teacher-details", (event, arg) => {
   teacherDetailsWin.show();
   teacherDetailsWin.webContents.send("id", arg);
+});
+
+ipcMain.on("toggle-edit-teacher-details", (event, arg) => {
+  editTeacherDetailsWin.show();
+  editTeacherDetailsWin.webContents.send("id", arg);
+});
+
+ipcMain.on("toggle-student-details", (event, arg) => {
+  studentDetailsWin.show();
+  studentDetailsWin.webContents.send("id", arg);
+});
+
+ipcMain.on("toggle-edit-student-details", (event, arg) => {
+  editStudentDetailsWin.show();
+  editStudentDetailsWin.webContents.send("id", arg);
 });
 
 // Exit cleanly on request from parent process in development mode.

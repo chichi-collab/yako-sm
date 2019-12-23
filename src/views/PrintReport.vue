@@ -66,14 +66,8 @@
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="print" class="fa fa-print" />
-                        <font-awesome-icon
-                          icon="user-edit"
-                          class="fa fa-user-edit"
-                        />
-                        <font-awesome-icon
-                          icon="trash-alt"
-                          class="fa fa-trash-alt"
-                        />
+                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
+                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -112,7 +106,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -224,7 +218,7 @@ form {
 
 input[type="text"] {
   border-radius: 5px;
-  background: #e8e9ec;
+  background: #f3f3f3;
   outline: none;
   border: none;
   height: 30px;
@@ -256,7 +250,7 @@ input[type="button"] {
 }
 
 .search-area {
-  background: #e8e9ec;
+  background: #f3f3f3;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -335,9 +329,11 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 400px;
   overflow-x: auto;
@@ -350,8 +346,8 @@ th {
   text-align: left;
   font-weight: 500;
   font-size: 12px;
-  color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  color: #fff;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
 
@@ -362,7 +358,7 @@ td {
   font-weight: 300;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
 }
 
 /* for custom scrollbar for webkit browser*/

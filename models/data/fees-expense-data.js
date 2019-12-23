@@ -1,8 +1,10 @@
+// data generated from the database
+// it consist of fees and expense total sums
+
 export const feesExpenseData = {
   type: "bar",
   data: {
-    datasets: [
-      {
+    datasets: [{
         // one line graph
         label: "Fees Collected",
         data: [100],
@@ -37,14 +39,12 @@ export const feesExpenseData = {
     maintainAspectRatio: true,
     lineTension: 1,
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            padding: 5
-          }
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          padding: 5
         }
-      ]
+      }]
     }
   }
 };

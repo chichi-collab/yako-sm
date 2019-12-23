@@ -99,7 +99,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -199,7 +199,7 @@ form {
 
 input[type="text"] {
   border-radius: 5px;
-  background: #e8e9ec;
+  background: #f3f3f3;
   outline: none;
   border: none;
   height: 30px;

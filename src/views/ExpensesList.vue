@@ -48,14 +48,8 @@
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="eye" class="fa fa-eye" />
-                        <font-awesome-icon
-                          icon="user-edit"
-                          class="fa fa-user-edit"
-                        />
-                        <font-awesome-icon
-                          icon="trash-alt"
-                          class="fa fa-trash-alt"
-                        />
+                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
+                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -88,7 +82,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -199,24 +193,28 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 500px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 th {
   padding: 5px;
   text-align: left;
   font-weight: 549;
   font-size: 12px;
-  color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  color: #fff;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
+
 td {
   padding-left: 5px;
   text-align: left;
@@ -225,7 +223,7 @@ td {
   font-size: 12px;
   color: #707070;
   height: 30px;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
 }
 
 .user-img {

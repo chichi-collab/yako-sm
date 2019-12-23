@@ -22,6 +22,7 @@ import Login from "./views/Login.vue";
 // screens to route
 import EditStudentDetails from "./views/screens/EditStudentDetails.vue";
 import EditTeacherDetails from "./views/screens/EditTeacherDetails.vue";
+import StudentDetails from "./views/screens/StudentDetails.vue";
 import TeacherDetails from "./views/screens/TeacherDetails.vue";
 
 Vue.use(Router);
@@ -64,6 +65,16 @@ export default new Router({
       path: "/students",
       name: "students",
       component: Students
+    },
+    {
+      path: "/students/studentDetails",
+      name: "studentsDetails",
+      component: StudentDetails
+    },
+    {
+      path: "/students/editStudentDetails",
+      name: "editStudentDetails",
+      component: EditStudentDetails
     },
     {
       path: "/admitStudent",
@@ -119,11 +130,6 @@ export default new Router({
       path: "/printReport",
       name: "printReport",
       component: PrintReport
-    },
-    {
-      path: "/editStudentDetails",
-      name: "EditStudentDetails",
-      component: EditStudentDetails
     },
     {
       path: "/about",

@@ -58,7 +58,7 @@
                           @click="openTeacherDetails(1)"
                           class="fa-eye"
                         />
-                        <font-awesome-icon icon="user-edit" class="fa-user-edit" />
+                        <font-awesome-icon icon="user-edit" @click="openEditTeacherDetails(1)" class="fa-user-edit" />
                         <font-awesome-icon icon="trash-alt" class="fa-trash-alt" />
                       </div>
                     </td>
@@ -91,6 +91,10 @@ export default {
     openTeacherDetails(id) {
       ipcRenderer.send("toggle-teacher-details", id);
       console.log("toggle-teacher-details", id);
+    },
+    openEditTeacherDetails(id) {
+      ipcRenderer.send("toggle-edit-teacher-details", id);
+      console.log("toggle-teacher-details", id);
     }
   }
 };
@@ -102,7 +106,7 @@ export default {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -213,24 +217,28 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
 .tbl-header {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #302d43;
 }
+
 .tbl-content {
   height: 500px;
   overflow-x: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 th {
+  color: #fff;
   padding: 10px;
   text-align: left;
   font-weight: 500;
   font-size: 12px;
-  color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
+
 td {
   padding-left: 10px;
   text-align: left;
@@ -238,7 +246,7 @@ td {
   font-weight: 300;
   font-size: 12px;
   color: #707070;
-  border-bottom: 1px solid #e8e9ec;
+  border-bottom: 1px solid #f3f3f3;
 }
 
 .user-img {

@@ -31,10 +31,10 @@
           <span class="pst-number">20</span>
         </div>
       </div>
-      <!-- four tables -->
-      <div class="four-tables">
+      <!-- three tables -->
+      <div class="three-tables">
         <!-- Fees Collection and Expenses -->
-        <div class="container-for-table">
+        <div class="container-for-table fc-e-box">
           <div class="title-bar">
             <span class="window-title">Fees Collection and Expenses</span>
             <!-- control box for window container -->
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Event Calendar -->
-        <div class="container-for-table">
+        <div class="container-for-table nb-h-full">
           <div class="title-bar">
             <span class="window-title">Event Calendar</span>
             <!-- control box for window container -->
@@ -63,14 +63,14 @@
           </div>
           <div class="line"></div>
           <div class="calendar">
-            <Calendar />
+            <EventCalendar />
           </div>
         </div>
 
-        <!-- Notice Board -->
-        <div class="container-for-table">
+        <!-- School Population -->
+        <div class="container-for-table sp-box">
           <div class="title-bar">
-            <span class="window-title">Notice Board</span>
+            <span class="window-title">School Population</span>
             <!-- control box for window container -->
             <div class="control-box prevent-select">
               <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
@@ -79,22 +79,9 @@
             </div>
           </div>
           <div class="line"></div>
-          <span>hello</span>
-        </div>
-
-        <!-- Recent Activities -->
-        <div class="container-for-table">
-          <div class="title-bar">
-            <span class="window-title">Recent Activities</span>
-            <!-- control box for window container -->
-            <div class="control-box prevent-select">
-              <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-              <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-              <font-awesome-icon icon="times" class="fa fa-times" />
-            </div>
+          <div class="line-chart">
+            <LineChart />
           </div>
-          <div class="line"></div>
-          <span>hello</span>
         </div>
       </div>
     </div>
@@ -103,7 +90,8 @@
 
 <script>
 import BarChart from "@/components/BarChart.vue";
-import Calendar from "@/components/Calendar.vue";
+import LineChart from "@/components/LineChart.vue";
+import EventCalendar from "@/components/EventCalendar.vue";
 
 export default {
   name: "Dashboard",
@@ -112,7 +100,8 @@ export default {
   },
   components: {
     BarChart,
-    Calendar
+    LineChart,
+    EventCalendar
   }
 };
 </script>
@@ -123,7 +112,7 @@ export default {
   margin-top: 15px;
   margin-left: 20px;
   margin-right: 15px;
-  background: #e8e9ec;
+  background: #f3f3f3;
 }
 
 .content-title {
@@ -202,10 +191,12 @@ export default {
   font-size: 1.5rem;
 }
 
-.four-tables {
+.three-tables {
   margin-top: 20px;
   display: grid;
   grid-template-columns: 405px 405px;
+  grid-template-rows: 225px 225px;
+  grid-template-areas: "fc-e-box nb-h-full" "sp-box nb-h-full";
   grid-column-gap: 45px;
   grid-row-gap: 20px;
 }
@@ -241,6 +232,10 @@ export default {
 
 .container-for-table .line {
   border-top: 1px solid #eee;
+}
+
+.nb-h-full {
+  height: 470px;
 }
 
 .control-box {

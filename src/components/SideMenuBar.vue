@@ -3,11 +3,11 @@
   <div id="side-menu-bar">
     <nav>
       <router-link to="/home">
-        <font-awesome-icon icon="chart-bar" class="fa fa-chart-bar" /> Dashboard
+        <font-awesome-icon icon="chart-bar" class="fa fa-chart-bar" />Dashboard
       </router-link>
       <div>
         <a href="#" v-on:click.prevent="toggleTeachersSubmenu">
-          <font-awesome-icon icon="user-tie" class="fa fa-user-tie" /> Teachers
+          <font-awesome-icon icon="user-tie" class="fa fa-user-tie" />Teachers
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -20,15 +20,18 @@
         </a>
         <div v-if="showTeachersSubmenu">
           <ul class="submenu">
-            <router-link to="/teachers">All Teachers</router-link>
-            <router-link to="/addTeacher">Add Teacher</router-link>
+            <span>
+              <router-link to="/teachers">All Teachers</router-link>
+            </span>
+            <span>
+              <router-link to="/addTeacher">Add Teacher</router-link>
+            </span>
           </ul>
         </div>
       </div>
       <div>
         <a href="#" v-on:click.prevent="toggleStudentSubmenu">
-          <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />
-          Students
+          <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />Students
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -41,18 +44,21 @@
         </a>
         <div v-if="showStudentSubmenu">
           <ul class="submenu">
-            <router-link to="/students">All Students</router-link>
-            <router-link to="/admitStudent">Admit Student</router-link>
+            <span >
+              <router-link to="/students">All Students</router-link>
+            </span>
+            <span >
+              <router-link to="/admitStudent">Admit Student</router-link>
+            </span>
           </ul>
         </div>
       </div>
       <router-link to="/parents">
-        <font-awesome-icon icon="users" class="fa fa-users" /> Parents
+        <font-awesome-icon icon="users" class="fa fa-users" />Parents
       </router-link>
       <div>
         <a href="#" v-on:click.prevent="toggleExpenseSubmenu">
-          <font-awesome-icon icon="credit-card" class="fa fa-credit-card" />
-          Account
+          <font-awesome-icon icon="credit-card" class="fa fa-credit-card" />Account
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -73,20 +79,18 @@
         </div>
       </div>
       <router-link to="/classrooms">
-        <font-awesome-icon icon="user-friends" class="fa fa-user-friends" />
-        Classrooms
+        <font-awesome-icon icon="user-friends" class="fa fa-user-friends" />Classrooms
       </router-link>
       <router-link to="/noticeBoard">
-        <font-awesome-icon icon="file-alt" class="fa fa-file-alt" /> Notice
+        <font-awesome-icon icon="file-alt" class="fa fa-file-alt" />Notice
         Board
       </router-link>
       <router-link to="/attendance">
-        <font-awesome-icon icon="user-check" class="fa fa-user-check" />
-        Attendance
+        <font-awesome-icon icon="user-check" class="fa fa-user-check" />Attendance
       </router-link>
       <div id="exam-report">
         <a href="#" v-on:click.prevent="toggleExamReportSubmenu">
-          <font-awesome-icon icon="file" class="fa fa-file" /> Exam Report
+          <font-awesome-icon icon="file" class="fa fa-file" />Exam Report
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -108,8 +112,7 @@
         <i class="fa fa-truck"></i> Transport
       </router-link>-->
       <router-link to="/logout" class="logout">
-        <font-awesome-icon icon="sign-out-alt" class="fa fa-sign-out-alt" />
-        Logout
+        <font-awesome-icon icon="sign-out-alt" class="fa fa-sign-out-alt" />Logout
       </router-link>
     </nav>
   </div>
@@ -119,6 +122,25 @@
 export default {
   name: "SideMenuBar",
   props: {},
+  mounted() {
+    // gets route name and convert to lowercase
+    let routeName = this.$route.name.toLowerCase();
+
+    // expand the side menu toggler depending on the route name
+    // otherwise remain
+    if (routeName.includes("teacher")) {
+      this.toggleTeachersSubmenu();
+    } else if (routeName.includes("student")) {
+      this.toggleStudentSubmenu();
+    } else if (routeName.includes("fees") || routeName.includes("expense")) {
+      this.toggleExpenseSubmenu();
+    } else if (
+      routeName.includes("mark") ||
+      routeName.includes("printreport")
+    ) {
+      this.toggleExamReportSubmenu();
+    }
+  },
   data() {
     return {
       showTeachersSubmenu: false,

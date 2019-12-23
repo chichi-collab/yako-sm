@@ -1,6 +1,8 @@
 <template>
   <div class="login">
-    <div class="triangle"></div>
+    <div class="triangle">
+      <img src="../../src/assets/logo.png" alt="logo">
+    </div>
     <div class="login-container">
       <p class="login-title">Login</p>
       <p class="login-wlc">welcome back to the state-of-art</p>
@@ -60,6 +62,12 @@ export default {
   background: #38306d;
   clip-path: polygon(37% 0, 100% 0, 100% 100%);
   -webkit-clip-path: polygon(37% 0, 100% 0, 100% 100%);
+}
+
+.triangle img {
+  position: relative;
+  left: 790px;
+  top: 100px;
 }
 
 .login-container {
