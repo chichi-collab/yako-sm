@@ -63,10 +63,10 @@
                     <td>1</td>
                     <td>Random dude</td>
                     <td>
-                      <input type="checkbox" />
+                      <input type="radio" name="radio" />
                     </td>
                     <td>
-                      <input type="checkbox" />
+                      <input type="radio" name="radio" />
                     </td>
                     <td>+2.01</td>
                   </tr>
@@ -218,7 +218,7 @@ form {
   margin-bottom: 20px;
 }
 
-input[type="checkbox"] {
+input[type="radio"] {
   background: #f3f3f3;
   height: 20px;
   width: 20px;
