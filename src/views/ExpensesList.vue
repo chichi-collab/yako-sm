@@ -26,7 +26,7 @@
                     <th>Expense Type</th>
                     <th>Name</th>
                     <th>Status</th>
-                    <th>Amount Taken</th>
+                    <th>Amount</th>
                     <th>Reason</th>
                     <th>Date</th>
                     <th>Action</th>
