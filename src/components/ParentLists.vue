@@ -22,9 +22,9 @@
                 <th>Name</th>
                 <th>Contact</th>
                 <th>Student</th>
-                <th>Student Class</th>
+                <th>Class</th>
                 <th>Relation</th>
-                <th>Fees Owning</th>
+                <th>Arrears</th>
                 <th>Address</th>
               </tr>
             </thead>
@@ -188,11 +188,11 @@ table {
 }
 
 th {
-  padding: 5px;
+  padding: 10px;
   text-align: left;
   font-weight: 515;
   font-size: 12px;
-  color: #707070;
+  color: #fff;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
