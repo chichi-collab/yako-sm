@@ -26,7 +26,7 @@
                     <th>Student</th>
                     <th>Parent</th>
                     <th>Class</th>
-                    <th>Fees Owning</th>
+                    <th>Arrears</th>
                     <th>Fees Paid</th>
                     <th>Contact</th>
                     <th>Date</th>
