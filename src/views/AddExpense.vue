@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>Expense Type</span>
@@ -40,22 +40,26 @@
                 <div>
                   <span>Status</span>
                   <br />
-                  <input type="text" v-model="status" />
+                  <select v-model="status">
+                    <option disabled value>Please choose status...</option>
+                    <option>Pending</option>
+                    <option>Received</option>
+                  </select>
                 </div>
                 <div>
                   <span>Amount Taken</span>
                   <br />
-                  <input type="text" v-model="amountTaken" />
+                  <input type="number" v-model="amountTaken" />
                 </div>
                 <div>
                   <span>Reason</span>
                   <br />
-                  <input type="text" v-model="Reason" />
+                  <input type="text" v-model="reason" />
                 </div>
                 <div>
                   <span>Date</span>
                   <br />
-                  <input type="text" v-model="date" />
+                  <input type="date" v-model="takenDate" />
                 </div>
               </div>
               <div class="btn-container">
@@ -79,6 +83,18 @@ export default {
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      id: "",
+      expenseType: "",
+      name: "",
+      status: "",
+      subject: "",
+      amountTaken: "",
+      reason: "",
+      takenDate: ""
+    };
   }
 };
 </script>
@@ -175,7 +191,9 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+input[type="date"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
@@ -186,6 +204,18 @@ input[type="text"] {
   font-weight: 100;
   width: 100%;
   margin-top: 5px;
+}
+
+select {
+  border-radius: 5px;
+  background: #f3f3f3;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
 }
 
 .btn-container {
