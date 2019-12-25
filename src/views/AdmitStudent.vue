@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="number" v-model="id" />
+                  <input type="number" v-model="studentId" />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -54,7 +54,7 @@
                 <div>
                   <span>Date of Birth</span>
                   <br />
-                  <input type="date" v-model="birthdate" />
+                  <input type="date" v-model="birthDate" />
                 </div>
                 <div>
                   <span>Parent Name</span>
@@ -64,7 +64,7 @@
                 <div>
                   <span>Parent Contact</span>
                   <br />
-                  <input type="phone" v-model="parentNo" />
+                  <input type="phone" v-model="parentContact" />
                 </div>
                 <div>
                   <span>Relation</span>
@@ -74,7 +74,7 @@
                 <div>
                   <span>Address</span>
                   <br />
-                  <input type="text" v-model="contact" />
+                  <input type="text" v-model="address" />
                 </div>
               </div>
               <div class="btn-container">
@@ -98,6 +98,20 @@ export default {
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      studentId: "",
+      firstName: "",
+      lastName: "",
+      studentClass: "",
+      gender: "",
+      birthDate: "",
+      parentName: "",
+      parentContact: "",
+      relation: "",
+      address: ""
+    };
   }
 };
 </script>
@@ -193,7 +207,11 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="phone"],
+input[type="number"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
@@ -211,6 +229,18 @@ input[type="text"] {
   grid-template-columns: 113px 113px;
   grid-column-gap: 30px;
   margin-top: 30px;
+}
+
+select {
+  border-radius: 5px;
+  background: #f3f3f3;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
 }
 
 input[type="button"] {
