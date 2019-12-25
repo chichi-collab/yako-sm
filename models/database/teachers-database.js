@@ -11,28 +11,14 @@ class TeachersDatabase {
 
   // fetch all teachers in the database
   fetchAll() {
-    this.databaseConn.all("SELECT * FROM teachers", (error, rows) => {
-      // if error return -1 otherwise rows
-      if (error) {
-        return -1;
-      }
-
-      return rows;
-    });
+    return this.databaseConn.all("SELECT * FROM teachers");
   }
 
-  // fetch teacher with id
+  // fetch teacher by id
   fetchOne(id) {
-    this.databaseConn.get(
+    return this.databaseConn.get(
       "SELECT * FROM teachers WHERE teacher_id = ?",
-      [id],
-      (error, result) => {
-        if (error) {
-          return -1;
-        }
-
-        return result;
-      }
+      [id]
     );
   }
 
@@ -45,33 +31,24 @@ class TeachersDatabase {
       classroom,
       gender,
       birthDate,
-      religion,
       email,
       phoneNumber,
       isHeadTutor
     } = teacher;
 
-    this.databaseConn.run(
-      "UPDATE Teachers SET first_name = ?, last_name = ?, classroom = ?, gender = ?, birth_date= ?, religion = ?, email = ?, phone_number = ?, is_head_tutor = ? WHERE id = ?",
+    return this.databaseConn.run(
+      "UPDATE Teachers SET first_name = ?, last_name = ?, classroom = ?, gender = ?, birth_date= ?, email = ?, phone_number = ?, is_head_tutor = ? WHERE id = ?",
       [
         firstName,
         lastName,
         classroom,
         gender,
         birthDate,
-        religion,
         email,
         phoneNumber,
         isHeadTutor,
         teacherId
-      ],
-      error => {
-        if (error) {
-          return -1;
-        }
-
-        return 0;
-      }
+      ]
     );
   }
 
@@ -84,14 +61,13 @@ class TeachersDatabase {
       classroom,
       gender,
       birthDate,
-      religion,
       email,
       phoneNumber,
       isHeadTutor
     } = teacher;
 
-    this.databaseConn.run(
-      "INSERT INTO Teachers VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    return this.databaseConn.run(
+      "INSERT INTO Teachers(teacher_id, first_name, last_name, classroom, gender, birth_date,  email, phone_number, is_head_tutor) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );",
       [
         teacherId,
         firstName,
@@ -99,18 +75,10 @@ class TeachersDatabase {
         classroom,
         gender,
         birthDate,
-        religion,
         email,
         phoneNumber,
         isHeadTutor
-      ],
-      error => {
-        if (error) {
-          return -1;
-        }
-
-        return 0;
-      }
+      ]
     );
   }
 
@@ -118,17 +86,9 @@ class TeachersDatabase {
   delete(teacher) {
     const { teacherId } = teacher;
 
-    this.databaseConn.run(
-      "DELETE FROM Teachers WHERE id = ?",
-      [teacherId],
-      error => {
-        if (error) {
-          return -1;
-        }
-
-        return 0;
-      }
-    );
+    return this.databaseConn.run("DELETE FROM Teachers WHERE id = ?", [
+      teacherId
+    ]);
   }
 }
 
