@@ -11,7 +11,7 @@
             <div>
               <span>Total Fees</span>
               <br />
-              <input type="text" value="1000" class="total-fees" />
+              <input type="number" value="1000" class="total-fees" v-model="totalFees" />
             </div>
             <div>
               <span></span>
@@ -38,12 +38,12 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="feesId" />
                 </div>
                 <div>
                   <span>Student Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="studentId" />
                 </div>
                 <div>
                   <span>Student Name</span>
@@ -59,13 +59,13 @@
                 <div>
                   <span>Fees Paid</span>
                   <br />
-                  <input type="text" v-model="feesPaid" />
+                  <input type="number" v-model="feesPaid" />
                 </div>
 
                 <div>
                   <span>Date</span>
                   <br />
-                  <input type="text" v-model="date" />
+                  <input type="date" v-model="paidDate" />
                 </div>
               </div>
               <div class="btn-container">
@@ -89,6 +89,17 @@ export default {
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      feesId: "",
+      studentId: "",
+      studentName: "",
+      studentClass: "",
+      feesPaid: "",
+      paidDate: "",
+      totalFees: ""
+    };
   }
 };
 </script>
@@ -197,7 +208,9 @@ form {
   border-radius: 5px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+input[type="date"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
