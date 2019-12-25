@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -45,17 +45,16 @@
                 <div>
                   <span>Gender</span>
                   <br />
-                  <input type="text" v-model="gender" />
+                  <select v-model="gender">
+                    <option disabled value>Please choose gender...</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
                 </div>
                 <div>
                   <span>Date of Birth</span>
                   <br />
-                  <input type="text" v-model="birthdate" />
-                </div>
-                <div>
-                  <span>Religion</span>
-                  <br />
-                  <input type="text" v-model="religion" />
+                  <input type="date" v-model="birthdate" />
                 </div>
                 <div>
                   <span>Parent Name</span>
@@ -63,9 +62,9 @@
                   <input type="text" v-model="parentName" />
                 </div>
                 <div>
-                  <span>Parent No</span>
+                  <span>Parent Contact</span>
                   <br />
-                  <input type="text" v-model="parentNo" />
+                  <input type="phone" v-model="parentNo" />
                 </div>
                 <div>
                   <span>Relation</span>
