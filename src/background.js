@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow, ipcMain } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, dialog } from "electron";
 import {
   createProtocol
   // installVueDevtools
@@ -233,6 +233,25 @@ ipcMain.on("toggle-student-details", (event, arg) => {
 ipcMain.on("toggle-edit-student-details", (event, arg) => {
   editStudentDetailsWin.show();
   editStudentDetailsWin.webContents.send("id", arg);
+});
+
+// opens a dialog whenever a teacher is added to the database successfully
+ipcMain.on("open-teacher-information-dialog", event => {
+  const options = {
+    type: "info",
+    title: "Teacher Information",
+    message: "Teacher added successfully",
+    buttons: ["OK"]
+  };
+
+  dialog.showMessageBox(options, index => {
+    event.sender.send("teacher-information-dialog-selection", index);
+  });
+});
+
+// opens an error dialog when an error occurs when teacher is added
+ipcMain.on("open-teacher-error-dialog", () => {
+  dialog.showErrorBox("Teacher Error", "An error occurred while adding teacher");
 });
 
 // Exit cleanly on request from parent process in development mode.
