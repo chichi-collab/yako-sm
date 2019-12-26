@@ -57,11 +57,6 @@
                   <input type="date" v-model="birthdate" />
                 </div>
                 <div>
-                  <span>Religion</span>
-                  <br />
-                  <input type="text" v-model="religion" />
-                </div>
-                <div>
                   <span>Email</span>
                   <br />
                   <input type="email" v-model="email" />
@@ -106,7 +101,7 @@
 </template>
 
 <script>
-// import { ipcRenderer } from "electron";
+import { ipcRenderer } from "electron";
 
 // components import
 import InfoBar from "@/components/InfoBar.vue";
@@ -130,7 +125,6 @@ export default {
       teacherClass: "",
       gender: "",
       birthdate: "",
-      religion: "",
       email: "",
       phoneNumber: "",
       headTutorChecked: false,
@@ -140,7 +134,7 @@ export default {
   },
   methods: {
     // add teacher to the database
-    addTeacher() {
+    async addTeacher() {
       const teacherData = {
         teacherId: this.id,
         firstName: this.firstName,
@@ -148,7 +142,6 @@ export default {
         teacherClass: this.teacherClass,
         gender: this.gender,
         birthdate: this.birthdate,
-        religion: this.religion,
         email: this.email,
         phoneNumber: this.phoneNumber,
         headTutorChecked: this.headTutorChecked
@@ -160,10 +153,18 @@ export default {
       // insert teacher details into the database
       // if error then show error message box
       // else show success message box
-      const teacherDatabase = new TeacherDatabase(DatabaseConnection);
-      let ADD_TEACHER_STATUS = teacherDatabase.add(teacherData);
+      const databaseConnection = new DatabaseConnection();
+      const teacherDatabase = new TeacherDatabase(databaseConnection);
 
-      console.log("ADD_TEACHER_STATUS: " + ADD_TEACHER_STATUS);
+      teacherDatabase
+        .add(teacherData)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          ipcRenderer.send("open-teacher-error-dialog");
+          console.log(err);
+        });
 
       // if (teacherData == "undefined") {
       //   ipcRenderer.send("open-teacher-error-dialog");
