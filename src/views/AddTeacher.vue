@@ -108,7 +108,6 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import DatabaseConnection from "../../models/database/database-connection";
 import TeacherDatabase from "../../models/database/teachers-database";
 
 export default {
@@ -136,16 +135,15 @@ export default {
     // add teacher to the database
     async addTeacher() {
       const teacherData = {
-        teacherId: this.id,
+        id: this.id,
         firstName: this.firstName,
         lastName: this.lastName,
-        teacherClass: this.teacherClass,
+        classroom: this.teacherClass,
         gender: this.gender,
-        birthdate: this.birthdate,
+        birthDate: this.birthdate,
         email: this.email,
-        phoneNumber: this.phoneNumber,
-        headTutorChecked: this.headTutorChecked
-        // classroom: this.classroom
+        contact: this.phoneNumber,
+        isHeadTutor: this.headTutorChecked
       };
 
       console.log(teacherData); // log teacher details
@@ -153,24 +151,18 @@ export default {
       // insert teacher details into the database
       // if error then show error message box
       // else show success message box
-      const databaseConnection = new DatabaseConnection();
-      const teacherDatabase = new TeacherDatabase(databaseConnection);
+      const teacherDatabase = new TeacherDatabase();
 
       teacherDatabase
         .add(teacherData)
         .then(result => {
+          ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
         })
         .catch(err => {
           ipcRenderer.send("open-teacher-error-dialog");
           console.log(err);
         });
-
-      // if (teacherData == "undefined") {
-      //   ipcRenderer.send("open-teacher-error-dialog");
-      // } else {
-      //   ipcRenderer.send("open-teacher-information-dialog");
-      // }
     }
   }
 };

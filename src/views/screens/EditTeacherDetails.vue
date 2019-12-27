@@ -27,7 +27,7 @@
               <div>
                 <span>Id Number</span>
                 <br />
-                <input type="text" v-model="id" />
+                <input type="number" v-model="id" />
               </div>
               <div>
                 <span>First Name</span>
@@ -42,42 +42,55 @@
               <div>
                 <span>Class</span>
                 <br />
-                <input type="text" v-model="teacherClass" />
+                <input type="text" v-model="classroom" />
               </div>
               <div>
                 <span>Gender</span>
                 <br />
-                <input type="text" v-model="gender" />
+                <select v-model="gender">
+                  <option disabled value>Please choose gender...</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
               </div>
               <div>
                 <span>Date of Birth</span>
                 <br />
-                <input type="text" v-model="birthdate" />
-              </div>
-              <div>
-                <span>Subject</span>
-                <br />
-                <input type="text" v-model="subject" />
-              </div>
-              <div>
-                <span>Religion</span>
-                <br />
-                <input type="text" v-model="religion" />
+                <input type="date" v-model="birthDate" />
               </div>
               <div>
                 <span>Email</span>
                 <br />
-                <input type="text" v-model="email" />
+                <input type="email" v-model="email" />
               </div>
               <div>
                 <span>Contact</span>
                 <br />
-                <input type="text" v-model="contact" />
+                <input type="phone" v-model="contact" />
               </div>
-            </div>
-            <div class="btn-container">
-              <input type="button" value="Save" class="save-btn" />
-              <input type="button" value="Reset" class="reset-btn" />
+              <div>
+                <span>Head Tutor</span>
+                <br />
+                <input type="checkbox" v-model="isHeadTutor" />
+              </div>
+              <div v-if="isHeadTutor" class="select-classroom">
+                <span>Class</span>
+                <select v-model="classroom">
+                  <option disabled value>Please choose classroom...</option>
+                  <option v-for="classroom in classrooms" :key="classroom.id">
+                    {{ classroom }}
+                  </option>
+                </select>
+              </div>
+              <div class="btn-container">
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="saveTeacherDetails"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
+              </div>
             </div>
           </form>
         </div>
@@ -87,12 +100,78 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
+// database scripts
+import TeacherDatabase from "../../../models/database/teachers-database";
+
+const teacherDatabase = new TeacherDatabase();
+
 export default {
   name: "EditTeacherDetails",
+  created() {
+    ipcRenderer.on("teacher-id", (event, arg) => {
+      this.teacherId = arg;
+
+      teacherDatabase
+        .fetchOne(this.teacherId)
+        .then(result => {
+          this.teacherDetails = result;
+          // set default data values to teacherDetails
+          this.firstName = this.teacherDetails.firstName;
+          this.id = this.teacherDetails.id;
+          this.lastName = this.teacherDetails.lastName;
+          this.classroom = this.teacherDetails.classroom;
+          this.gender = this.teacherDetails.gender;
+          this.birthDate = this.teacherDetails.birthdate;
+          this.email = this.teacherDetails.email;
+          this.contact = this.teacherDetails.phoneNumber;
+          this.isHeadTutor = this.teacherDetails.isHeadTutor;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+  },
+  data() {
+    return {
+      teacherId: "",
+      teacherDetails: {},
+      id: "",
+      firstName: "",
+      lastName: "",
+      classroom: "",
+      gender: "",
+      birthDate: "",
+      email: "",
+      contact: "",
+      isHeadTutor: ""
+    };
+  },
   methods: {
-    goToTeachers: function() {
-      // alert();
-      this.$router.push({ path: "/teachers" });
+    saveTeacherDetails() {
+      const teacherNewDetails = {
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        classroom: this.classroom,
+        gender: this.gender,
+        birthDate: this.birthDate,
+        email: this.email,
+        contact: this.contact,
+        isHeadTutor: this.isHeadTutor,
+        _id: this.teacherId
+      };
+
+      teacherDatabase
+        .update(teacherNewDetails)
+        .then(result => {
+          ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -209,7 +288,11 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="phone"],
+input[type="number"] {
   border-radius: 5px;
   background: #e8e9ec;
   outline: none;
@@ -239,6 +322,18 @@ input[type="button"] {
   font-weight: bold;
   width: 100%;
   margin-top: 5px;
+}
+
+select {
+  border-radius: 5px;
+  background: #f3f3f3;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
 }
 
 .reset-btn {

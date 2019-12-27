@@ -23,70 +23,63 @@
               <span>Id Number</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.id }}</span>
               </div>
             </div>
             <div>
               <span>First Name</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.firstName }}</span>
               </div>
             </div>
             <div>
               <span>Last Name</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.lastName }}</span>
               </div>
             </div>
             <div>
               <span>Class</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.classroom }}</span>
               </div>
             </div>
             <div>
               <span>Gender</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.gender }}</span>
               </div>
             </div>
             <div>
               <span>Date of Birth</span>
               <br />
               <div class="info-card">
-                <span>None</span>
-              </div>
-            </div>
-            <div>
-              <span>Subject</span>
-              <br />
-              <div class="info-card">
-                <span>None</span>
-              </div>
-            </div>
-            <div>
-              <span>Religion</span>
-              <br />
-              <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.birthDate }}</span>
               </div>
             </div>
             <div>
               <span>Email</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.email }}</span>
               </div>
             </div>
             <div>
               <span>Contact</span>
               <br />
               <div class="info-card">
-                <span>None</span>
+                <span>{{ teacherDetails.contact }}</span>
+              </div>
+            </div>
+            <div v-if="teacherDetails.isHeadTutor">
+              <span>Head Tutor</span>
+              <br />
+              <div class="info-card">
+                <span>{{ teacherDetails.classroom }}</span>
               </div>
             </div>
           </div>
@@ -100,19 +93,34 @@
 // node_modules
 const { ipcRenderer } = require("electron");
 
+// database scripts
+import TeacherDatabase from "../../../models/database/teachers-database";
+
+const teacherDatabase = new TeacherDatabase();
+
 export default {
   name: "teacherDetails",
   created() {
-    ipcRenderer.on("id", (event, arg) => {
+    ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
+
+      teacherDatabase
+        .fetchOne(this.teacherId)
+        .then(result => {
+          this.teacherDetails = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     });
   },
   data() {
-    return { teacherId: "" };
+    return { teacherId: "", teacherDetails: {} };
   },
   methods: {
-    goToTeachers: function() {
-      // alert();
+    goToTeachers() {
+      console.log("SERVER: ");
+      console.log(this.teacherDetails);
       // this.$router.push({ path: "/teachers" });
     }
   }
