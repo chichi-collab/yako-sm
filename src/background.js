@@ -217,12 +217,12 @@ app.on("ready", async () => {
 
 ipcMain.on("toggle-teacher-details", (event, arg) => {
   teacherDetailsWin.show();
-  teacherDetailsWin.webContents.send("id", arg);
+  teacherDetailsWin.webContents.send("teacher-id", arg);
 });
 
 ipcMain.on("toggle-edit-teacher-details", (event, arg) => {
   editTeacherDetailsWin.show();
-  editTeacherDetailsWin.webContents.send("id", arg);
+  editTeacherDetailsWin.webContents.send("teacher-id", arg);
 });
 
 ipcMain.on("toggle-student-details", (event, arg) => {
@@ -251,7 +251,10 @@ ipcMain.on("open-teacher-information-dialog", event => {
 
 // opens an error dialog when an error occurs when teacher is added
 ipcMain.on("open-teacher-error-dialog", () => {
-  dialog.showErrorBox("Teacher Error", "An error occurred while adding teacher");
+  dialog.showErrorBox(
+    "Teacher Error",
+    "An error occurred while adding teacher"
+  );
 });
 
 // Exit cleanly on request from parent process in development mode.
