@@ -21,9 +21,11 @@ import Login from "./views/Login.vue";
 
 // screens to route
 import EditStudentDetails from "./views/screens/EditStudentDetails.vue";
+import EditExpenseDetails from "./views/screens/EditExpenseDetails.vue";
 import EditTeacherDetails from "./views/screens/EditTeacherDetails.vue";
 import StudentDetails from "./views/screens/StudentDetails.vue";
 import TeacherDetails from "./views/screens/TeacherDetails.vue";
+import ExpenseDetails from "./views/screens/ExpenseDetails.vue";
 
 Vue.use(Router);
 
@@ -105,6 +107,16 @@ export default new Router({
       path: "/addExpense",
       name: "addExpense",
       component: AddExpense
+    },
+    {
+      path: "/expenses/editExpenseDetails",
+      name: "editExpenseDetails",
+      component: EditExpenseDetails
+    },
+    {
+      path: "/expenses/expenseDetails",
+      name: "expenseDetails",
+      component: ExpenseDetails
     },
     {
       path: "/classrooms",
