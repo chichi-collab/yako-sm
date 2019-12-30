@@ -15,7 +15,9 @@ let win;
 let teacherDetailsWin,
   editTeacherDetailsWin,
   editStudentDetailsWin,
-  studentDetailsWin;
+  studentDetailsWin,
+  expenseDetailsWin,
+  editExpenseDetailsWin;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -103,7 +105,37 @@ function createWindow() {
     frame: false
   });
 
-  // disable default menu
+  editExpenseDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
+  expenseDetailsWin = new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+
+  // disable default menu for various screens
   win.setMenuBarVisibility(false);
   win.removeMenu();
 
@@ -120,6 +152,12 @@ function createWindow() {
 
   studentDetailsWin.setMenuBarVisibility(false);
   studentDetailsWin.removeMenu();
+
+  editExpenseDetailsWin.setMenuBarVisibility(false);
+  editExpenseDetailsWin.removeMenu();
+
+  expenseDetailsWin.setMenuBarVisibility(false);
+  expenseDetailsWin.removeMenu();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -143,6 +181,16 @@ function createWindow() {
     // load url of edit student details
     editStudentDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/students/editStudentDetails"
+    );
+
+    // Load url of expense details
+    expenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/expenses/expenseDetails"
+    );
+
+    // load url of edit expense details
+    editExpenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/expenses/editExpenseDetails"
     );
 
     // Open the DevTools.
@@ -175,6 +223,17 @@ function createWindow() {
   editStudentDetailsWin.on("close", e => {
     e.preventDefault();
     editStudentDetailsWin.hide();
+  });
+
+  // hides expense details and edit expense details window when it's close
+  expenseDetailsWin.on("close", e => {
+    e.preventDefault();
+    expenseDetailsWin.hide();
+  });
+
+  editExpenseDetailsWin.on("close", e => {
+    e.preventDefault();
+    editExpenseDetailsWin.hide();
   });
 }
 
@@ -233,6 +292,20 @@ ipcMain.on("toggle-student-details", (event, arg) => {
 ipcMain.on("toggle-edit-student-details", (event, arg) => {
   editStudentDetailsWin.show();
   editStudentDetailsWin.webContents.send("id", arg);
+});
+
+// listens on expense-details-screen and sends the expense-id as arg
+// to the expense details window or screen
+ipcMain.on("expense-details-screen", (event, arg) => {
+  expenseDetailsWin.show();
+  expenseDetailsWin.webContents.send("expense-id", arg);
+});
+
+// listens on edit-expense-details-screen and sends the expense-id as arg
+// to the edit expense details window or screen
+ipcMain.on("edit-expense-details-screen", (event, arg) => {
+  editExpenseDetailsWin.show();
+  editExpenseDetailsWin.webContents.send("expense-id", arg);
 });
 
 // opens a dialog whenever a teacher is added to the database successfully
