@@ -284,14 +284,14 @@ ipcMain.on("toggle-edit-teacher-details", (event, arg) => {
   editTeacherDetailsWin.webContents.send("teacher-id", arg);
 });
 
-ipcMain.on("toggle-student-details", (event, arg) => {
+ipcMain.on("student-details-screen", (event, arg) => {
   studentDetailsWin.show();
-  studentDetailsWin.webContents.send("id", arg);
+  studentDetailsWin.webContents.send("student-id", arg);
 });
 
-ipcMain.on("toggle-edit-student-details", (event, arg) => {
+ipcMain.on("edit-student-details-screen", (event, arg) => {
   editStudentDetailsWin.show();
-  editStudentDetailsWin.webContents.send("id", arg);
+  editStudentDetailsWin.webContents.send("student-id", arg);
 });
 
 // listens on expense-details-screen and sends the expense-id as arg
