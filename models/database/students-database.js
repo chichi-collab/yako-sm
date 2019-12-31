@@ -1,99 +1,129 @@
+import Datastore from "nedb";
+import Promise from "bluebird";
+
+import electron from "electron";
+const app = electron.remote.app;
+
+const userData = app.getPath("userData"); // user data path to bundled app
+
 /**
  * @class StudentsDatabase CRUD operations on the Students table
  * @constructor constructor initializes a connection to the database
  *
  */
 class StudentsDatabase {
-  constructor(databaseConn) {
-    // databaseConn stores the connection
-    this.databaseConn = databaseConn;
+  constructor() {
+    // teachers database file path
+    let databasePath = userData + "/databases/students-table.db";
+
+    // initializes database with the database file path
+    this.database = new Datastore({
+      filename: databasePath,
+      autoload: true
+    });
   }
 
   // fetch all students in the database
   fetchAll() {
-    return this.databaseConn.all("SELECT * FROM Students");
+    return new Promise((resolve, reject) => {
+      this.database.find({}, (error, result) => {
+        if (error) {
+          console.log("[-] Error: failed to fetch all students");
+          reject(error);
+        }
+
+        resolve(result);
+      });
+    });
   }
 
-  // fetch student by id
-  fetchOne(id) {
-    return this.databaseConn.get(
-      "SELECT * FROM Students WHERE student_id = ?",
-      [id]
-    );
+  // fetch student by _id
+  fetchOne(_id) {
+    return new Promise((resolve, reject) => {
+      this.database.findOne(
+        {
+          _id
+        },
+        (error, result) => {
+          if (error) {
+            console.log("[-] Error: failed to fetch student by id");
+            reject(error);
+          }
+
+          resolve(result);
+        }
+      );
+    });
   }
 
   // update student details where id equals student_id
   update(student) {
-    const {
-      studentId,
-      firstName,
-      lastName,
-      classroom,
-      gender,
-      birthDate,
-      parentName,
-      parentContact,
-      relation,
-      address
-    } = student;
+    const { _id } = student;
 
-    return this.databaseConn.run(
-      "UPDATE Students SET first_name = ?, last_name = ?, classroom = ?, gender = ?, birth_date= ?, parent_name = ?, parent_contact = ?, relation = ?, address = ? WHERE id = ?",
-      [
-        firstName,
-        lastName,
-        classroom,
-        gender,
-        birthDate,
-        parentName,
-        parentContact,
-        relation,
-        address,
-        studentId
-      ]
-    );
+    return new Promise((resolve, reject) => {
+      this.database.update(
+        {
+          _id
+        },
+        student,
+        {},
+        (error, numReplaced) => {
+          if (error) {
+            console.log("[-] Error: failed to fetch student by id");
+            reject(error);
+          } else if (numReplaced == 1) {
+            resolve("update student details successfully");
+          }
+        }
+      );
+    });
   }
 
   // add student to the database
+  // param student contains object of student details
   add(student) {
-    const {
-      studentId,
-      firstName,
-      lastName,
-      classroom,
-      gender,
-      birthDate,
-      parentName,
-      parentContact,
-      relation,
-      address
-    } = student;
-
-    return this.databaseConn.run(
-      "INSERT INTO Students(student_id, first_name, last_name, classroom, gender, birth_date, parent_name, parent_contact, relation, address) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ?); ",
-      [
-        studentId,
-        firstName,
-        lastName,
-        classroom,
-        gender,
-        birthDate,
-        parentName,
-        parentContact,
-        relation,
-        address
-      ]
-    );
+    return new Promise((resolve, reject) => {
+      this.database.insert(student, (error, result) => {
+        if (error) {
+          console.log("[-] Error: failed to add new student");
+          reject(error);
+        }
+        resolve(result);
+      });
+    });
   }
 
   // delete student from the database
-  delete(student) {
-    const { studentId } = student;
+  // param _id the unique id by the student
+  delete(_id) {
+    return new Promise((resolve, reject) => {
+      this.database.remove(
+        {
+          _id
+        },
+        {},
+        (error, result) => {
+          if (error) {
+            console.log("[-] Error: failed to delete student");
+            reject(error);
+          }
 
-    return this.databaseConn.run("DELETE FROM Students WHERE id = ?", [
-      studentId
-    ]);
+          resolve(result);
+        }
+      );
+    });
   }
 }
 
 export default StudentsDatabase;
+
+//   id: 1,
+//   firstName: "Okai",
+//   lastName: "Kloy",
+//   classroom: "JHS 1",
+//   gender: "Male",
+//   birthDate: "",
+//   parentName: "",
+//   parentContact: ""
+//   relation: "",
+//   digitalAddress: ""
