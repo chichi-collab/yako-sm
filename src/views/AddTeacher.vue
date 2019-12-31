@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     // add teacher to the database
-    async addTeacher() {
+    addTeacher() {
       const teacherData = {
         id: this.id,
         firstName: this.firstName,
