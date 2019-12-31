@@ -23,13 +23,11 @@
                 <thead>
                   <tr>
                     <th>Id</th>
-                    <th>Photo</th>
                     <th>Name</th>
-                    <th>Gender</th>
                     <th>Class</th>
-                    <th>Address</th>
+                    <th>Gender</th>
                     <th>Parent</th>
-                    <th>Parent No</th>
+                    <th>Address</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -38,30 +36,30 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                      <div class="user-img"></div>
-                    </td>
-                    <td>O. Yeboah</td>
-                    <td>Male</td>
-                    <td>JHS 1</td>
-                    <td>None</td>
-                    <td>1233</td>
-                    <td>+2.01</td>
+                  <tr v-for="student in studentsData" :key="student._id">
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.firstName }} {{ student.lastName }}</td>
+                    <td>{{ student.gender }}</td>
+                    <td>{{ student.classroom }}</td>
+                    <td>{{ student.parentName }}</td>
+                    <td>{{ student.digitalAddress }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
                           class="fa fa-eye"
-                          @click="openStudentDetails(1)"
+                          @click="openStudentDetails(student._id)"
                         />
                         <font-awesome-icon
                           icon="user-edit"
-                          @click="openEditStudentDetails(1)"
+                          @click="openEditStudentDetails(student._id)"
                           class="fa fa-user-edit"
                         />
-                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa fa-trash-alt"
+                          @click="removeStudent(student._id)"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -76,11 +74,16 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
+// components
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
-// packages
-import { ipcRenderer } from "electron";
+// database scripts
+import StudentDatabase from "../../models/database/students-database";
+
+const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
 
 export default {
   name: "AllStudents",
@@ -88,15 +91,41 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  created() {
+    studentDatabase
+      .fetchAll()
+      .then(result => {
+        this.studentsData = result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   methods: {
     openStudentDetails(id) {
-      ipcRenderer.send("toggle-student-details", id);
-      console.log("toggle-teacher-details", id);
+      ipcRenderer.send("student-details-screen", id);
+      console.log("student-id: ", id);
     },
     openEditStudentDetails(id) {
-      ipcRenderer.send("toggle-edit-student-details", id);
-      console.log("toggle-teacher-details", id);
+      ipcRenderer.send("edit-student-details-screen", id);
+      console.log("student-id: ", id);
+    },
+    removeStudent(_id) {
+      studentDatabase
+        .delete(_id)
+        .then(result => {
+          ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
+  },
+  data() {
+    return {
+      studentsData: []
+    };
   }
 };
 </script>
@@ -181,7 +210,7 @@ export default {
 .action-box {
   float: right;
   display: grid;
-  margin-right: 20px;
+  margin-right: 60px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 3px;
   padding: 2px;
