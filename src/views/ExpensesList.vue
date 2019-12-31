@@ -27,7 +27,6 @@
                     <th>Name</th>
                     <th>Status</th>
                     <th>Amount Taken</th>
-                    <th>Reason</th>
                     <th>Date</th>
                     <th>Action</th>
                   </tr>
@@ -37,19 +36,30 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Lucy Addae</td>
-                    <td>O. Yeboah</td>
-                    <td>Male</td>
-                    <td>JHS 1</td>
-                    <td>None</td>
-                    <td>None</td>
+                  <tr v-for="expense in expenseData" :key="expense._id">
+                    <td>{{ expense.id }}</td>
+                    <td>{{ expense.expenseType }}</td>
+                    <td>{{ expense.name }}</td>
+                    <td>{{ expense.status }}</td>
+                    <td>{{ expense.amountTaken }}</td>
+                    <td>{{ expense.takenDate }}</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <font-awesome-icon icon="eye" class="fa fa-eye" />
-                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
-                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                        <font-awesome-icon
+                          icon="eye"
+                          class="fa fa-eye"
+                          @click="openExpenseDetails(expense._id)"
+                        />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          class="fa fa-user-edit"
+                          @click="openEditExpenseDetails(expense._id)"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa fa-trash-alt"
+                          @click="removeExpense(expense._id)"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -64,14 +74,57 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
+
+// database scripts
+import ExpenseDatabase from "../../models/database/expense-database";
+
+const expenseDatabase = new ExpenseDatabase();
 
 export default {
   name: "ExpensesList",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  created() {
+    expenseDatabase
+      .fetchAll()
+      .then(result => {
+        this.expenseData = result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  methods: {
+    openExpenseDetails(id) {
+      ipcRenderer.send("expense-details-screen", id);
+      console.log("expense-details-id", id);
+    },
+    openEditExpenseDetails(id) {
+      ipcRenderer.send("edit-expense-details-screen", id);
+      console.log("expense-details-id", id);
+    },
+    removeExpense(_id) {
+      expenseDatabase
+        .delete(_id)
+        .then(result => {
+          // ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  data() {
+    return {
+      expenseData: []
+    };
   }
 };
 </script>
