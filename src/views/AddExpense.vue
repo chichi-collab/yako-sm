@@ -63,8 +63,13 @@
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addExpense"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -78,6 +83,11 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import ExpenseDatabase from "../../models/database/expense-database";
+
+const expenseDatabase = new ExpenseDatabase();
+
 export default {
   name: "AddExpense",
   components: {
@@ -90,11 +100,40 @@ export default {
       expenseType: "",
       name: "",
       status: "",
-      subject: "",
       amountTaken: "",
       reason: "",
       takenDate: ""
     };
+  },
+  methods: {
+    addExpense() {
+      const expenseData = {
+        id: this.id,
+        expenseType: this.expenseType,
+        name: this.name,
+        status: this.status,
+        amountTaken: this.amountTaken,
+        reason: this.reason,
+        takenDate: this.takenDate
+      };
+
+      console.log(expenseData); // log expense details
+
+      // insert expense details into the database
+      // if error then show error message box
+      // else show success message box
+
+      expenseDatabase
+        .add(expenseData)
+        .then(result => {
+          // ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-teacher-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
