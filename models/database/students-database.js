@@ -113,6 +113,26 @@ class StudentsDatabase {
       );
     });
   }
+
+  // fetch students by classroom
+  fetchByClassroom(classroom) {
+    return new Promise((resolve, reject) => {
+      this.database.find(
+        {
+          classroom
+        },
+        {},
+        (error, result) => {
+          if (error) {
+            console.log("[-] Error: failed to fetchByClassroom");
+            reject(error);
+          }
+
+          resolve(result);
+        }
+      );
+    });
+  }
 }
 
 export default StudentsDatabase;
