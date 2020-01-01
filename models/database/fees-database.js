@@ -33,23 +33,16 @@ class FeesDatabase {
 
   // fetch all fees in the database
   fetchAll() {
-    // log database content to the console
-    fs.readFile(this.databasePath, (error, data) => {
-      if (error) {
-        console.log("[-] Error: ", error);
-      }
-      console.log(data.toString());
-    });
-    // return new Promise((resolve, reject) => {
-    //   this.database.find({}, (error, result) => {
-    //     if (error) {
-    //       console.log("[-] Error: failed to fetch all fees");
-    //       reject(error);
-    //     }
+    return new Promise((resolve, reject) => {
+      this.database.find({}, (error, result) => {
+        if (error) {
+          console.log("[-] Error: failed to fetch all fees");
+          reject(error);
+        }
 
-    //     resolve(result);
-    //   });
-    // });
+        resolve(result);
+      });
+    });
   }
 
   // fetch fee by id
