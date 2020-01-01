@@ -24,11 +24,9 @@
                   <tr>
                     <th>Id</th>
                     <th>Student</th>
-                    <th>Parent</th>
                     <th>Class</th>
                     <th>Fees Owning</th>
                     <th>Fees Paid</th>
-                    <th>Contact</th>
                     <th>Date</th>
                     <th>Actions</th>
                   </tr>
@@ -38,20 +36,24 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>O. Yeboah</td>
-                    <td>Male</td>
-                    <td>JHS 1</td>
-                    <td>None</td>
-                    <td>None</td>
-                    <td>1233</td>
-                    <td>+2.01</td>
+                  <tr v-for="fee in feesData" :key="fee._id">
+                    <td>{{ fee.studentId }}</td>
+                    <td>{{ fee.studentName }}</td>
+                    <td>{{ fee.studentClass }}</td>
+                    <td>{{ fee.totalFees - fee.feesPaid }}</td>
+                    <td>{{ fee.feesPaid }}</td>
+                    <td>{{ fee.paidDate }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="eye" class="fa fa-eye" />
-                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
-                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          class="fa fa-user-edit"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa fa-trash-alt"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -69,11 +71,32 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import FeesDatabase from "../../models/database/fees-database";
+
+const feesDatabase = new FeesDatabase(); // initializes FeesDatabase
+
 export default {
-  name: "AllStudents",
+  name: "FeesCollection",
+  mounted() {
+    feesDatabase
+      .fetchAll()
+      .then(result => {
+        this.feesData = result;
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      feesData: []
+    };
   }
 };
 </script>
