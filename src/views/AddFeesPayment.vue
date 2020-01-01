@@ -11,7 +11,12 @@
             <div>
               <span>Total Fees</span>
               <br />
-              <input type="number" value="1000" class="total-fees" v-model="totalFees" />
+              <input
+                type="number"
+                value="1000"
+                class="total-fees"
+                v-model="totalFees"
+              />
             </div>
             <div>
               <span></span>
@@ -35,11 +40,6 @@
             <!-- form here -->
             <form action>
               <div class="input-container">
-                <div>
-                  <span>Id</span>
-                  <br />
-                  <input type="number" v-model="feesId" />
-                </div>
                 <div>
                   <span>Student Id</span>
                   <br />
@@ -69,8 +69,13 @@
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addFees"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -84,6 +89,11 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import FeesDatabase from "../../models/database/fees-database";
+
+const feesDatabase = new FeesDatabase(); // initializes FeesDatabase
+
 export default {
   name: "AddFeesPayment",
   components: {
@@ -92,7 +102,6 @@ export default {
   },
   data() {
     return {
-      feesId: "",
       studentId: "",
       studentName: "",
       studentClass: "",
@@ -100,6 +109,34 @@ export default {
       paidDate: "",
       totalFees: ""
     };
+  },
+  methods: {
+    addFees() {
+      const feesData = {
+        studentId: this.studentId,
+        studentName: this.studentName,
+        studentClass: this.studentClass,
+        feesPaid: this.feesPaid,
+        paidDate: this.paidDate,
+        totalFees: this.totalFees
+      };
+
+      console.log(feesData); // log fees details
+
+      // insert fees details into the fees database
+      // if error then show error message box
+      // else show success message box
+      feesDatabase
+        .add(feesData)
+        .then(result => {
+          // ipcRenderer.send("open-fees-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-fees-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
