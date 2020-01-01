@@ -63,95 +63,14 @@ function createWindow() {
     }
   });
 
-  teacherDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  teacherDetailsWin = createScreen();
+  editTeacherDetailsWin = createScreen();
 
-  editTeacherDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  editStudentDetailsWin = createScreen();
+  studentDetailsWin = createScreen();
 
-  editStudentDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
-
-  studentDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
-
-  editExpenseDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
-
-  expenseDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  editExpenseDetailsWin = createScreen();
+  expenseDetailsWin = createScreen();
 
   feeDetailsWin = createScreen();
   editFeeDetailsWin = createScreen();
