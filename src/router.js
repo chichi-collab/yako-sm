@@ -23,9 +23,11 @@ import Login from "./views/Login.vue";
 import EditStudentDetails from "./views/screens/EditStudentDetails.vue";
 import EditExpenseDetails from "./views/screens/EditExpenseDetails.vue";
 import EditTeacherDetails from "./views/screens/EditTeacherDetails.vue";
+import EditFeeDetails from "./views/screens/EditTeacherDetails.vue";
 import StudentDetails from "./views/screens/StudentDetails.vue";
 import TeacherDetails from "./views/screens/TeacherDetails.vue";
 import ExpenseDetails from "./views/screens/ExpenseDetails.vue";
+import FeeDetails from "./views/screens/EditTeacherDetails.vue";
 
 Vue.use(Router);
 
@@ -92,6 +94,16 @@ export default new Router({
       path: "/feesCollection",
       name: "feesCollection",
       component: FeesCollection
+    },
+    {
+      path: "/feesCollection/feeDetails",
+      name: "feeDetails",
+      component: FeeDetails
+    },
+    {
+      path: "/feesCollection/editFeeDetails",
+      name: "editFeeDetails",
+      component: EditFeeDetails
     },
     {
       path: "/addFeesPayment",
