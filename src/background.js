@@ -17,7 +17,8 @@ let teacherDetailsWin,
   editStudentDetailsWin,
   studentDetailsWin,
   expenseDetailsWin,
-  editExpenseDetailsWin;
+  editExpenseDetailsWin, feeDetailsWin,
+  editFeeDetailsWin;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -29,6 +30,23 @@ protocol.registerSchemesAsPrivileged([
     }
   }
 ]);
+
+function createScreen() {
+  return new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+}
 
 function createWindow() {
   // Create the browser window.
@@ -135,6 +153,9 @@ function createWindow() {
     frame: false
   });
 
+  feeDetailsWin = createScreen();
+  editFeeDetailsWin = createScreen();
+
   // disable default menu for various screens
   win.setMenuBarVisibility(false);
   win.removeMenu();
@@ -158,6 +179,12 @@ function createWindow() {
 
   expenseDetailsWin.setMenuBarVisibility(false);
   expenseDetailsWin.removeMenu();
+
+  feeDetailsWin.setMenuBarVisibility(false);
+  feeDetailsWin.removeMenu();
+
+  editFeeDetailsWin.setMenuBarVisibility(false);
+  editFeeDetailsWin.removeMenu();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -191,6 +218,16 @@ function createWindow() {
     // load url of edit expense details
     editExpenseDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/expenses/editExpenseDetails"
+    );
+
+    // Load url of fee details
+    expenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/feeDetails"
+    );
+
+    // load url of edit fee details
+    editExpenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/editFeeDetails"
     );
 
     // Open the DevTools.
@@ -232,6 +269,17 @@ function createWindow() {
   });
 
   editExpenseDetailsWin.on("close", e => {
+    e.preventDefault();
+    editExpenseDetailsWin.hide();
+  });
+
+  // hides fee details and edit fee details window when it's close
+  feeDetailsWin.on("close", e => {
+    e.preventDefault();
+    expenseDetailsWin.hide();
+  });
+
+  editFeeDetailsWin.on("close", e => {
     e.preventDefault();
     editExpenseDetailsWin.hide();
   });
@@ -306,6 +354,20 @@ ipcMain.on("expense-details-screen", (event, arg) => {
 ipcMain.on("edit-expense-details-screen", (event, arg) => {
   editExpenseDetailsWin.show();
   editExpenseDetailsWin.webContents.send("expense-id", arg);
+});
+
+// listens on fee-details-screen and sends the fee-id as arg
+// to the fee details window or screen
+ipcMain.on("fee-details-screen", (event, arg) => {
+  expenseDetailsWin.show();
+  expenseDetailsWin.webContents.send("fee-id", arg);
+});
+
+// listens on edit-fee-details-screen and sends the fee-id as arg
+// to the edit fee details window or screen
+ipcMain.on("edit-fee-details-screen", (event, arg) => {
+  editExpenseDetailsWin.show();
+  editExpenseDetailsWin.webContents.send("fee-id", arg);
 });
 
 // opens a dialog whenever a teacher is added to the database successfully
