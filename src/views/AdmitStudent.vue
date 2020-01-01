@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="number" v-model="studentId" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -40,7 +40,7 @@
                 <div>
                   <span>Class</span>
                   <br />
-                  <input type="text" v-model="studentClass" />
+                  <input type="text" v-model="classroom" />
                 </div>
                 <div>
                   <span>Gender</span>
@@ -72,14 +72,19 @@
                   <input type="text" v-model="relation" />
                 </div>
                 <div>
-                  <span>Address</span>
+                  <span>Digital Address</span>
                   <br />
-                  <input type="text" v-model="address" />
+                  <input type="text" v-model="digitalAddress" />
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addStudent"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -93,6 +98,11 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import StudentDatabase from "../../models/database/students-database";
+
+const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+
 export default {
   name: "admitStudent",
   components: {
@@ -101,17 +111,50 @@ export default {
   },
   data() {
     return {
-      studentId: "",
+      id: "",
       firstName: "",
       lastName: "",
-      studentClass: "",
+      classroom: "",
       gender: "",
       birthDate: "",
       parentName: "",
       parentContact: "",
       relation: "",
-      address: ""
+      digitalAddress: ""
     };
+  },
+  methods: {
+    addStudent() {
+      // add student to the database
+      const studentData = {
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        classroom: this.classroom,
+        gender: this.gender,
+        birthDate: this.birthDate,
+        parentName: this.parentName,
+        parentContact: this.parentContact,
+        relation: this.relation,
+        digitalAddress: this.digitalAddress
+      };
+
+      console.log(studentData); // log student details
+
+      // insert student details into the database
+      // if error then show error message box
+      // else show success message box
+      studentDatabase
+        .add(studentData)
+        .then(result => {
+          // ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-student-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
