@@ -45,14 +45,20 @@
                     <td>{{ fee.paidDate }}</td>
                     <td>
                       <div class="action-box prevent-select">
-                        <font-awesome-icon icon="eye" class="fa fa-eye" />
+                        <font-awesome-icon
+                          icon="eye"
+                          class="fa fa-eye"
+                          @click="openFeeDetails(fee._id)"
+                        />
                         <font-awesome-icon
                           icon="user-edit"
                           class="fa fa-user-edit"
+                          @click="openEditFeeDetails(fee._id)"
                         />
                         <font-awesome-icon
                           icon="trash-alt"
                           class="fa fa-trash-alt"
+                          @click="removeFee(fee._id)"
                         />
                       </div>
                     </td>
@@ -68,6 +74,8 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
@@ -97,6 +105,27 @@ export default {
     return {
       feesData: []
     };
+  },
+  methods: {
+    openFeeDetails(id) {
+      ipcRenderer.send("fee-details-screen", id);
+      console.log("fee-id: ", id);
+    },
+    openEditFeeDetails(id) {
+      ipcRenderer.send("edit-fee-details-screen", id);
+      console.log("fee-id: ", id);
+    },
+    removeFee(_id) {
+      feesDatabase
+        .delete(_id)
+        .then(result => {
+          ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
