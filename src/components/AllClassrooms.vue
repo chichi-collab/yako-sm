@@ -58,7 +58,7 @@
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody>
               <tr v-if="isStudentsAvailable">
-               <td>1</td>
+                <td>1</td>
                 <td>Random dude</td>
                 <td>None</td>
                 <td>None</td>
