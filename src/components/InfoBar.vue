@@ -19,13 +19,9 @@
       </div>
       <div class="user-notification">
         <div class="grey-circle">
-          <font-awesome-icon icon="envelope" class="fa fa-color fa-envelope" />
-        </div>
-        <span class="counter">13</span>
-        <div class="grey-circle">
           <font-awesome-icon icon="bell" class="fa fa-color fa-bell" />
         </div>
-        <span class="counter-yellow">13</span>
+        <div class="counter-yellow">13</div>
         <div class="pipe"></div>
         <div class="user-img"></div>
         <div class="user-area">
@@ -119,7 +115,7 @@ export default {
 .pipe {
   border-right: 2px solid #f3f3f3;
   height: 30px;
-  margin: 8px 14px 10px 0px;
+  margin: 10px 18px 10px 20px;
 }
 
 .school-icon {
@@ -131,12 +127,16 @@ export default {
   color: #fff;
 }
 
+.dropdown {
+  margin-left:45px;
+}
+
 .yakoSM {
   font-size: 25px;
   font-weight: 300;
   width: 150px;
   color: #707070;
-  margin: 10px 10px 10px 55px;
+  margin: 10px 10px 10px 45px;
   vertical-align: center;
 }
 
@@ -159,12 +159,12 @@ export default {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  width: 280px;
+  width: 250px;
   height: 25px;
   border-radius: 50px;
   margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 30px;
+  margin-left: 0px;
+  margin-right: 40px;
   padding: 2px;
 }
 
@@ -196,6 +196,8 @@ export default {
 
 .grey-circle a {
   text-decoration: none;
+  position: absolute;
+  z-index: auto;
 }
 
 .user-img {
@@ -212,23 +214,11 @@ export default {
   margin: 7px 14px 8px 0px;
 }
 
-.counter {
-  display: inline-block;
-  background: #3686ff;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  font-size: 11px;
-  text-align: center;
-  color: #fff;
-  position: relative;
-  font-weight: 200;
-  top: 5px;
-  left: -15px;
-}
 
 .counter-yellow {
-  display: inline-block;
+  position:absolute;
+  z-index: 1;
+  /* display: inline-block; */
   background: #ffe711;
   width: 15px;
   height: 15px;
@@ -236,9 +226,10 @@ export default {
   font-size: 11px;
   text-align: center;
   color: #fff;
-  position: relative;
+  /* position: relative; */
   font-weight: 200;
   top: 5px;
+  right: 269px;
 }
 
 .user-area {

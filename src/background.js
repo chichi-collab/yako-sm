@@ -31,6 +31,7 @@ protocol.registerSchemesAsPrivileged([
   }
 ]);
 
+
 function createScreen() {
   return new BrowserWindow({
     width: 700,

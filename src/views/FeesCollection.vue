@@ -25,7 +25,7 @@
                     <th>Id</th>
                     <th>Student</th>
                     <th>Class</th>
-                    <th>Fees Owning</th>
+                    <th>Arrears</th>
                     <th>Fees Paid</th>
                     <th>Date</th>
                     <th>Actions</th>
