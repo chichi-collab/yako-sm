@@ -15,7 +15,7 @@ const userData = app.getPath("userData"); // user data path to bundled app
 class FeesDatabase {
   constructor() {
     // fees database file path
-    this.databasePath = userData + "databases/fees-table.db";
+    this.databasePath = userData + "/databases/fees-table.db";
     console.log("database path: ", this.databasePath);
 
     // initializes database with the database file path
