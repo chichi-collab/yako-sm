@@ -1,7 +1,7 @@
 <template>
   <div class="contain-area">
     <div class="content">
-      <!-- All Teachers -->
+      <!-- All Fees -->
       <div class="container-for-table">
         <div class="title-bar">
           <span class="window-title">Teacher Details</span>
@@ -16,70 +16,54 @@
 
         <!-- form here -->
         <div class="profile-container">
-          <div class="user-img"></div>
-
           <div class="input-container">
             <div>
               <span>Id Number</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.id }}</span>
+                <span>{{ feeDetails.id }}</span>
               </div>
             </div>
             <div>
-              <span>First Name</span>
+              <span>Total Fees</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.firstName }}</span>
+                <span>{{ feeDetails.totalFees }}</span>
               </div>
             </div>
             <div>
-              <span>Last Name</span>
+              <span>Student Id</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.lastName }}</span>
+                <span>{{ feeDetails.studentId }}</span>
               </div>
             </div>
             <div>
-              <span>Class</span>
+              <span>Student Name</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.classroom }}</span>
+                <span>{{ feeDetails.studentName }}</span>
               </div>
             </div>
             <div>
-              <span>Gender</span>
+              <span>Classroom</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.gender }}</span>
+                <span>{{ feeDetails.studentClass }}</span>
               </div>
             </div>
             <div>
-              <span>Date of Birth</span>
+              <span>Fees paid</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.birthDate }}</span>
+                <span>{{ feeDetails.feesPaid }}</span>
               </div>
             </div>
             <div>
-              <span>Email</span>
+              <span>Date</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.email }}</span>
-              </div>
-            </div>
-            <div>
-              <span>Contact</span>
-              <br />
-              <div class="info-card">
-                <span>{{ teacherDetails.contact }}</span>
-              </div>
-            </div>
-            <div v-if="teacherDetails.isHeadTutor">
-              <span>Head Tutor</span>
-              <br />
-              <div class="info-card">
-                <span>{{ teacherDetails.classroom }}</span>
+                <span>{{ feeDetails.datePaid }}</span>
               </div>
             </div>
           </div>
@@ -94,20 +78,20 @@
 const { ipcRenderer } = require("electron");
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import FeesDatabase from "../../../models/database/fees-database";
 
-const teacherDatabase = new TeacherDatabase();
+const feeDatabase = new FeesDatabase();
 
 export default {
-  name: "teacherDetails",
+  name: "feeDetails",
   created() {
-    ipcRenderer.on("teacher-id", (event, arg) => {
-      this.teacherId = arg;
+    ipcRenderer.on("fee-id", (event, arg) => {
+      this.feeId = arg;
 
-      teacherDatabase
-        .fetchOne(this.teacherId)
+      feeDatabase
+        .fetchOne(this.feeId)
         .then(result => {
-          this.teacherDetails = result;
+          this.feeDetails = result;
         })
         .catch(err => {
           console.log(err);
@@ -115,13 +99,13 @@ export default {
     });
   },
   data() {
-    return { teacherId: "", teacherDetails: {} };
+    return { feeId: "", feeDetails: {} };
   },
   methods: {
-    goToTeachers() {
+    goToFees() {
       console.log("SERVER: ");
-      console.log(this.teacherDetails);
-      // this.$router.push({ path: "/teachers" });
+      console.log(this.feeDetails);
+      // this.$router.push({ path: "/fees" });
     }
   }
 };

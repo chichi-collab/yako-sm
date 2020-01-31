@@ -11,7 +11,12 @@
             <div>
               <span>Total Fees</span>
               <br />
-              <input type="text" value="1000" class="total-fees" />
+              <input
+                type="number"
+                value="1000"
+                class="total-fees"
+                v-model="totalFees"
+              />
             </div>
             <div>
               <span></span>
@@ -36,14 +41,9 @@
             <form action>
               <div class="input-container">
                 <div>
-                  <span>Id</span>
-                  <br />
-                  <input type="text" v-model="id" />
-                </div>
-                <div>
                   <span>Student Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="studentId" />
                 </div>
                 <div>
                   <span>Student Name</span>
@@ -59,18 +59,23 @@
                 <div>
                   <span>Fees Paid</span>
                   <br />
-                  <input type="text" v-model="feesPaid" />
+                  <input type="number" v-model="feesPaid" />
                 </div>
 
                 <div>
                   <span>Date</span>
                   <br />
-                  <input type="text" v-model="date" />
+                  <input type="date" v-model="paidDate" />
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addFees"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -84,11 +89,54 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import FeesDatabase from "../../models/database/fees-database";
+
+const feesDatabase = new FeesDatabase(); // initializes FeesDatabase
+
 export default {
   name: "AddFeesPayment",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      studentId: "",
+      studentName: "",
+      studentClass: "",
+      feesPaid: "",
+      paidDate: "",
+      totalFees: ""
+    };
+  },
+  methods: {
+    addFees() {
+      const feesData = {
+        studentId: this.studentId,
+        studentName: this.studentName,
+        studentClass: this.studentClass,
+        feesPaid: this.feesPaid,
+        paidDate: this.paidDate,
+        totalFees: this.totalFees
+      };
+
+      console.log(feesData); // log fees details
+
+      // insert fees details into the fees database
+      // if error then show error message box
+      // else show success message box
+      feesDatabase
+        .add(feesData)
+        .then(result => {
+          // ipcRenderer.send("open-fees-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-fees-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
@@ -197,7 +245,9 @@ form {
   border-radius: 5px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+input[type="date"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;

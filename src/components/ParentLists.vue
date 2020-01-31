@@ -25,7 +25,6 @@
                 <th>Student Class</th>
                 <th>Relation</th>
                 <th>Fees Owning</th>
-                <th>Address</th>
               </tr>
             </thead>
           </table>
@@ -33,15 +32,14 @@
         <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Lucy Addae</td>
-                <td>O. Yeboah</td>
-                <td>Male</td>
-                <td>JHS 1</td>
-                <td>None</td>
-                <td>None</td>
-                <td>None</td>
+              <tr v-for="student in studentsData" :key="student._id">
+                <td>{{ student.id }}</td>
+                <td>{{ student.parentName }}</td>
+                <td>{{ student.parentContact }}</td>
+                <td>{{ student.firstName }} {{ student.lastName }}</td>
+                <td>{{ student.classroom }}</td>
+                <td>{{ student.relation }}</td>
+                <td>Not yet</td>
               </tr>
             </tbody>
           </table>
@@ -52,8 +50,28 @@
 </template>
 
 <script>
+// database scripts
+import StudentDatabase from "../../models/database/students-database";
+
+const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+
 export default {
-  name: "ParentLists"
+  name: "ParentLists",
+  mounted() {
+    studentDatabase
+      .fetchAll()
+      .then(result => {
+        this.studentsData = result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  data() {
+    return {
+      studentsData: []
+    };
+  }
 };
 </script>
 
@@ -202,7 +220,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #fff;
+  color: #707070;
   height: 30px;
   border-bottom: 1px solid #f3f3f3;
 }

@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -40,22 +40,21 @@
                 <div>
                   <span>Class</span>
                   <br />
-                  <input type="text" v-model="studentClass" />
+                  <input type="text" v-model="classroom" />
                 </div>
                 <div>
                   <span>Gender</span>
                   <br />
-                  <input type="text" v-model="gender" />
+                  <select v-model="gender">
+                    <option disabled value>Please choose gender...</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
                 </div>
                 <div>
                   <span>Date of Birth</span>
                   <br />
-                  <input type="text" v-model="birthdate" />
-                </div>
-                <div>
-                  <span>Religion</span>
-                  <br />
-                  <input type="text" v-model="religion" />
+                  <input type="date" v-model="birthDate" />
                 </div>
                 <div>
                   <span>Parent Name</span>
@@ -63,9 +62,9 @@
                   <input type="text" v-model="parentName" />
                 </div>
                 <div>
-                  <span>Parent No</span>
+                  <span>Parent Contact</span>
                   <br />
-                  <input type="text" v-model="parentNo" />
+                  <input type="phone" v-model="parentContact" />
                 </div>
                 <div>
                   <span>Relation</span>
@@ -73,14 +72,19 @@
                   <input type="text" v-model="relation" />
                 </div>
                 <div>
-                  <span>Address</span>
+                  <span>Digital Address</span>
                   <br />
-                  <input type="text" v-model="contact" />
+                  <input type="text" v-model="digitalAddress" />
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addStudent"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -94,11 +98,63 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import StudentDatabase from "../../models/database/students-database";
+
+const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+
 export default {
   name: "admitStudent",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      id: "",
+      firstName: "",
+      lastName: "",
+      classroom: "",
+      gender: "",
+      birthDate: "",
+      parentName: "",
+      parentContact: "",
+      relation: "",
+      digitalAddress: ""
+    };
+  },
+  methods: {
+    addStudent() {
+      // add student to the database
+      const studentData = {
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        classroom: this.classroom,
+        gender: this.gender,
+        birthDate: this.birthDate,
+        parentName: this.parentName,
+        parentContact: this.parentContact,
+        relation: this.relation,
+        digitalAddress: this.digitalAddress
+      };
+
+      console.log(studentData); // log student details
+
+      // insert student details into the database
+      // if error then show error message box
+      // else show success message box
+      studentDatabase
+        .add(studentData)
+        .then(result => {
+          // ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-student-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
@@ -194,7 +250,11 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="phone"],
+input[type="number"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
@@ -212,6 +272,18 @@ input[type="text"] {
   grid-template-columns: 113px 113px;
   grid-column-gap: 30px;
   margin-top: 30px;
+}
+
+select {
+  border-radius: 5px;
+  background: #f3f3f3;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
 }
 
 input[type="button"] {

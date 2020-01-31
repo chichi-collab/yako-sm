@@ -16,7 +16,7 @@
 
         <!-- form here -->
         <div class="profile-container">
-          <div class="user-img"></div>
+          
 
           <div class="input-container">
             <div>
@@ -99,7 +99,7 @@ import TeacherDatabase from "../../../models/database/teachers-database";
 const teacherDatabase = new TeacherDatabase();
 
 export default {
-  name: "teacherDetails",
+  name: "expenseDetails",
   created() {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;

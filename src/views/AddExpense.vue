@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>Expense Type</span>
@@ -40,27 +40,36 @@
                 <div>
                   <span>Status</span>
                   <br />
-                  <input type="text" v-model="status" />
+                  <select v-model="status">
+                    <option disabled value>Please choose status...</option>
+                    <option>Pending</option>
+                    <option>Received</option>
+                  </select>
                 </div>
                 <div>
                   <span>Amount Taken</span>
                   <br />
-                  <input type="text" v-model="amountTaken" />
+                  <input type="number" v-model="amountTaken" />
                 </div>
                 <div>
                   <span>Reason</span>
                   <br />
-                  <input type="text" v-model="Reason" />
+                  <input type="text" v-model="reason" />
                 </div>
                 <div>
                   <span>Date</span>
                   <br />
-                  <input type="text" v-model="date" />
+                  <input type="date" v-model="takenDate" />
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addExpense"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -74,11 +83,57 @@
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
+// database scripts
+import ExpenseDatabase from "../../models/database/expense-database";
+
+const expenseDatabase = new ExpenseDatabase();
+
 export default {
   name: "AddExpense",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  data() {
+    return {
+      id: "",
+      expenseType: "",
+      name: "",
+      status: "",
+      amountTaken: "",
+      reason: "",
+      takenDate: ""
+    };
+  },
+  methods: {
+    addExpense() {
+      const expenseData = {
+        id: this.id,
+        expenseType: this.expenseType,
+        name: this.name,
+        status: this.status,
+        amountTaken: this.amountTaken,
+        reason: this.reason,
+        takenDate: this.takenDate
+      };
+
+      console.log(expenseData); // log expense details
+
+      // insert expense details into the database
+      // if error then show error message box
+      // else show success message box
+
+      expenseDatabase
+        .add(expenseData)
+        .then(result => {
+          // ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-teacher-error-dialog");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
@@ -175,7 +230,9 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+input[type="date"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
@@ -186,6 +243,18 @@ input[type="text"] {
   font-weight: 100;
   width: 100%;
   margin-top: 5px;
+}
+
+select {
+  border-radius: 5px;
+  background: #f3f3f3;
+  height: 30px;
+  padding: 5px;
+  color: #707070;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
+  width: 250px;
 }
 
 .btn-container {
