@@ -1,7 +1,5 @@
 import Datastore from "nedb";
 import Promise from "bluebird";
-import fs from "fs";
-
 import electron from "electron";
 const app = electron.remote.app;
 
