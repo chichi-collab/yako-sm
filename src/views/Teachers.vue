@@ -13,7 +13,7 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" />
+                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" @click="refreshScreen()" />
                 <font-awesome-icon icon="times" class="fa-times" />
               </div>
             </div>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
+import { ipcRenderer, remote } from "electron";
 
 // components
 import InfoBar from "@/components/InfoBar.vue";
@@ -124,6 +124,9 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    refreshScreen() {
+      remote.getCurrentWindow().reload();
     }
   },
   data() {
