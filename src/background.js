@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow, ipcMain } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, dialog } from "electron";
 import {
   createProtocol
   // installVueDevtools
@@ -15,7 +15,10 @@ let win;
 let teacherDetailsWin,
   editTeacherDetailsWin,
   editStudentDetailsWin,
-  studentDetailsWin;
+  studentDetailsWin,
+  expenseDetailsWin,
+  editExpenseDetailsWin, feeDetailsWin,
+  editFeeDetailsWin;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -28,82 +31,52 @@ protocol.registerSchemesAsPrivileged([
   }
 ]);
 
+
+function createScreen() {
+  return new BrowserWindow({
+    width: 700,
+    height: 600,
+    minWidth: 700,
+    minHeight: 600,
+    maxWidth: 700,
+    maxHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: win,
+    show: false,
+    frame: false
+  });
+}
+
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1140,
-    height: 703,
+    height: 680,
     minWidth: 1140,
-    minHeight: 703,
+    minHeight: 680,
     maxWidth: 1140,
-    maxHeight: 703,
+    maxHeight: 680,
     fullscreen: false,
     webPreferences: {
       nodeIntegration: true
     }
   });
 
-  teacherDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  teacherDetailsWin = createScreen();
+  editTeacherDetailsWin = createScreen();
 
-  editTeacherDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  editStudentDetailsWin = createScreen();
+  studentDetailsWin = createScreen();
 
-  editStudentDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  editExpenseDetailsWin = createScreen();
+  expenseDetailsWin = createScreen();
 
-  studentDetailsWin = new BrowserWindow({
-    width: 700,
-    height: 600,
-    minWidth: 700,
-    minHeight: 600,
-    maxWidth: 700,
-    maxHeight: 600,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    parent: win,
-    show: false,
-    frame: false
-  });
+  feeDetailsWin = createScreen();
+  editFeeDetailsWin = createScreen();
 
-  // disable default menu
+  // disable default menu for various screens
   win.setMenuBarVisibility(false);
   win.removeMenu();
 
@@ -120,6 +93,18 @@ function createWindow() {
 
   studentDetailsWin.setMenuBarVisibility(false);
   studentDetailsWin.removeMenu();
+
+  editExpenseDetailsWin.setMenuBarVisibility(false);
+  editExpenseDetailsWin.removeMenu();
+
+  expenseDetailsWin.setMenuBarVisibility(false);
+  expenseDetailsWin.removeMenu();
+
+  feeDetailsWin.setMenuBarVisibility(false);
+  feeDetailsWin.removeMenu();
+
+  editFeeDetailsWin.setMenuBarVisibility(false);
+  editFeeDetailsWin.removeMenu();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -143,6 +128,26 @@ function createWindow() {
     // load url of edit student details
     editStudentDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/students/editStudentDetails"
+    );
+
+    // Load url of expense details
+    expenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/expenses/expenseDetails"
+    );
+
+    // load url of edit expense details
+    editExpenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/expenses/editExpenseDetails"
+    );
+
+    // Load url of fee details
+    expenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/feeDetails"
+    );
+
+    // load url of edit fee details
+    editExpenseDetailsWin.loadURL(
+      process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/editFeeDetails"
     );
 
     // Open the DevTools.
@@ -175,6 +180,28 @@ function createWindow() {
   editStudentDetailsWin.on("close", e => {
     e.preventDefault();
     editStudentDetailsWin.hide();
+  });
+
+  // hides expense details and edit expense details window when it's close
+  expenseDetailsWin.on("close", e => {
+    e.preventDefault();
+    expenseDetailsWin.hide();
+  });
+
+  editExpenseDetailsWin.on("close", e => {
+    e.preventDefault();
+    editExpenseDetailsWin.hide();
+  });
+
+  // hides fee details and edit fee details window when it's close
+  feeDetailsWin.on("close", e => {
+    e.preventDefault();
+    expenseDetailsWin.hide();
+  });
+
+  editFeeDetailsWin.on("close", e => {
+    e.preventDefault();
+    editExpenseDetailsWin.hide();
   });
 }
 
@@ -217,22 +244,72 @@ app.on("ready", async () => {
 
 ipcMain.on("toggle-teacher-details", (event, arg) => {
   teacherDetailsWin.show();
-  teacherDetailsWin.webContents.send("id", arg);
+  teacherDetailsWin.webContents.send("teacher-id", arg);
 });
 
 ipcMain.on("toggle-edit-teacher-details", (event, arg) => {
   editTeacherDetailsWin.show();
-  editTeacherDetailsWin.webContents.send("id", arg);
+  editTeacherDetailsWin.webContents.send("teacher-id", arg);
 });
 
-ipcMain.on("toggle-student-details", (event, arg) => {
+ipcMain.on("student-details-screen", (event, arg) => {
   studentDetailsWin.show();
-  studentDetailsWin.webContents.send("id", arg);
+  studentDetailsWin.webContents.send("student-id", arg);
 });
 
-ipcMain.on("toggle-edit-student-details", (event, arg) => {
+ipcMain.on("edit-student-details-screen", (event, arg) => {
   editStudentDetailsWin.show();
-  editStudentDetailsWin.webContents.send("id", arg);
+  editStudentDetailsWin.webContents.send("student-id", arg);
+});
+
+// listens on expense-details-screen and sends the expense-id as arg
+// to the expense details window or screen
+ipcMain.on("expense-details-screen", (event, arg) => {
+  expenseDetailsWin.show();
+  expenseDetailsWin.webContents.send("expense-id", arg);
+});
+
+// listens on edit-expense-details-screen and sends the expense-id as arg
+// to the edit expense details window or screen
+ipcMain.on("edit-expense-details-screen", (event, arg) => {
+  editExpenseDetailsWin.show();
+  editExpenseDetailsWin.webContents.send("expense-id", arg);
+});
+
+// listens on fee-details-screen and sends the fee-id as arg
+// to the fee details window or screen
+ipcMain.on("fee-details-screen", (event, arg) => {
+  expenseDetailsWin.show();
+  expenseDetailsWin.webContents.send("fee-id", arg);
+});
+
+// listens on edit-fee-details-screen and sends the fee-id as arg
+// to the edit fee details window or screen
+ipcMain.on("edit-fee-details-screen", (event, arg) => {
+  editExpenseDetailsWin.show();
+  editExpenseDetailsWin.webContents.send("fee-id", arg);
+});
+
+// opens a dialog whenever a teacher is added to the database successfully
+ipcMain.on("open-teacher-information-dialog", event => {
+  const options = {
+    type: "info",
+    title: "Teacher Information",
+    message: "Teacher added successfully",
+    buttons: ["OK"]
+  };
+
+  dialog.showMessageBox(options, index => {
+    event.sender.send("teacher-information-dialog-selection", index);
+  });
+});
+
+// opens an error dialog when an error occurs when teacher is added
+ipcMain.on("open-teacher-error-dialog", () => {
+  dialog.showErrorBox(
+    "Teacher Error",
+    "An error occurred while adding teacher"
+  );
 });
 
 // Exit cleanly on request from parent process in development mode.

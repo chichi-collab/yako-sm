@@ -6,10 +6,10 @@
       </router-link>
     </p>
     <div class="content">
-      <!-- All Teachers -->
+      <!-- All Fees -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">Edit Teacher Details</span>
+          <span class="window-title">Edit Fee Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
             <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
@@ -20,80 +20,58 @@
         <div class="line"></div>
 
         <!-- form here -->
-        <div class="profile-container">
-          <div class="user-img"></div>
-          <form>
-            <div class="input-container">
-              <div>
-                <span>Id Number</span>
-                <br />
-                <input type="number" v-model="id" />
-              </div>
-              <div>
-                <span>First Name</span>
-                <br />
-                <input type="text" v-model="firstName" />
-              </div>
-              <div>
-                <span>Last Name</span>
-                <br />
-                <input type="text" v-model="lastName" />
-              </div>
-              <div>
-                <span>Class</span>
-                <br />
-                <input type="text" v-model="classroom" />
-              </div>
-              <div>
-                <span>Gender</span>
-                <br />
-                <select v-model="gender">
-                  <option disabled value>Please choose gender...</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
-              </div>
-              <div>
-                <span>Date of Birth</span>
-                <br />
-                <input type="date" v-model="birthDate" />
-              </div>
-              <div>
-                <span>Email</span>
-                <br />
-                <input type="email" v-model="email" />
-              </div>
-              <div>
-                <span>Contact</span>
-                <br />
-                <input type="phone" v-model="contact" />
-              </div>
-              <div>
-                <span>Head Tutor</span>
-                <br />
-                <input type="checkbox" v-model="isHeadTutor" />
-              </div>
-              <div v-if="isHeadTutor" class="select-classroom">
-                <span>Class</span>
-                <select v-model="classroom">
-                  <option disabled value>Please choose classroom...</option>
-                  <option v-for="classroom in classrooms" :key="classroom.id">
-                    {{ classroom }}
-                  </option>
-                </select>
-              </div>
-              <div class="btn-container">
-                <input
-                  type="button"
-                  value="Save"
-                  class="save-btn"
-                  @click="saveTeacherDetails"
-                />
-                <input type="reset" value="Reset" class="reset-btn" />
-              </div>
+        <form action>
+          <div class="input-container">
+            <div>
+              <span>Id</span>
+              <br />
+              <input type="number" v-model="id" />
             </div>
-          </form>
-        </div>
+            <div>
+              <span>Expense Type</span>
+              <br />
+              <input type="text" v-model="expenseType" />
+            </div>
+            <div>
+              <span>Name</span>
+              <br />
+              <input type="text" v-model="name" />
+            </div>
+            <div>
+              <span>Status</span>
+              <br />
+              <select v-model="status">
+                <option disabled value>Please choose status...</option>
+                <option>Pending</option>
+                <option>Received</option>
+              </select>
+            </div>
+            <div>
+              <span>Amount Taken</span>
+              <br />
+              <input type="number" v-model="amountTaken" />
+            </div>
+            <div>
+              <span>Reason</span>
+              <br />
+              <input type="text" v-model="reason" />
+            </div>
+            <div>
+              <span>Date</span>
+              <br />
+              <input type="date" v-model="takenDate" />
+            </div>
+          </div>
+          <div class="btn-container">
+            <input
+              type="button"
+              value="Save"
+              class="save-btn"
+              @click="addExpense"
+            />
+            <input type="reset" value="Reset" class="reset-btn" />
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -103,12 +81,12 @@
 import { ipcRenderer } from "electron";
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import FeeDatabase from "../../../models/database/teachers-database";
 
-const teacherDatabase = new TeacherDatabase();
+const teacherDatabase = new FeeDatabase();
 
 export default {
-  name: "EditTeacherDetails",
+  name: "editFeeDetails",
   created() {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
@@ -149,7 +127,7 @@ export default {
     };
   },
   methods: {
-    saveTeacherDetails() {
+    saveFeeDetails() {
       const teacherNewDetails = {
         id: this.id,
         firstName: this.firstName,

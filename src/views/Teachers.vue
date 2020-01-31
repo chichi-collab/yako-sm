@@ -13,7 +13,7 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" />
+                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" @click="refreshScreen()" />
                 <font-awesome-icon icon="times" class="fa-times" />
               </div>
             </div>
@@ -27,10 +27,8 @@
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Class</th>
-                    <th>Address</th>
-                    <th>Birthdate</th>
                     <th>Contact</th>
-                    <th>Email</th>
+                    <th>Head Tutor</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -39,27 +37,33 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr>
-                    <td>1</td>
+                  <tr v-for="teacher in teachersData" :key="teacher._id">
+                    <td>{{ teacher.id }}</td>
                     <td>
                       <div class="user-img"></div>
                     </td>
-                    <td>O. Yeboah</td>
-                    <td>Male</td>
-                    <td>JHS 1</td>
-                    <td>None</td>
-                    <td>None</td>
-                    <td>1233</td>
-                    <td>+2.01</td>
+                    <td>{{ teacher.firstName }} {{ teacher.lastName }}</td>
+                    <td>{{ teacher.gender }}</td>
+                    <td>{{ teacher.classroom }}</td>
+                    <td>{{ teacher.contact }}</td>
+                    <td>{{ teacher.isHeadTutor }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
-                          @click="openTeacherDetails(1)"
+                          @click="openTeacherDetails(teacher._id)"
                           class="fa-eye"
                         />
-                        <font-awesome-icon icon="user-edit" @click="openEditTeacherDetails(1)" class="fa-user-edit" />
-                        <font-awesome-icon icon="trash-alt" class="fa-trash-alt" />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          @click="openEditTeacherDetails(teacher._id)"
+                          class="fa-user-edit"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa-trash-alt"
+                          @click="removeTeacher(teacher._id)"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -74,18 +78,32 @@
 </template>
 
 <script>
+import { ipcRenderer, remote } from "electron";
+
 // components
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
-// packages
-import { ipcRenderer } from "electron";
+// database scripts
+import TeacherDatabase from "../../models/database/teachers-database";
+
+const teacherDatabase = new TeacherDatabase();
 
 export default {
   name: "teachers",
   components: {
     InfoBar,
     SideMenuBar
+  },
+  mounted() {
+    teacherDatabase
+      .fetchAll()
+      .then(result => {
+        this.teachersData = result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     openTeacherDetails(id) {
@@ -95,7 +113,26 @@ export default {
     openEditTeacherDetails(id) {
       ipcRenderer.send("toggle-edit-teacher-details", id);
       console.log("toggle-teacher-details", id);
+    },
+    removeTeacher(_id) {
+      teacherDatabase
+        .delete(_id)
+        .then(result => {
+          ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    refreshScreen() {
+      remote.getCurrentWindow().reload();
     }
+  },
+  data() {
+    return {
+      teachersData: []
+    };
   }
 };
 </script>
@@ -233,7 +270,7 @@ th {
   color: #fff;
   padding: 10px;
   text-align: left;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;

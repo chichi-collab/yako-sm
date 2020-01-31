@@ -22,10 +22,12 @@
               <span>Class</span>
               <br />
               <div class="search-area">
-                <input type="search" :placeholder="searchItem" />
-                <a href="#">
-                  <i class="fa fa-color fa-search"></i>
-                </a>
+                <input type="search" v-model="searchItem" />
+                <font-awesome-icon
+                  class="fa fa-color fa-search"
+                  icon="search"
+                  @click="searchClassroom"
+                />
               </div>
             </div>
             <div>
@@ -55,7 +57,7 @@
         <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody>
-              <tr>
+              <tr v-if="isStudentsAvailable">
                 <td>1</td>
                 <td>Random dude</td>
                 <td>None</td>
@@ -64,9 +66,20 @@
                 <td>
                   <div class="action-box prevent-select">
                     <font-awesome-icon icon="save" class="fa fa-save" />
-                    <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
-                    <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                    <font-awesome-icon
+                      icon="user-edit"
+                      class="fa fa-user-edit"
+                    />
+                    <font-awesome-icon
+                      icon="trash-alt"
+                      class="fa fa-trash-alt"
+                    />
                   </div>
+                </td>
+              </tr>
+              <tr v-else>
+                <td>
+                  Please search student...
                 </td>
               </tr>
             </tbody>
@@ -78,15 +91,37 @@
 </template>
 
 <script>
+// database scripts
+import StudentDatabase from "../../models/database/students-database";
+
+const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+
 export default {
   name: "AddFeesPayment",
   data() {
     return {
-      searchItem: "One",
+      searchItem: "",
       sortBy: "Id",
       classMark: "",
-      examMark: ""
+      examMark: "",
+      studentsData: [],
+      isStudentsAvailable: false
     };
+  },
+  methods: {
+    searchClassroom() {
+      let classroom = this.searchItem;
+
+      studentDatabase
+        .fetchByClassroom(classroom)
+        .then(result => {
+          this.studentsData = result;
+          this.isStudentsAvailable = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

@@ -27,9 +27,10 @@
                   <br />
                   <div class="search-area">
                     <input type="search" :placeholder="searchItem" />
-                    <a href="#">
-                      <i class="fa fa-color fa-search"></i>
-                    </a>
+                    <font-awesome-icon
+                      icon="search"
+                      class="fa fa-color fa-search"
+                    />
                   </div>
                 </div>
                 <div>
@@ -37,10 +38,9 @@
                   <br />
                   <div class="select-subject">
                     <select v-model="subject">
+                      <option disabled value>Please choose subject...</option>
                       <option v-for="subject in subjects" :key="subject.id">
-                        {{
-                        subject
-                        }}
+                        {{ subject }}
                       </option>
                     </select>
                   </div>
@@ -78,8 +78,14 @@
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="save" class="fa fa-save" />
-                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
-                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          class="fa fa-user-edit"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa fa-trash-alt"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -106,10 +112,10 @@ export default {
   data() {
     return {
       searchItem: "One",
-      sortBy: "Id",
       classMark: "",
       examMark: "",
-      subjects: ["English", "Math", "Science"]
+      subjects: ["English", "Math", "Science"],
+      subject: ""
     };
   }
 };

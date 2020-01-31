@@ -25,7 +25,7 @@
                 <div>
                   <span>Id Number</span>
                   <br />
-                  <input type="text" v-model="id" />
+                  <input type="number" v-model="id" />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -45,50 +45,52 @@
                 <div>
                   <span>Gender</span>
                   <br />
-                  <input type="text" v-model="gender" />
+                  <select v-model="gender">
+                    <option disabled value>Please choose gender...</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
                 </div>
                 <div>
                   <span>Date of Birth</span>
                   <br />
-                  <input type="text" v-model="birthdate" />
-                </div>
-                <div>
-                  <span>Religion</span>
-                  <br />
-                  <input type="text" v-model="religion" />
+                  <input type="date" v-model="birthdate" />
                 </div>
                 <div>
                   <span>Email</span>
                   <br />
-                  <input type="text" v-model="email" />
+                  <input type="email" v-model="email" />
                 </div>
                 <div>
                   <span>Contact</span>
                   <br />
-                  <input type="text" v-model="contact" />
+                  <input type="phone" v-model="phoneNumber" />
                 </div>
                 <div>
                   <span>Head Tutor</span>
                   <br />
-                  <input
-                    type="checkbox"
-                    v-model="isHeadTutor"
-                    :checked="headTutorChecked"
-                    @change="toggleHeadTutorCheck"
-                  />
+                  <input type="checkbox" v-model="headTutorChecked" />
                 </div>
-                <div v-if="headTutorChecked" class="select-subject">
+                <div v-if="headTutorChecked" class="select-classroom">
                   <span>Class</span>
-                  <select v-model="subject">
-                    <option v-for="subject in subjects" :key="subject.id">{{
-                      subject
-                    }}</option>
+                  <select v-model="classroom">
+                    <option disabled value>Please choose classroom...</option>
+                    <option
+                      v-for="classroom in classrooms"
+                      :key="classroom.id"
+                      >{{ classroom }}</option
+                    >
                   </select>
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" />
-                <input type="button" value="Reset" class="reset-btn" />
+                <input
+                  type="button"
+                  @click="addTeacher"
+                  value="Save"
+                  class="save-btn"
+                />
+                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
           </div>
@@ -99,8 +101,14 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
+// components import
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
+
+// database scripts
+import TeacherDatabase from "../../models/database/teachers-database";
 
 export default {
   name: "addTeacher",
@@ -110,13 +118,51 @@ export default {
   },
   data() {
     return {
+      id: "",
+      firstName: "",
+      lastName: "",
+      teacherClass: "",
+      gender: "",
+      birthdate: "",
+      email: "",
+      phoneNumber: "",
       headTutorChecked: false,
-      subjects: ["One", "JHS", "KG"]
+      classrooms: ["One", "JHS", "KG"],
+      classroom: ""
     };
   },
   methods: {
-    toggleHeadTutorCheck() {
-      this.headTutorChecked = !this.headTutorChecked;
+    // add teacher to the database
+    addTeacher() {
+      const teacherData = {
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        classroom: this.teacherClass,
+        gender: this.gender,
+        birthDate: this.birthdate,
+        email: this.email,
+        contact: this.phoneNumber,
+        isHeadTutor: this.headTutorChecked
+      };
+
+      console.log(teacherData); // log teacher details
+
+      // insert teacher details into the database
+      // if error then show error message box
+      // else show success message box
+      const teacherDatabase = new TeacherDatabase();
+
+      teacherDatabase
+        .add(teacherData)
+        .then(result => {
+          ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          ipcRenderer.send("open-teacher-error-dialog");
+          console.log(err);
+        });
     }
   }
 };
@@ -214,7 +260,11 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="phone"],
+input[type="number"] {
   border-radius: 5px;
   background: #f3f3f3;
   outline: none;
@@ -243,7 +293,8 @@ input[type="checkbox"] {
   margin-top: 30px;
 }
 
-input[type="button"] {
+input[type="button"],
+input [type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;
@@ -255,7 +306,7 @@ input[type="button"] {
   margin-top: 5px;
 }
 
-.select-subject select {
+select {
   border-radius: 5px;
   background: #f3f3f3;
   height: 30px;
