@@ -3,7 +3,8 @@
     <div class="timeline">
       <div class="column">
         <div class="title">
-          <span>{{ day }}-{{ month }}-{{ year }}</span>
+          <span>{{ weekday[actualDay] }}</span>, 
+          <span>{{ day }}-{{ months[month] }}-{{ year }}</span>
         </div>
         <div class="description">
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam similique reprehenderit, asperiores rerum autem nihil laborum atque ducimus hic fuga perspiciatis dolor! In maiores ipsam facilis ipsum beatae accusantium nisi?</p>
@@ -31,7 +32,7 @@
 
 <script>
 // date utils
-import { day, month, year } from "../utils/date";
+import { day, actualDay, weekday, month, months, year } from "../utils/date";
 
 export default {
   name: "EventCalendar",
@@ -39,6 +40,9 @@ export default {
     return {
       year,
       month,
+      months,
+      weekday,
+      actualDay,
       day
     };
   }
