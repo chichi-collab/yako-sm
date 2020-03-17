@@ -31,31 +31,68 @@ Check the .gitignore file to see all the files and folders that will be ignore b
 
 - <b>store.js</b> state management file
 
+## What to fix
+
+When an issue is fix put [✓] in front
+
+### frontend-v0.1.1
+
+- forget password screen
+- implement settings screen
+- implement profile screen
+- logo design and yako-sm motto
+- implement about software screen
+- add style to the notice board
+- make Attendance checkbox mutually exclusive or just use  radio
+- design and build Noticeboard ui
+- implement 'ACTIONS' icons functionalities in each screen
+
+### backend-v0.1.1
+
+- connect login screen to backend
+- connect forget password to backend
+- implement remember me logic
+- implement logout function
+- connect fees database to frontend
+- fix classrooms search issue
+- create Attendance table and connect to the frontend
+- create add marks table and implement CRUD on table
+- print pdf or student result functionalities
+
+### testing the whole application
+
+- unit test and others
+
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run electron:serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run electron:build
 ```
 
 ### Run your tests
+
 ```
 npm run test
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
 ```
 
-
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
