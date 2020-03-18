@@ -15,15 +15,17 @@
         <span class="remember-me">&nbsp;remember me</span>
         <span class="forgot-passwd">forgot password?</span>
       </div>
-      <button type="submit" class="btn-submit" @click="checkLogin()">login</button>
+      <button type="submit" class="btn-submit" @click="checkLogin()">
+        login
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 // database scripts
-import Database from "../models/database/database";
-import AdminTable from "../models/database/admin-table";
+import Database from "@/models/database/database";
+import AdminTable from "@/models/database/admin-table";
 
 const adminTable = new AdminTable(new Database());
 
@@ -99,7 +101,8 @@ export default {
   font-size: 20px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   border-radius: 5px;
   border: 1px solid #e8e9ec;
   height: 45px;
