@@ -13,7 +13,11 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa-sync-alt" @click="refreshScreen()" />
+                <font-awesome-icon
+                  icon="sync-alt"
+                  class="fa-sync-alt"
+                  @click="refreshTeachersList"
+                />
                 <font-awesome-icon icon="times" class="fa-times" />
               </div>
             </div>
@@ -37,32 +41,32 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr v-for="teacher in teachersData" :key="teacher._id">
-                    <td>{{ teacher.id }}</td>
+                  <tr v-for="teacher in teachersData" :key="teacher.teacher_id">
+                    <td>{{ teacher.teacher_id }}</td>
                     <td>
                       <div class="user-img"></div>
                     </td>
-                    <td>{{ teacher.firstName }} {{ teacher.lastName }}</td>
+                    <td>{{ teacher.first_name }} {{ teacher.last_name }}</td>
                     <td>{{ teacher.gender }}</td>
                     <td>{{ teacher.classroom }}</td>
                     <td>{{ teacher.contact }}</td>
-                    <td>{{ teacher.isHeadTutor }}</td>
+                    <td>{{ teacher.is_head_tutor }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
-                          @click="openTeacherDetails(teacher._id)"
+                          @click="openTeacherDetails(teacher.teacher_id)"
                           class="fa-eye"
                         />
                         <font-awesome-icon
                           icon="user-edit"
-                          @click="openEditTeacherDetails(teacher._id)"
+                          @click="openEditTeacherDetails(teacher.teacher_id)"
                           class="fa-user-edit"
                         />
                         <font-awesome-icon
                           icon="trash-alt"
                           class="fa-trash-alt"
-                          @click="removeTeacher(teacher._id)"
+                          @click="removeTeacher(teacher.teacher_id)"
                         />
                       </div>
                     </td>
@@ -78,16 +82,18 @@
 </template>
 
 <script>
-import { ipcRenderer, remote } from "electron";
+import { ipcRenderer } from "electron";
 
 // components
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import TeacherDatabase from "../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import TeachersTable from "@/models/database/teachers-table";
 
-const teacherDatabase = new TeacherDatabase();
+// init TeachersTable
+const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "teachers",
@@ -96,14 +102,7 @@ export default {
     SideMenuBar
   },
   mounted() {
-    teacherDatabase
-      .fetchAll()
-      .then(result => {
-        this.teachersData = result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.refreshTeachersList();
   },
   methods: {
     openTeacherDetails(id) {
@@ -114,9 +113,9 @@ export default {
       ipcRenderer.send("toggle-edit-teacher-details", id);
       console.log("toggle-teacher-details", id);
     },
-    removeTeacher(_id) {
-      teacherDatabase
-        .delete(_id)
+    removeTeacher(teacher_id) {
+      teachersTable
+        .delete(teacher_id)
         .then(result => {
           ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
@@ -124,9 +123,20 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      // reload teachers table
+      this.refreshTeachersList();
     },
-    refreshScreen() {
-      remote.getCurrentWindow().reload();
+    refreshTeachersList() {
+      teachersTable
+        .fetchAll()
+        .then(result => {
+          console.log(result);
+          this.teachersData = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   data() {
@@ -282,7 +292,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+ color: #303030;
   border-bottom: 1px solid #f3f3f3;
 }
 

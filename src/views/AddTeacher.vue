@@ -20,12 +20,12 @@
             <div class="line"></div>
 
             <!-- form here -->
-            <form action>
+            <form>
               <div class="input-container">
                 <div>
                   <span>Id Number</span>
                   <br />
-                  <input type="number" v-model="id" />
+                  <input type="number" v-model="teacherId" readonly />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -71,25 +71,9 @@
                   <br />
                   <input type="checkbox" v-model="headTutorChecked" />
                 </div>
-                <div v-if="headTutorChecked" class="select-classroom">
-                  <span>Class</span>
-                  <select v-model="classroom">
-                    <option disabled value>Please choose classroom...</option>
-                    <option
-                      v-for="classroom in classrooms"
-                      :key="classroom.id"
-                      >{{ classroom }}</option
-                    >
-                  </select>
-                </div>
               </div>
               <div class="btn-container">
-                <input
-                  type="button"
-                  @click="addTeacher"
-                  value="Save"
-                  class="save-btn"
-                />
+                <input type="button" @click="addTeacher" value="Save" class="save-btn" />
                 <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
@@ -108,7 +92,11 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import TeacherDatabase from "../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import TeachersTable from "@/models/database/teachers-table";
+
+// init TeachersTable
+const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "addTeacher",
@@ -116,9 +104,24 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  created() {
+    teachersTable
+      .fetchAll()
+      .then(result => {
+        console.log(result);
+        if (result == []) {
+          this.teacherId = 1;
+        } else {
+          this.teacherId = result.length + 1;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   data() {
     return {
-      id: "",
+      teacherId: 0,
       firstName: "",
       lastName: "",
       teacherClass: "",
@@ -135,7 +138,6 @@ export default {
     // add teacher to the database
     addTeacher() {
       const teacherData = {
-        id: this.id,
         firstName: this.firstName,
         lastName: this.lastName,
         classroom: this.teacherClass,
@@ -151,18 +153,30 @@ export default {
       // insert teacher details into the database
       // if error then show error message box
       // else show success message box
-      const teacherDatabase = new TeacherDatabase();
-
-      teacherDatabase
+      teachersTable
         .add(teacherData)
         .then(result => {
           ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
+          this.teacherId += 1;
+
+          // clear input feilds
+          this.resetForm();
         })
         .catch(err => {
           ipcRenderer.send("open-teacher-error-dialog");
           console.log(err);
         });
+    },
+    resetForm() {
+      this.firstName = "";
+      this.lastName = "";
+      this.teacherClass = "";
+      this.gender = "";
+      this.birthdate = "";
+      this.email = "";
+      this.phoneNumber = "";
+      this.headTutorChecked = false;
     }
   }
 };
@@ -250,7 +264,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -271,7 +285,7 @@ input[type="number"] {
   border: none;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 5px;
@@ -280,7 +294,7 @@ input[type="number"] {
 input[type="checkbox"] {
   border-radius: 5px;
   height: 30px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 30px;
   margin-top: 5px;
@@ -311,7 +325,7 @@ select {
   background: #f3f3f3;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 10px;

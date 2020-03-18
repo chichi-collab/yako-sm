@@ -1,15 +1,13 @@
 <template>
   <div class="contain-area">
     <div class="content">
-      <!-- All Teachers -->
+      <!-- Teacher's Details -->
       <div class="container-for-table">
         <div class="title-bar">
           <span class="window-title">Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon icon="times" class="fa fa-times" @click="closeCurrentWindow" />
           </div>
         </div>
         <div class="line"></div>
@@ -23,21 +21,21 @@
               <span>Id Number</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.id }}</span>
+                <span>{{ teacherDetails.teacher_id }}</span>
               </div>
             </div>
             <div>
               <span>First Name</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.firstName }}</span>
+                <span>{{ teacherDetails.first_name }}</span>
               </div>
             </div>
             <div>
               <span>Last Name</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.lastName }}</span>
+                <span>{{ teacherDetails.last_name }}</span>
               </div>
             </div>
             <div>
@@ -58,7 +56,7 @@
               <span>Date of Birth</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.birthDate }}</span>
+                <span>{{ teacherDetails.birth_date }}</span>
               </div>
             </div>
             <div>
@@ -72,14 +70,14 @@
               <span>Contact</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.contact }}</span>
+                <span>{{ teacherDetails.phone_number }}</span>
               </div>
             </div>
-            <div v-if="teacherDetails.isHeadTutor">
-              <span>Head Tutor</span>
+            <div>
+              <span>HeadTutor</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.classroom }}</span>
+                <span>{{ teacherDetails.is_head_tutor }}</span>
               </div>
             </div>
           </div>
@@ -91,12 +89,14 @@
 
 <script>
 // node_modules
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import TeachersTable from "@/models/database/teachers-table";
 
-const teacherDatabase = new TeacherDatabase();
+// init TeachersTable
+const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "teacherDetails",
@@ -104,7 +104,7 @@ export default {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
 
-      teacherDatabase
+      teachersTable
         .fetchOne(this.teacherId)
         .then(result => {
           this.teacherDetails = result;
@@ -118,10 +118,9 @@ export default {
     return { teacherId: "", teacherDetails: {} };
   },
   methods: {
-    goToTeachers() {
-      console.log("SERVER: ");
-      console.log(this.teacherDetails);
-      // this.$router.push({ path: "/teachers" });
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
@@ -131,14 +130,7 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
@@ -170,39 +162,19 @@ export default {
 .control-box {
   float: right;
   display: grid;
-  margin-right: 5px;
+  margin-right: 0px;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 2px;
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
-}
-
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
 }
 
 .profile-container {
@@ -228,7 +200,7 @@ export default {
 .input-container {
   margin: 20px;
   font-size: 15px;
-  color: #707070;
+  color: #303030;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 30px;
@@ -237,13 +209,13 @@ export default {
 
 .info-card {
   background: #e8e9ec;
-  color: #707070;
+  color: #303030;
   margin-top: 5px;
-  padding: 3px;
+  padding: 7px;
   font-weight: bold;
   font-size: 17px;
   border-radius: 5px;
   width: 100%;
-  height: 25px;
+  height: 35px;
 }
 </style>

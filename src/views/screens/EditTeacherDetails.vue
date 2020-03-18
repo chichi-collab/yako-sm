@@ -12,22 +12,19 @@
           <span class="window-title">Edit Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon icon="times" class="fa fa-times" @click="closeCurrentWindow" />
           </div>
         </div>
         <div class="line"></div>
 
         <!-- form here -->
         <div class="profile-container">
-          <div class="user-img"></div>
           <form>
             <div class="input-container">
               <div>
                 <span>Id Number</span>
                 <br />
-                <input type="number" v-model="id" />
+                <input type="number" v-model="teacherId" readonly />
               </div>
               <div>
                 <span>First Name</span>
@@ -73,23 +70,14 @@
                 <br />
                 <input type="checkbox" v-model="isHeadTutor" />
               </div>
-              <div v-if="isHeadTutor" class="select-classroom">
-                <span>Class</span>
-                <select v-model="classroom">
-                  <option disabled value>Please choose classroom...</option>
-                  <option v-for="classroom in classrooms" :key="classroom.id">
-                    {{ classroom }}
-                  </option>
-                </select>
-              </div>
               <div class="btn-container">
+                <input type="button" value="Save" class="save-btn" @click="updateTeacherDetails" />
                 <input
                   type="button"
-                  value="Save"
-                  class="save-btn"
-                  @click="saveTeacherDetails"
+                  value="Revert Changes"
+                  class="reset-btn"
+                  @click="refreshTeacherDetails(teacherId)"
                 />
-                <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </div>
           </form>
@@ -100,12 +88,14 @@
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
+import { ipcRenderer, remote } from "electron";
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import TeachersTable from "@/models/database/teachers-table";
 
-const teacherDatabase = new TeacherDatabase();
+// init TeachersTable
+const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "EditTeacherDetails",
@@ -113,24 +103,7 @@ export default {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
 
-      teacherDatabase
-        .fetchOne(this.teacherId)
-        .then(result => {
-          this.teacherDetails = result;
-          // set default data values to teacherDetails
-          this.firstName = this.teacherDetails.firstName;
-          this.id = this.teacherDetails.id;
-          this.lastName = this.teacherDetails.lastName;
-          this.classroom = this.teacherDetails.classroom;
-          this.gender = this.teacherDetails.gender;
-          this.birthDate = this.teacherDetails.birthdate;
-          this.email = this.teacherDetails.email;
-          this.contact = this.teacherDetails.phoneNumber;
-          this.isHeadTutor = this.teacherDetails.isHeadTutor;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.refreshTeacherDetails(this.teacherId);
     });
   },
   data() {
@@ -149,9 +122,9 @@ export default {
     };
   },
   methods: {
-    saveTeacherDetails() {
+    updateTeacherDetails() {
       const teacherNewDetails = {
-        id: this.id,
+        teacherId: this.teacherId,
         firstName: this.firstName,
         lastName: this.lastName,
         classroom: this.classroom,
@@ -159,11 +132,10 @@ export default {
         birthDate: this.birthDate,
         email: this.email,
         contact: this.contact,
-        isHeadTutor: this.isHeadTutor,
-        _id: this.teacherId
+        isHeadTutor: this.isHeadTutor
       };
 
-      teacherDatabase
+      teachersTable
         .update(teacherNewDetails)
         .then(result => {
           ipcRenderer.send("open-teacher-information-dialog");
@@ -172,6 +144,31 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    refreshTeacherDetails(teacherId) {
+      teachersTable
+        .fetchOne(teacherId)
+        .then(result => {
+          this.teacherDetails = result;
+
+          // set default data values to teacherDetails
+          this.firstName = this.teacherDetails.first_name;
+          this.id = this.teacherDetails.teacher_id;
+          this.lastName = this.teacherDetails.last_name;
+          this.classroom = this.teacherDetails.classroom;
+          this.gender = this.teacherDetails.gender;
+          this.birthDate = this.teacherDetails.birth_date;
+          this.email = this.teacherDetails.email;
+          this.contact = this.teacherDetails.phone_number;
+          this.isHeadTutor = this.teacherDetails.is_head_tutor;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
@@ -181,21 +178,13 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
   border-radius: 5px;
-  height: 530px;
 }
 
 .title-bar {
@@ -220,65 +209,25 @@ export default {
 .control-box {
   float: right;
   display: grid;
-  margin-right: 5px;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 2px;
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
 }
 
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-}
-
 form {
-  margin: 10px;
+  margin: 20px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -297,9 +246,9 @@ input[type="number"] {
   background: #e8e9ec;
   outline: none;
   border: none;
-  height: 30px;
+  height: 33px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 5px;
@@ -316,7 +265,7 @@ input[type="button"] {
   border-radius: 5px;
   outline: none;
   border: none;
-  height: 30px;
+  height: 33px;
   padding: 5px;
   color: #fff;
   font-weight: bold;
@@ -329,7 +278,7 @@ select {
   background: #f3f3f3;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
