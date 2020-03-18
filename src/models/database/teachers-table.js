@@ -15,14 +15,16 @@ class TeachersTable {
 
   // fetch teacher by id
   fetchOne(id) {
-    return this.database.get(`SELECT * FROM Teachers WHERE teacher_id = ?`, [id]);
+    return this.database.get(`SELECT * FROM Teachers WHERE teacher_id = ?`, [
+      id
+    ]);
   }
 
   // update teacher details where id equals
   // param teacher contains an object of the teacher details
   update(teacher) {
     const {
-      id,
+      teacherId,
       firstName,
       lastName,
       classroom,
@@ -53,7 +55,7 @@ class TeachersTable {
         email,
         contact,
         isHeadTutor,
-        id
+        teacherId
       ]
     );
   }
