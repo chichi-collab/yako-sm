@@ -35,11 +35,11 @@ protocol.registerSchemesAsPrivileged([
 function createScreen() {
   return new BrowserWindow({
     width: 700,
-    height: 600,
+    height: 450,
     minWidth: 700,
-    minHeight: 600,
+    minHeight: 450,
     maxWidth: 700,
-    maxHeight: 600,
+    maxHeight: 450,
     webPreferences: {
       nodeIntegration: true
     },
