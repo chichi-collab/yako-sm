@@ -20,5 +20,8 @@ yarn-error.log*
 *.sln
 *.sw?
 
+# Configurations
+.jshintrc
+
 #Electron-builder output
 /dist_electron
