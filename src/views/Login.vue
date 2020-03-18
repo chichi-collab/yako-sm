@@ -1,14 +1,14 @@
 <template>
   <div class="login">
     <div class="triangle">
-      <img src="../../src/assets/logo.png" alt="logo">
+      <img src="../../src/assets/logo.png" alt="logo" />
     </div>
     <div class="login-container">
       <p class="login-title">Login</p>
       <p class="login-wlc">welcome back to the state-of-art</p>
       <input type="text" v-model="username" placeholder="username" />
       <br />
-      <input type="text" v-model="password" placeholder="password" />
+      <input type="password" v-model="password" placeholder="password" />
       <br />
       <div class="crf">
         <input type="checkbox" v-model="remember" />
@@ -21,19 +21,41 @@
 </template>
 
 <script>
+// database scripts
+import Database from "../models/database/database";
+import AdminTable from "../models/database/admin-table";
+
+const adminTable = new AdminTable(new Database());
+
 export default {
   name: "login",
+  created() {
+    adminTable
+      .getById(1)
+      .then(result => {
+        this.adminDetails = result;
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   data() {
     return {
       username: "",
       password: "",
-      remember: false
+      remember: false,
+      adminDetails: {}
     };
   },
   methods: {
     // checks login authentication
     checkLogin() {
-      this.$router.push({ path: "/home" });
+      const { username, password } = this.adminDetails;
+
+      if (username == this.username && password == this.password) {
+        this.$router.push({ path: "/home" });
+      }
     }
   }
 };
@@ -77,7 +99,7 @@ export default {
   font-size: 20px;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   border-radius: 5px;
   border: 1px solid #e8e9ec;
   height: 45px;
