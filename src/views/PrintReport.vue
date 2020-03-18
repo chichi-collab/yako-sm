@@ -187,7 +187,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -223,7 +223,7 @@ input[type="text"] {
   border: none;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 1px;
@@ -264,7 +264,7 @@ input[type="button"] {
 }
 
 .search-area input[type="search"] {
-  color: #707070;
+  color: #303030;
   background: transparent;
   outline: none;
   border: none;
@@ -357,7 +357,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+  color: #303030;
   border-bottom: 1px solid #f3f3f3;
 }
 

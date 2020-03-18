@@ -27,10 +27,7 @@
                   <br />
                   <div class="search-area">
                     <input type="search" :placeholder="searchItem" />
-                    <font-awesome-icon
-                      icon="search"
-                      class="fa fa-color fa-search"
-                    />
+                    <font-awesome-icon icon="search" class="fa fa-color fa-search" />
                   </div>
                 </div>
                 <div>
@@ -199,7 +196,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -260,7 +257,7 @@ input[type="button"] {
 }
 
 .search-area input[type="search"] {
-  color: #707070;
+  color: #303030;
   background: transparent;
   outline: none;
   border: none;
@@ -353,7 +350,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+  color: #303030;
   height: 25px;
   border-bottom: 1px solid #f3f3f3;
 }

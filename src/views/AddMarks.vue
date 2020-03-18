@@ -27,10 +27,7 @@
                   <br />
                   <div class="search-area">
                     <input type="search" :placeholder="searchItem" />
-                    <font-awesome-icon
-                      icon="search"
-                      class="fa fa-color fa-search"
-                    />
+                    <font-awesome-icon icon="search" class="fa fa-color fa-search" />
                   </div>
                 </div>
                 <div>
@@ -39,9 +36,7 @@
                   <div class="select-subject">
                     <select v-model="subject">
                       <option disabled value>Please choose subject...</option>
-                      <option v-for="subject in subjects" :key="subject.id">
-                        {{ subject }}
-                      </option>
+                      <option v-for="subject in subjects" :key="subject.id">{{ subject }}</option>
                     </select>
                   </div>
                 </div>
@@ -78,14 +73,8 @@
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon icon="save" class="fa fa-save" />
-                        <font-awesome-icon
-                          icon="user-edit"
-                          class="fa fa-user-edit"
-                        />
-                        <font-awesome-icon
-                          icon="trash-alt"
-                          class="fa fa-trash-alt"
-                        />
+                        <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
+                        <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
                       </div>
                     </td>
                   </tr>
@@ -204,7 +193,7 @@ export default {
   background: #f3f3f3;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
@@ -215,7 +204,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -241,7 +230,7 @@ input[type="text"] {
   border: none;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 1px;
@@ -282,7 +271,7 @@ input[type="button"] {
 }
 
 .search-area input[type="search"] {
-  color: #707070;
+  color: #303030;
   background: transparent;
   outline: none;
   border: none;
@@ -375,7 +364,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+  color: #303030;
   border-bottom: 1px solid #f3f3f3;
 }
 

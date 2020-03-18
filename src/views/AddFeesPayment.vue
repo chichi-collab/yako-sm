@@ -11,12 +11,7 @@
             <div>
               <span>Total Fees</span>
               <br />
-              <input
-                type="number"
-                value="1000"
-                class="total-fees"
-                v-model="totalFees"
-              />
+              <input type="number" value="1000" class="total-fees" v-model="totalFees" />
             </div>
             <div>
               <span></span>
@@ -69,12 +64,7 @@
                 </div>
               </div>
               <div class="btn-container">
-                <input
-                  type="button"
-                  value="Save"
-                  class="save-btn"
-                  @click="addFees"
-                />
+                <input type="button" value="Save" class="save-btn" @click="addFees" />
                 <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
@@ -222,7 +212,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -254,7 +244,7 @@ input[type="date"] {
   border: none;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 5px;

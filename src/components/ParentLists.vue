@@ -219,7 +219,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
-  color: #707070;
+  color: #303030;
   height: 30px;
   border-bottom: 1px solid #f3f3f3;
 }

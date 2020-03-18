@@ -194,7 +194,7 @@ form {
   margin: 10px;
   font-size: 15px;
   font-weight: 300;
-  color: #707070;
+  color: #303030;
 }
 
 .input-container {
@@ -211,7 +211,7 @@ input[type="text"] {
   border: none;
   height: 30px;
   padding: 5px;
-  color: #707070;
+  color: #303030;
   font-weight: 100;
   width: 100%;
   margin-top: 5px;

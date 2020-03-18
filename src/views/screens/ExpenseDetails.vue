@@ -16,8 +16,6 @@
 
         <!-- form here -->
         <div class="profile-container">
-          
-
           <div class="input-container">
             <div>
               <span>Id Number</span>
@@ -228,7 +226,7 @@ export default {
 .input-container {
   margin: 20px;
   font-size: 15px;
-  color: #707070;
+  color: #303030;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 30px;
@@ -237,7 +235,7 @@ export default {
 
 .info-card {
   background: #e8e9ec;
-  color: #707070;
+  color: #303030;
   margin-top: 5px;
   padding: 3px;
   font-weight: bold;

@@ -150,7 +150,7 @@ export default {
 
 .col-pst {
   margin: 0px 20px 20px 0;
-  color: #707070;
+  color: #303030;
 }
 
 .row-card .fa-user-tie {
@@ -186,7 +186,7 @@ export default {
 .pst-number {
   margin-left: 15px;
   margin-top: 15px;
-  color: #707070;
+  color: #303030;
   text-align: right;
   font-size: 1.5rem;
 }

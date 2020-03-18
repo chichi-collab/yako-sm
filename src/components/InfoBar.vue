@@ -31,16 +31,19 @@
         </div>
         <div class="dropdown">
           <font-awesome-icon
-          icon="angle-down"
-          @click="toggleShow"
-          class="fa fa-color fa-angle-down"
-          id="font-awesome"
-        />
-        <div v-if='showMenu' class="menu">
-          <div class="menu-item" v-for="item in this.caretList" v-bind:key="item" @click="itemClicked(item)">
-            {{item}}
+            icon="angle-down"
+            @click="toggleShow"
+            class="fa fa-color fa-angle-down"
+            id="font-awesome"
+          />
+          <div v-if="showMenu" class="menu">
+            <div
+              class="menu-item"
+              v-for="item in this.caretList"
+              v-bind:key="item"
+              @click="itemClicked(item)"
+            >{{item}}</div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -50,29 +53,24 @@
 <script>
 export default {
   name: "InfoBar",
-  data () {
+  data() {
     return {
-      showMenu : false,
-      caretItem: 'Settings',
-      caretList : [
-        'Profile',
-        'Settings',
-        'About software',
-      ],
-    }
+      showMenu: false,
+      caretItem: "Settings",
+      caretList: ["Profile", "Settings", "About software"]
+    };
   },
   methods: {
     toggleShow() {
       this.showMenu = !this.showMenu;
     },
-    changeItem(item){
+    changeItem(item) {
       this.caretItem = item;
     },
-    itemClicked(item){
+    itemClicked(item) {
       this.toggleShow();
       this.changeItem(item);
-    },
-
+    }
   }
 };
 </script>
@@ -128,14 +126,14 @@ export default {
 }
 
 .dropdown {
-  margin-left:45px;
+  margin-left: 45px;
 }
 
 .yakoSM {
   font-size: 25px;
   font-weight: 300;
   width: 150px;
-  color: #707070;
+  color: #303030;
   margin: 10px 10px 10px 45px;
   vertical-align: center;
 }
@@ -146,7 +144,7 @@ export default {
   height: 15px;
   font-size: 11px;
   text-align: center;
-  color: #707070;
+  color: #303030;
   position: relative;
   font-weight: 200;
   top: 6px;
@@ -169,7 +167,7 @@ export default {
 }
 
 .search-area input[type="search"] {
-  color: #707070;
+  color: #303030;
   background: transparent;
   outline: none;
   border: none;
@@ -214,9 +212,8 @@ export default {
   margin: 7px 14px 8px 0px;
 }
 
-
 .counter-yellow {
-  position:absolute;
+  position: absolute;
   z-index: 1;
   /* display: inline-block; */
   background: #ffe711;
@@ -244,7 +241,7 @@ export default {
 }
 
 .user-type {
-  color: #707070;
+  color: #303030;
   font-size: 0.7rem;
   width: 110px;
 }
@@ -272,36 +269,33 @@ export default {
 
 .font-awesome {
   display: flex;
-
 }
 
 .menu {
   text-align: left;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid rgba(0,0,0,.15);
-	border-radius: .25rem;
-	cursor: pointer;
-	display:flex;
-	flex-direction: column;
-	list-style: none;
-	position: absolute;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  position: absolute;
   right: 5px;
   margin-right: 1px;
-  
 }
 
 .menu-item {
-	color: #212529;
-	padding: 10px 80px 0px 3px;
+  color: #212529;
+  padding: 10px 80px 0px 3px;
   font-size: 15px;
-	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .menu-item:hover {
-	background-color: #F4F6F6;
-	cursor: pointer;
+  background-color: #f4f6f6;
+  cursor: pointer;
 }
-
-
 </style>
