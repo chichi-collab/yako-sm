@@ -23,11 +23,11 @@ import Login from "./views/Login.vue";
 import EditStudentDetails from "./views/screens/EditStudentDetails.vue";
 import EditExpenseDetails from "./views/screens/EditExpenseDetails.vue";
 import EditTeacherDetails from "./views/screens/EditTeacherDetails.vue";
-import EditFeeDetails from "./views/screens/EditTeacherDetails.vue";
+import EditFeeDetails from "./views/screens/EditFeeDetails.vue";
 import StudentDetails from "./views/screens/StudentDetails.vue";
 import TeacherDetails from "./views/screens/TeacherDetails.vue";
 import ExpenseDetails from "./views/screens/ExpenseDetails.vue";
-import FeeDetails from "./views/screens/EditTeacherDetails.vue";
+import FeeDetails from "./views/screens/FeeDetails.vue";
 
 Vue.use(Router);
 
