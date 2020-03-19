@@ -31,7 +31,10 @@
       </div>
       <div>
         <a href="#" v-on:click.prevent="toggleStudentSubmenu">
-          <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />Students
+          <font-awesome-icon
+            icon="user-graduate"
+            class="fa fa-user-graduate"
+          />Students
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -44,10 +47,10 @@
         </a>
         <div v-if="showStudentSubmenu">
           <ul class="submenu">
-            <span >
+            <span>
               <router-link to="/students">All Students</router-link>
             </span>
-            <span >
+            <span>
               <router-link to="/admitStudent">Admit Student</router-link>
             </span>
           </ul>
@@ -58,7 +61,10 @@
       </router-link>
       <div>
         <a href="#" v-on:click.prevent="toggleExpenseSubmenu">
-          <font-awesome-icon icon="credit-card" class="fa fa-credit-card" />Account
+          <font-awesome-icon
+            icon="credit-card"
+            class="fa fa-credit-card"
+          />Account
           <font-awesome-icon
             icon="caret-down"
             :class="{
@@ -79,14 +85,19 @@
         </div>
       </div>
       <router-link to="/classrooms">
-        <font-awesome-icon icon="user-friends" class="fa fa-user-friends" />Classrooms
+        <font-awesome-icon
+          icon="user-friends"
+          class="fa fa-user-friends"
+        />Classrooms
       </router-link>
       <router-link to="/noticeBoard">
-        <font-awesome-icon icon="file-alt" class="fa fa-file-alt" />Notice
-        Board
+        <font-awesome-icon icon="file-alt" class="fa fa-file-alt" />Notice Board
       </router-link>
       <router-link to="/attendance">
-        <font-awesome-icon icon="user-check" class="fa fa-user-check" />Attendance
+        <font-awesome-icon
+          icon="user-check"
+          class="fa fa-user-check"
+        />Attendance
       </router-link>
       <div id="exam-report">
         <a href="#" v-on:click.prevent="toggleExamReportSubmenu">
@@ -111,14 +122,19 @@
       <!-- <router-link to="/transport">
         <i class="fa fa-truck"></i> Transport
       </router-link>-->
-      <router-link to="/logout" class="logout">
-        <font-awesome-icon icon="sign-out-alt" class="fa fa-sign-out-alt" />Logout
+      <router-link to="/" class="logout" @click="closeCurrentWindow">
+        <font-awesome-icon
+          icon="sign-out-alt"
+          class="fa fa-sign-out-alt"
+        />Logout
       </router-link>
     </nav>
   </div>
 </template>
 
 <script>
+import { remote } from "electron";
+
 export default {
   name: "SideMenuBar",
   props: {},
@@ -173,6 +189,10 @@ export default {
       this.showStudentSubmenu = false;
       this.showExpenseSubmenu = false;
       this.showTeachersSubmenu = false;
+    },
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
