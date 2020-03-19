@@ -31,14 +31,13 @@
         <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody>
-              <tr v-for="student in studentsData" :key="student._id">
+              <tr v-for="(student, index) in studentsData" :key="student._id">
                 <td>{{ student.id }}</td>
-                <td>{{ student.parentName }}</td>
-                <td>{{ student.parentContact }}</td>
-                <td>{{ student.firstName }} {{ student.lastName }}</td>
+                <td>{{ parentsData[index].parent_name }}</td>
+                <td>{{ parentsData[index].parent_contact }}</td>
+                <td>{{ student.first_name }} {{ student.last_name }}</td>
                 <td>{{ student.classroom }}</td>
-                <td>{{ student.relation }}</td>
-                <td>Not yet</td>
+                <td>{{ parentsData[index].relation }}</td>
               </tr>
             </tbody>
           </table>
@@ -50,14 +49,18 @@
 
 <script>
 // database scripts
-import StudentDatabase from "../../models/database/students-database";
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import ParentsTable from "@/models/database/parents-table";
 
-const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+// init StudentsTable and ParentsTable
+const studentsTable = new StudentsTable(new Database());
+const parentsTable = new ParentsTable(new Database());
 
 export default {
   name: "ParentLists",
   mounted() {
-    studentDatabase
+    studentsTable
       .fetchAll()
       .then(result => {
         this.studentsData = result;
@@ -65,10 +68,20 @@ export default {
       .catch(err => {
         console.log(err);
       });
+
+    parentsTable
+      .fetchAll()
+      .then(result => {
+        this.parentsData = result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   data() {
     return {
-      studentsData: []
+      studentsData: [],
+      parentsData: []
     };
   }
 };
@@ -207,39 +220,22 @@ table {
 th {
   padding: 10px;
   text-align: left;
-  font-weight: 515;
+  font-weight: bold;
   font-size: 12px;
   color: #fff;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
+
 td {
   padding-left: 5px;
   text-align: left;
   vertical-align: middle;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
   color: #303030;
   height: 30px;
   border-bottom: 1px solid #f3f3f3;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 7px 14px 8px 0px;
-}
-
-section {
-  margin: 50px;
 }
 
 /* for custom scrollbar for webkit browser*/
