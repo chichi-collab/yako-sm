@@ -141,12 +141,12 @@ function createWindow() {
     );
 
     // Load url of fee details
-    expenseDetailsWin.loadURL(
+    feeDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/feeDetails"
     );
 
     // load url of edit fee details
-    editExpenseDetailsWin.loadURL(
+    editFeeDetailsWin.loadURL(
       process.env.WEBPACK_DEV_SERVER_URL + "/#/feesCollection/editFeeDetails"
     );
 
