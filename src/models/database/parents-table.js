@@ -26,8 +26,8 @@ class ParentsTable {
 
     return this.database.run(
       `UPDATE Parents
-      SET parentName = ?,
-        parentContact = ?,
+      SET parent_name = ?,
+        parent_contact = ?,
         relation = ?
       WHERE student_id = ?`,
       [parentName, parentContact, relation, studentId]
