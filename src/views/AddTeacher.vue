@@ -308,7 +308,7 @@ input[type="checkbox"] {
 }
 
 input[type="button"],
-input [type="reset"] {
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;
@@ -319,6 +319,7 @@ input [type="reset"] {
   width: 100%;
   margin-top: 5px;
 }
+
 
 select {
   border-radius: 5px;

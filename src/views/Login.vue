@@ -27,6 +27,7 @@
 import Database from "@/models/database/database";
 import AdminTable from "@/models/database/admin-table";
 
+// init AdminTable
 const adminTable = new AdminTable(new Database());
 
 export default {
