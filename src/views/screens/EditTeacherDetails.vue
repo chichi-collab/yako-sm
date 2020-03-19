@@ -7,7 +7,11 @@
           <span class="window-title">Edit Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="times" class="fa fa-times" @click="closeCurrentWindow" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
@@ -281,7 +285,6 @@ select {
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
-  width: 250px;
 }
 
 .reset-btn {

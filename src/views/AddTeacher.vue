@@ -320,7 +320,6 @@ input[type="reset"] {
   margin-top: 5px;
 }
 
-
 select {
   border-radius: 5px;
   background: #f3f3f3;
@@ -330,7 +329,6 @@ select {
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
-  width: 250px;
 }
 
 .reset-btn {

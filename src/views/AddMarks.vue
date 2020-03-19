@@ -188,7 +188,7 @@ export default {
   color: rgb(14, 233, 25);
 }
 
-.select-subject select {
+select {
   border-radius: 5px;
   background: #f3f3f3;
   height: 30px;
@@ -197,7 +197,6 @@ export default {
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
-  width: 250px;
 }
 
 form {

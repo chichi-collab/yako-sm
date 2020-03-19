@@ -268,7 +268,6 @@ select {
   font-weight: 100;
   width: 100%;
   margin-top: 10px;
-  width: 250px;
 }
 
 .reset-btn {
