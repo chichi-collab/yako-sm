@@ -10,16 +10,19 @@
             <span class="col-pst">Parents</span>
           </div>
           <div class="separator"></div>
-          <span class="pst-number">500</span>
+          <span class="pst-number">{{ numberOfParents }}</span>
         </div>
         <div class="row-card">
           <div>
-            <font-awesome-icon icon="user-graduate" class="fa fa-user-graduate" />
+            <font-awesome-icon
+              icon="user-graduate"
+              class="fa fa-user-graduate"
+            />
             <br />
             <span class="col-pst">Students</span>
           </div>
           <div class="separator"></div>
-          <span class="pst-number">1500</span>
+          <span class="pst-number">{{ numberOfStudents }}</span>
         </div>
         <div class="row-card">
           <div>
@@ -28,7 +31,7 @@
             <span class="col-pst">Teachers</span>
           </div>
           <div class="separator"></div>
-          <span class="pst-number">20</span>
+          <span class="pst-number">{{ numberOfTeachers }}</span>
         </div>
       </div>
       <!-- three tables -->
@@ -93,10 +96,53 @@ import BarChart from "@/components/BarChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import EventCalendar from "@/components/EventCalendar.vue";
 
+// database scripts
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import ParentsTable from "@/models/database/parents-table";
+import TeachersTable from "@/models/database/teachers-table";
+
+// init StudentsTable and ParentsTable
+const studentsTable = new StudentsTable(new Database());
+const parentsTable = new ParentsTable(new Database());
+const teachersTable = new TeachersTable(new Database());
+
 export default {
   name: "Dashboard",
-  props: {
-    msg: String
+  mounted() {
+    studentsTable
+      .fetchAll()
+      .then(result => {
+        this.numberOfStudents = result.length;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    parentsTable
+      .fetchAll()
+      .then(result => {
+        this.numberOfParents = result.length;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    teachersTable
+      .fetchAll()
+      .then(result => {
+        this.numberOfTeachers = result.length;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  data() {
+    return {
+      numberOfTeachers: 0,
+      numberOfStudents: 0,
+      numberOfParents: 0
+    };
   },
   components: {
     BarChart,
