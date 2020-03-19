@@ -1,20 +1,17 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">
-      <router-link to="/teachers">
-        <i class="fa fa-arrow-left"></i>
-      </router-link>
-    </p>
     <div class="content">
-      <!-- All Teachers -->
+      <!-- Edit Expense Details -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">Edit Teacher Details</span>
+          <span class="window-title">Edit Expense Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
@@ -25,7 +22,7 @@
             <div>
               <span>Id</span>
               <br />
-              <input type="number" v-model="id" />
+              <input type="number" v-model="expensesId" readonly />
             </div>
             <div>
               <span>Expense Type</span>
@@ -59,12 +56,22 @@
             <div>
               <span>Date</span>
               <br />
-              <input type="date" v-model="takenDate" />
+              <input type="date" v-model="dateOfExpense" />
             </div>
           </div>
           <div class="btn-container">
-            <input type="button" value="Save" class="save-btn" @click="addExpense" />
-            <input type="reset" value="Reset" class="reset-btn" />
+            <input
+              type="button"
+              value="Save"
+              class="save-btn"
+              @click="updateExpenseDetails"
+            />
+            <input
+              type="button"
+              value="Revert Changes"
+              class="reset-btn"
+              @click="refreshExpenseDetails(expensesId)"
+            />
           </div>
         </form>
       </div>
@@ -73,71 +80,50 @@
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
+import { ipcRenderer, remote } from "electron";
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import ExpensesTable from "@/models/database/expense-table";
 
-const teacherDatabase = new TeacherDatabase();
+// init ExpensesTable
+const expensesTable = new ExpensesTable(new Database());
 
 export default {
   name: "editExpenseDetails",
-  created() {
-    ipcRenderer.on("teacher-id", (event, arg) => {
-      this.teacherId = arg;
+  mounted() {
+    ipcRenderer.on("expense-id", (event, arg) => {
+      this.expensesId = arg;
 
-      teacherDatabase
-        .fetchOne(this.teacherId)
-        .then(result => {
-          this.teacherDetails = result;
-          // set default data values to teacherDetails
-          this.firstName = this.teacherDetails.firstName;
-          this.id = this.teacherDetails.id;
-          this.lastName = this.teacherDetails.lastName;
-          this.classroom = this.teacherDetails.classroom;
-          this.gender = this.teacherDetails.gender;
-          this.birthDate = this.teacherDetails.birthdate;
-          this.email = this.teacherDetails.email;
-          this.contact = this.teacherDetails.phoneNumber;
-          this.isHeadTutor = this.teacherDetails.isHeadTutor;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.refreshExpenseDetails(this.expensesId);
     });
   },
   data() {
     return {
-      teacherId: "",
-      teacherDetails: {},
-      id: "",
-      firstName: "",
-      lastName: "",
-      classroom: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      contact: "",
-      isHeadTutor: ""
+      expensesId: 0,
+      expenseType: "",
+      name: "",
+      status: "",
+      amountTaken: 0,
+      reason: "",
+      dateOfExpense: "",
+      expenseDetails: {}
     };
   },
   methods: {
-    saveTeacherDetails() {
-      const teacherNewDetails = {
-        id: this.id,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        classroom: this.classroom,
-        gender: this.gender,
-        birthDate: this.birthDate,
-        email: this.email,
-        contact: this.contact,
-        isHeadTutor: this.isHeadTutor,
-        _id: this.teacherId
+    updateExpenseDetails() {
+      const expenseNewDetails = {
+        expensesId: this.expensesId,
+        expenseType: this.expenseType,
+        name: this.name,
+        status: this.status,
+        amountTaken: this.amountTaken,
+        reason: this.reason,
+        dateOfExpense: this.dateOfexpense
       };
 
-      teacherDatabase
-        .update(teacherNewDetails)
+      expensesTable
+        .update(expenseNewDetails)
         .then(result => {
           ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
@@ -145,6 +131,29 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    refreshExpenseDetails(id) {
+      expensesTable
+        .fetchOne(id)
+        .then(result => {
+          this.expenseDetails = result;
+
+          // set default data values to expenseDetails
+          this.expensesId = this.expenseDetails.expenses_id;
+          this.expenseType = this.expenseDetails.expense_type;
+          this.name = this.expenseDetails.name;
+          this.status = this.expenseDetails.status;
+          this.amountTaken = this.expenseDetails.amount_taken;
+          this.reason = this.expenseDetails.reason;
+          this.dateOfExpense = this.expenseDetails.date_of_expense;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
@@ -154,21 +163,12 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
-  height: 530px;
 }
 
 .title-bar {
@@ -199,56 +199,17 @@ export default {
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
 }
 
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-}
-
 form {
-  margin: 10px;
+  margin: 30px;
   font-size: 15px;
   font-weight: 300;
   color: #303030;
@@ -285,7 +246,8 @@ input[type="number"] {
   margin-top: 30px;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;

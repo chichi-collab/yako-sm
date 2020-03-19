@@ -13,7 +13,11 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon
+                  icon="sync-alt"
+                  class="fa fa-sync-alt"
+                  @click="refreshExpensesList"
+                />
                 <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
@@ -37,29 +41,33 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr v-for="expense in expenseData" :key="expense._id">
-                    <td>{{ expense.id }}</td>
-                    <td>{{ expense.expenseType }}</td>
+                  <tr
+                    v-for="expense in expensesData"
+                    :key="expense.expenses_id"
+                  >
+                    <td>{{ expense.expenses_id }}</td>
+                    <td>{{ expense.expense_type }}</td>
                     <td>{{ expense.name }}</td>
                     <td>{{ expense.status }}</td>
-                    <td>{{ expense.amountTaken }}</td>
-                    <td>{{ expense.takenDate }}</td>
+                    <td>{{ expense.reason }}</td>
+                    <td>{{ expense.amount_taken }}</td>
+                    <td>{{ expense.date_of_expense }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
                           class="fa fa-eye"
-                          @click="openExpenseDetails(expense._id)"
+                          @click="openExpenseDetails(expense.expenses_id)"
                         />
                         <font-awesome-icon
                           icon="user-edit"
                           class="fa fa-user-edit"
-                          @click="openEditExpenseDetails(expense._id)"
+                          @click="openEditExpenseDetails(expense.expenses_id)"
                         />
                         <font-awesome-icon
                           icon="trash-alt"
                           class="fa fa-trash-alt"
-                          @click="removeExpense(expense._id)"
+                          @click="removeExpense(expense.expenses_id)"
                         />
                       </div>
                     </td>
@@ -81,9 +89,11 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import ExpenseDatabase from "../../models/database/expense-database";
+import Database from "@/models/database/database";
+import ExpensesTable from "@/models/database/expense-table";
 
-const expenseDatabase = new ExpenseDatabase();
+// init ExpensesTable
+const expensesTable = new ExpensesTable(new Database());
 
 export default {
   name: "ExpensesList",
@@ -91,15 +101,13 @@ export default {
     InfoBar,
     SideMenuBar
   },
-  created() {
-    expenseDatabase
-      .fetchAll()
-      .then(result => {
-        this.expenseData = result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  mounted() {
+    this.refreshExpensesList();
+  },
+  data() {
+    return {
+      expensesData: []
+    };
   },
   methods: {
     openExpenseDetails(id) {
@@ -110,9 +118,9 @@ export default {
       ipcRenderer.send("edit-expense-details-screen", id);
       console.log("expense-details-id", id);
     },
-    removeExpense(_id) {
-      expenseDatabase
-        .delete(_id)
+    removeExpense(id) {
+      expensesTable
+        .delete(id)
         .then(result => {
           // ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
@@ -120,12 +128,20 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      // reload expenses table
+      this.refreshExpensesList();
+    },
+    refreshExpensesList() {
+      expensesTable
+        .fetchAll()
+        .then(result => {
+          this.expensesData = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-  },
-  data() {
-    return {
-      expenseData: []
-    };
   }
 };
 </script>
@@ -260,21 +276,21 @@ table {
 }
 
 th {
-  padding: 5px;
-  text-align: left;
-  font-weight: 549;
-  font-size: 12px;
   color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 12px;
   border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
 }
 
 td {
-  padding-left: 5px;
+  padding-left: 10px;
   text-align: left;
   vertical-align: middle;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
   color: #303030;
   height: 30px;
   border-bottom: 1px solid #f3f3f3;

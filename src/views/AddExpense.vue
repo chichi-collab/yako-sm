@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="number" v-model="id" />
+                  <input type="number" v-model="expenseId" readonly />
                 </div>
                 <div>
                   <span>Expense Type</span>
@@ -59,11 +59,16 @@
                 <div>
                   <span>Date</span>
                   <br />
-                  <input type="date" v-model="takenDate" />
+                  <input type="date" v-model="dateOfExpense" />
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" @click="addExpense" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addExpense"
+                />
                 <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
@@ -79,9 +84,11 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import ExpenseDatabase from "../../models/database/expense-database";
+import Database from "@/models/database/database";
+import ExpensesTable from "@/models/database/expense-table";
 
-const expenseDatabase = new ExpenseDatabase();
+// init ExpensesTable
+const expensesTable = new ExpensesTable(new Database());
 
 export default {
   name: "AddExpense",
@@ -89,36 +96,46 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  mounted() {
+    expensesTable
+      .fetchAll()
+      .then(result => {
+        if (result == []) {
+          this.expenseId = 1;
+        } else {
+          this.expenseId = result.length + 1;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   data() {
     return {
-      id: "",
+      expenseId: 0,
       expenseType: "",
       name: "",
       status: "",
-      amountTaken: "",
+      amountTaken: 0,
       reason: "",
-      takenDate: ""
+      dateOfExpense: ""
     };
   },
   methods: {
     addExpense() {
       const expenseData = {
-        id: this.id,
         expenseType: this.expenseType,
         name: this.name,
         status: this.status,
         amountTaken: this.amountTaken,
         reason: this.reason,
-        takenDate: this.takenDate
+        dateOfExpense: this.dateOfExpense
       };
-
-      console.log(expenseData); // log expense details
 
       // insert expense details into the database
       // if error then show error message box
       // else show success message box
-
-      expenseDatabase
+      expensesTable
         .add(expenseData)
         .then(result => {
           // ipcRenderer.send("open-teacher-information-dialog");
@@ -128,6 +145,17 @@ export default {
           // ipcRenderer.send("open-teacher-error-dialog");
           console.log(err);
         });
+
+      this.expenseId += 1;
+      this.resetForm();
+    },
+    resetForm() {
+      this.expenseType = "";
+      this.name = "";
+      this.status = "";
+      this.amountTaken = 0;
+      this.reason = "";
+      this.dateOfExpense = "";
     }
   }
 };
@@ -259,7 +287,8 @@ select {
   margin-top: 30px;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;

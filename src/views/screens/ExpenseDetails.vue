@@ -7,9 +7,11 @@
           <span class="window-title">Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
@@ -21,63 +23,49 @@
               <span>Id Number</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.id }}</span>
+                <span>{{ expenseDetails.expenses_id }}</span>
               </div>
             </div>
             <div>
-              <span>First Name</span>
+              <span>Expense Type</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.firstName }}</span>
+                <span>{{ expenseDetails.expense_type }}</span>
               </div>
             </div>
             <div>
-              <span>Last Name</span>
+              <span>Name</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.lastName }}</span>
+                <span>{{ expenseDetails.name }}</span>
               </div>
             </div>
             <div>
-              <span>Class</span>
+              <span>Status</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.classroom }}</span>
+                <span>{{ expenseDetails.status }}</span>
               </div>
             </div>
             <div>
-              <span>Gender</span>
+              <span>Amount Taken</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.gender }}</span>
+                <span>{{ expenseDetails.amount_taken }}</span>
               </div>
             </div>
             <div>
-              <span>Date of Birth</span>
+              <span>Reason</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.birthDate }}</span>
+                <span>{{ expenseDetails.reason }}</span>
               </div>
             </div>
             <div>
-              <span>Email</span>
+              <span>Date</span>
               <br />
               <div class="info-card">
-                <span>{{ teacherDetails.email }}</span>
-              </div>
-            </div>
-            <div>
-              <span>Contact</span>
-              <br />
-              <div class="info-card">
-                <span>{{ teacherDetails.contact }}</span>
-              </div>
-            </div>
-            <div v-if="teacherDetails.isHeadTutor">
-              <span>Head Tutor</span>
-              <br />
-              <div class="info-card">
-                <span>{{ teacherDetails.classroom }}</span>
+                <span>{{ expenseDetails.date_of_expense }}</span>
               </div>
             </div>
           </div>
@@ -89,23 +77,25 @@
 
 <script>
 // node_modules
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 // database scripts
-import TeacherDatabase from "../../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import ExpensesTable from "@/models/database/expense-table";
 
-const teacherDatabase = new TeacherDatabase();
+// init ExpensesTable
+const expensesTable = new ExpensesTable(new Database());
 
 export default {
   name: "expenseDetails",
-  created() {
-    ipcRenderer.on("teacher-id", (event, arg) => {
-      this.teacherId = arg;
+  mounted() {
+    ipcRenderer.on("expense-id", (event, arg) => {
+      this.expensesId = arg;
 
-      teacherDatabase
-        .fetchOne(this.teacherId)
+      expensesTable
+        .fetchOne(this.expensesId)
         .then(result => {
-          this.teacherDetails = result;
+          this.expenseDetails = result;
         })
         .catch(err => {
           console.log(err);
@@ -113,13 +103,12 @@ export default {
     });
   },
   data() {
-    return { teacherId: "", teacherDetails: {} };
+    return { expensesId: "", expenseDetails: {} };
   },
   methods: {
-    goToTeachers() {
-      console.log("SERVER: ");
-      console.log(this.teacherDetails);
-      // this.$router.push({ path: "/teachers" });
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
@@ -129,21 +118,12 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
-  height: 400px;
 }
 
 .title-bar {
@@ -168,63 +148,23 @@ export default {
 .control-box {
   float: right;
   display: grid;
-  margin-right: 5px;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 2px;
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
 }
 
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-  margin-top: 25px;
-}
-
 .input-container {
-  margin: 20px;
+  margin: 30px;
+  margin-top: 40px;
   font-size: 15px;
   color: #303030;
   display: grid;
@@ -237,11 +177,11 @@ export default {
   background: #e8e9ec;
   color: #303030;
   margin-top: 5px;
-  padding: 3px;
+  padding: 7px;
   font-weight: bold;
   font-size: 17px;
   border-radius: 5px;
   width: 100%;
-  height: 25px;
+  height: 35px;
 }
 </style>
