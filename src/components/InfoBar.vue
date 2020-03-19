@@ -25,7 +25,7 @@
         <div class="pipe"></div>
         <div class="user-img"></div>
         <div class="user-area">
-          <span class="user-name">Anane Gabriel</span>
+          <span class="user-name">{{ adminName }}</span>
           <br />
           <span class="user-type">Admin</span>
         </div>
@@ -51,13 +51,31 @@
 </template>
 
 <script>
+// database scripts
+import Database from "@/models/database/database";
+import AdminTable from "@/models/database/admin-table";
+
+// init AdminTable
+const adminTable = new AdminTable(new Database());
+
 export default {
   name: "InfoBar",
+  created() {
+    adminTable
+      .getById(1)
+      .then(result => {
+        this.adminName = result.full_name;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   data() {
     return {
       showMenu: false,
       caretItem: "Settings",
-      caretList: ["Profile", "Settings", "About software"]
+      caretList: ["Profile", "Settings", "About software"],
+      adminName: ""
     };
   },
   methods: {
