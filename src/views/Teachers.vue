@@ -101,6 +101,11 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  data() {
+    return {
+      teachersData: []
+    };
+  },
   mounted() {
     this.refreshTeachersList();
   },
@@ -138,11 +143,6 @@ export default {
           console.log(err);
         });
     }
-  },
-  data() {
-    return {
-      teachersData: []
-    };
   }
 };
 </script>
@@ -292,7 +292,7 @@ td {
   vertical-align: middle;
   font-weight: 300;
   font-size: 12px;
- color: #303030;
+  color: #303030;
   border-bottom: 1px solid #f3f3f3;
 }
 

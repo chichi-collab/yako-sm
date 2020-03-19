@@ -7,7 +7,11 @@
           <span class="window-title">Teacher Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="times" class="fa fa-times" @click="closeCurrentWindow" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
@@ -100,7 +104,7 @@ const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "teacherDetails",
-  created() {
+  mounted() {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
 

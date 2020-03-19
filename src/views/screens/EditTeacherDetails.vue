@@ -1,10 +1,5 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">
-      <router-link to="/teachers">
-        <i class="fa fa-arrow-left"></i>
-      </router-link>
-    </p>
     <div class="content">
       <!-- All Teachers -->
       <div class="container-for-table">
@@ -71,7 +66,12 @@
                 <input type="checkbox" v-model="isHeadTutor" />
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" @click="updateTeacherDetails" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="updateTeacherDetails"
+                />
                 <input
                   type="button"
                   value="Revert Changes"
@@ -99,7 +99,7 @@ const teachersTable = new TeachersTable(new Database());
 
 export default {
   name: "EditTeacherDetails",
-  created() {
+  mounted() {
     ipcRenderer.on("teacher-id", (event, arg) => {
       this.teacherId = arg;
 
@@ -184,7 +184,6 @@ export default {
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
 }
 
 .title-bar {

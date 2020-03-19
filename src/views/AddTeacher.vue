@@ -104,7 +104,7 @@ export default {
     InfoBar,
     SideMenuBar
   },
-  created() {
+  mounted() {
     teachersTable
       .fetchAll()
       .then(result => {
