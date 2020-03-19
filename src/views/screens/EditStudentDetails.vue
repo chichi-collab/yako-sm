@@ -1,29 +1,25 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">Edit Student Details</p>
     <div class="content">
       <!-- All Teachers -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">About Rita Donkor</span>
+          <span class="window-title">Edit Student Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon icon="times" class="fa fa-times" @click="closeCurrentWindow" />
           </div>
         </div>
         <div class="line"></div>
 
         <!-- form here -->
         <div class="profile-container">
-          <div class="user-img"></div>
           <form action>
             <div class="input-container">
               <div>
                 <span>Id Number</span>
                 <br />
-                <input type="text" v-model="id" />
+                <input type="number" v-model="id" readonly />
               </div>
               <div>
                 <span>First Name</span>
@@ -38,7 +34,7 @@
               <div>
                 <span>Class</span>
                 <br />
-                <input type="text" v-model="studentClass" />
+                <input type="text" v-model="classroom" />
               </div>
               <div>
                 <span>Gender</span>
@@ -48,12 +44,7 @@
               <div>
                 <span>Date of Birth</span>
                 <br />
-                <input type="text" v-model="birthdate" />
-              </div>
-              <div>
-                <span>Religion</span>
-                <br />
-                <input type="text" v-model="religion" />
+                <input type="date" v-model="birthDate" />
               </div>
               <div>
                 <span>Parent Name</span>
@@ -61,9 +52,9 @@
                 <input type="text" v-model="parentName" />
               </div>
               <div>
-                <span>Parent No</span>
+                <span>Parent Contact</span>
                 <br />
-                <input type="text" v-model="parentNo" />
+                <input type="phone" v-model="parentContact" />
               </div>
               <div>
                 <span>Relation</span>
@@ -73,12 +64,17 @@
               <div>
                 <span>Address</span>
                 <br />
-                <input type="text" v-model="address" />
+                <input type="text" v-model="digitalAddress" />
               </div>
             </div>
             <div class="btn-container">
-              <input type="button" value="Save" class="save-btn" />
-              <input type="button" value="Reset" class="reset-btn" />
+              <input type="button" value="Save" class="save-btn" @click="updateStudentDetails" />
+              <input
+                type="button"
+                value="Revert Changes"
+                class="reset-btn"
+                @click="refreshAllDetails(id)"
+              />
             </div>
           </form>
         </div>
@@ -88,8 +84,117 @@
 </template>
 
 <script>
+import { remote, ipcRenderer } from "electron";
+
+// database scripts
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import ParentsTable from "@/models/database/parents-table";
+
+// init StudentsTable and ParentsTable
+const studentsTable = new StudentsTable(new Database());
+const parentsTable = new ParentsTable(new Database());
+
 export default {
-  name: "EditTeacherDetails"
+  name: "EditStudentDetails",
+  mounted() {
+    ipcRenderer.on("student-id", (event, arg) => {
+      this.id = arg;
+
+      this.refreshAllDetails(this.id);
+    });
+  },
+  data() {
+    return {
+      id: "",
+      firstName: "",
+      lastName: "",
+      classroom: "",
+      gender: "",
+      birthDate: "",
+      parentName: "",
+      parentContact: "",
+      relation: "",
+      digitalAddress: "",
+      studentDetails: {},
+      parentDetails: {}
+    };
+  },
+  methods: {
+    updateStudentDetails() {
+      const studentData = {
+        id: this.id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        classroom: this.classroom,
+        gender: this.gender,
+        birthDate: this.birthDate,
+        digitalAddress: this.digitalAddress
+      };
+
+      const parentData = {
+        parentName: this.parentName,
+        parentContact: this.parentContact,
+        studentId: this.id,
+        relation: this.relation
+      };
+
+      parentsTable
+        .update(parentData)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      studentsTable
+        .update(studentData)
+        .then(result => {
+          ipcRenderer.send("open-teacher-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    refreshAllDetails(id) {
+      studentsTable
+        .fetchOne(id)
+        .then(result => {
+          this.studentDetails = result;
+
+          // set default data values to studentDetails
+          this.firstName = this.studentDetails.first_name;
+          this.lastName = this.studentDetails.last_name;
+          this.classroom = this.studentDetails.classroom;
+          this.gender = this.studentDetails.gender;
+          this.birthDate = this.studentDetails.birth_date;
+          this.digitalAddress = this.studentDetails.address;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      parentsTable
+        .fetchOne(id)
+        .then(result => {
+          this.parentDetails = result;
+
+          // set default data values to studentDetails
+          this.parentName = this.parentDetails.parent_name;
+          this.parentContact = this.parentDetails.parent_contact;
+          this.relation = this.parentDetails.relation;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
+    }
+  }
 };
 </script>
 
@@ -97,21 +202,12 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
-  height: 530px;
 }
 
 .title-bar {
@@ -136,62 +232,24 @@ export default {
 .control-box {
   float: right;
   display: grid;
-  margin-right: 5px;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 2px;
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
 }
 
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-}
-
 form {
   margin: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
   font-size: 15px;
   font-weight: 300;
   color: #303030;
@@ -204,7 +262,11 @@ form {
   grid-row-gap: 20px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="phone"],
+input[type="number"] {
   border-radius: 5px;
   background: #e8e9ec;
   outline: none;
@@ -221,7 +283,7 @@ input[type="text"] {
   display: grid;
   grid-template-columns: 120px 120px;
   grid-column-gap: 30px;
-  margin-top: 30px;
+  margin-top: 14px;
 }
 
 input[type="button"] {

@@ -13,7 +13,11 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon
+                  icon="sync-alt"
+                  class="fa fa-sync-alt"
+                  @click="refreshStudentsList"
+                />
                 <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
@@ -26,7 +30,6 @@
                     <th>Name</th>
                     <th>Class</th>
                     <th>Gender</th>
-                    <th>Parent</th>
                     <th>Address</th>
                     <th>Actions</th>
                   </tr>
@@ -36,29 +39,28 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr v-for="student in studentsData" :key="student._id">
+                  <tr v-for="student in studentsData" :key="student.id">
                     <td>{{ student.id }}</td>
-                    <td>{{ student.firstName }} {{ student.lastName }}</td>
+                    <td>{{ student.first_name }} {{ student.last_name }}</td>
                     <td>{{ student.gender }}</td>
                     <td>{{ student.classroom }}</td>
-                    <td>{{ student.parentName }}</td>
-                    <td>{{ student.digitalAddress }}</td>
+                    <td>{{ student.address }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
                           class="fa fa-eye"
-                          @click="openStudentDetails(student._id)"
+                          @click="openStudentDetails(student.id)"
                         />
                         <font-awesome-icon
                           icon="user-edit"
-                          @click="openEditStudentDetails(student._id)"
+                          @click="openEditStudentDetails(student.id)"
                           class="fa fa-user-edit"
                         />
                         <font-awesome-icon
                           icon="trash-alt"
                           class="fa fa-trash-alt"
-                          @click="removeStudent(student._id)"
+                          @click="removeStudent(student.id)"
                         />
                       </div>
                     </td>
@@ -81,9 +83,13 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import StudentDatabase from "../../models/database/students-database";
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import ParentsTable from "@/models/database/parents-table";
 
-const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+// init StudentsTable and ParentsTable
+const studentsTable = new StudentsTable(new Database());
+const parentsTable = new ParentsTable(new Database());
 
 export default {
   name: "AllStudents",
@@ -91,15 +97,15 @@ export default {
     InfoBar,
     SideMenuBar
   },
-  created() {
-    studentDatabase
-      .fetchAll()
-      .then(result => {
-        this.studentsData = result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  mounted() {
+    this.refreshStudentsList();
+    this.refreshParentsList();
+  },
+  data() {
+    return {
+      studentsData: [],
+      parentsData: []
+    };
   },
   methods: {
     openStudentDetails(id) {
@@ -110,9 +116,9 @@ export default {
       ipcRenderer.send("edit-student-details-screen", id);
       console.log("student-id: ", id);
     },
-    removeStudent(_id) {
-      studentDatabase
-        .delete(_id)
+    removeStudent(id) {
+      studentsTable
+        .delete(id)
         .then(result => {
           ipcRenderer.send("open-student-information-dialog");
           console.log(result);
@@ -120,12 +126,40 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      parentsTable
+        .delete(id)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      // refresh students and parents list
+      this.refreshStudentsList();
+      this.refreshParentsList();
+    },
+    refreshStudentsList() {
+      studentsTable
+        .fetchAll()
+        .then(result => {
+          this.studentsData = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    refreshParentsList() {
+      parentsTable
+        .fetchAll()
+        .then(result => {
+          this.parentsData = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-  },
-  data() {
-    return {
-      studentsData: []
-    };
   }
 };
 </script>
@@ -210,7 +244,7 @@ export default {
 .action-box {
   float: right;
   display: grid;
-  margin-right: 60px;
+  margin-right: 72px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 3px;
   padding: 2px;
@@ -262,7 +296,7 @@ table {
 th {
   padding: 10px;
   text-align: left;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
   color: #fff;
   border-bottom: 1px solid #f3f3f3;
@@ -274,7 +308,8 @@ td {
   text-align: left;
   vertical-align: middle;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
+  height: 30px;
   color: #303030;
   border-bottom: 1px solid #f3f3f3;
 }

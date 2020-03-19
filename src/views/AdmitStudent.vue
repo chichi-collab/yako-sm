@@ -25,7 +25,7 @@
                 <div>
                   <span>Id</span>
                   <br />
-                  <input type="number" v-model="id" />
+                  <input type="number" v-model="id" readonly />
                 </div>
                 <div>
                   <span>First Name</span>
@@ -99,9 +99,13 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import StudentDatabase from "../../models/database/students-database";
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import ParentsTable from "@/models/database/parents-table";
 
-const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+// init StudentsTable and ParentsTable
+const studentsTable = new StudentsTable(new Database());
+const parentsTable = new ParentsTable(new Database());
 
 export default {
   name: "admitStudent",
@@ -109,9 +113,24 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  mounted() {
+    studentsTable
+      .fetchAll()
+      .then(result => {
+        console.log(result);
+        if (result == []) {
+          this.id = 1;
+        } else {
+          this.id = result.length + 1;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   data() {
     return {
-      id: "",
+      id: 0,
       firstName: "",
       lastName: "",
       classroom: "",
@@ -127,16 +146,19 @@ export default {
     addStudent() {
       // add student to the database
       const studentData = {
-        id: this.id,
         firstName: this.firstName,
         lastName: this.lastName,
         classroom: this.classroom,
         gender: this.gender,
         birthDate: this.birthDate,
+        digitalAddress: this.digitalAddress
+      };
+
+      const parentData = {
         parentName: this.parentName,
         parentContact: this.parentContact,
-        relation: this.relation,
-        digitalAddress: this.digitalAddress
+        studentId: this.id,
+        relation: this.relation
       };
 
       console.log(studentData); // log student details
@@ -144,7 +166,7 @@ export default {
       // insert student details into the database
       // if error then show error message box
       // else show success message box
-      studentDatabase
+      studentsTable
         .add(studentData)
         .then(result => {
           // ipcRenderer.send("open-student-information-dialog");
@@ -154,6 +176,31 @@ export default {
           // ipcRenderer.send("open-student-error-dialog");
           console.log(err);
         });
+
+      parentsTable
+        .add(parentData)
+        .then(result => {
+          // ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          // ipcRenderer.send("open-student-error-dialog");
+          console.log(err);
+        });
+
+      this.id += 1;
+      this.resetForm();
+    },
+    resetForm() {
+      this.firstName = "";
+      this.lastName = "";
+      this.classroom = "";
+      this.gender = "";
+      this.birthDate = "";
+      this.parentName = "";
+      this.parentContact = "";
+      this.relation = "";
+      this.digitalAddress = "";
     }
   }
 };
@@ -195,7 +242,7 @@ export default {
 }
 
 .container-for-table .line {
-  border-top: 1px sol#eee;
+  border-top: 1px solid #eee;
 }
 
 .control-box {
@@ -286,7 +333,8 @@ select {
   width: 250px;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;
