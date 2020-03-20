@@ -20,6 +20,14 @@ class TeachersTable {
     ]);
   }
 
+  // fetch teacher by classroom
+  fetchByClassroom(classroom) {
+    return this.database.get(
+      `SELECT first_name, last_name FROM Teachers WHERE classroom = ?`,
+      [classroom]
+    );
+  }
+
   // update teacher details where id equals
   // param teacher contains an object of the teacher details
   update(teacher) {
