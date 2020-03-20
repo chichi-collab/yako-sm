@@ -8,7 +8,12 @@
       <p class="login-wlc">welcome back to the state-of-art</p>
       <input type="text" v-model="username" placeholder="username" />
       <br />
-      <input type="password" v-model="password" placeholder="password" />
+      <input
+        type="password"
+        v-model="password"
+        placeholder="password"
+        @keydown="checkLogin"
+      />
       <br />
       <div class="crf">
         <input type="checkbox" v-model="remember" />

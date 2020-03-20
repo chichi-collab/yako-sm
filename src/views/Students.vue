@@ -28,7 +28,7 @@
                   <tr>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>Class</th>
+                    <th>Classroom</th>
                     <th>Gender</th>
                     <th>Address</th>
                     <th>Actions</th>
@@ -42,8 +42,8 @@
                   <tr v-for="student in studentsData" :key="student.id">
                     <td>{{ student.id }}</td>
                     <td>{{ student.first_name }} {{ student.last_name }}</td>
-                    <td>{{ student.gender }}</td>
                     <td>{{ student.classroom }}</td>
+                    <td>{{ student.gender }}</td>
                     <td>{{ student.address }}</td>
                     <td>
                       <div class="action-box prevent-select">
