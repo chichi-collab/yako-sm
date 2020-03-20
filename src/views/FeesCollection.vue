@@ -13,7 +13,11 @@
               <!-- control box for window container -->
               <div class="control-box prevent-select">
                 <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon
+                  icon="sync-alt"
+                  class="fa fa-sync-alt"
+                  @click="refreshFeesList"
+                />
                 <font-awesome-icon icon="times" class="fa fa-times" />
               </div>
             </div>
@@ -22,11 +26,11 @@
               <table cellpadding="0" cellspacing="0" border="0">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Student</th>
+                    <th>Student Id</th>
+                    <th>Name</th>
                     <th>Class</th>
-                    <th>Arrears</th>
                     <th>Fees Paid</th>
+                    <th>Fees Owing</th>
                     <th>Date</th>
                     <th>Actions</th>
                   </tr>
@@ -36,29 +40,29 @@
             <div class="tbl-content">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tbody>
-                  <tr v-for="fee in feesData" :key="fee._id">
-                    <td>{{ fee.studentId }}</td>
-                    <td>{{ fee.studentName }}</td>
-                    <td>{{ fee.studentClass }}</td>
-                    <td>{{ fee.totalFees - fee.feesPaid }}</td>
-                    <td>{{ fee.feesPaid }}</td>
-                    <td>{{ fee.paidDate }}</td>
+                  <tr v-for="fee in feesData" :key="fee.fees_id">
+                    <td>{{ fee.student_id }}</td>
+                    <td>{{ fee.student_name }}</td>
+                    <td>{{ fee.student_class }}</td>
+                    <td>{{ fee.fees_paid }}</td>
+                    <td>{{ fee.total_fees - fee.fees_paid }}</td>
+                    <td>{{ fee.paid_date }}</td>
                     <td>
                       <div class="action-box prevent-select">
                         <font-awesome-icon
                           icon="eye"
                           class="fa fa-eye"
-                          @click="openFeeDetails(fee._id)"
+                          @click="openFeeDetails(fee.fees_id)"
                         />
                         <font-awesome-icon
                           icon="user-edit"
                           class="fa fa-user-edit"
-                          @click="openEditFeeDetails(fee._id)"
+                          @click="openEditFeeDetails(fee.fees_id)"
                         />
                         <font-awesome-icon
                           icon="trash-alt"
                           class="fa fa-trash-alt"
-                          @click="removeFee(fee._id)"
+                          @click="removeFee(fee.fees_id)"
                         />
                       </div>
                     </td>
@@ -80,22 +84,16 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import FeesDatabase from "../../models/database/fees-database";
+import Database from "@/models/database/database";
+import FeesTable from "@/models/database/fees-table";
 
-const feesDatabase = new FeesDatabase(); // initializes FeesDatabase
+// init FeesTable and StudentsTable
+const feesTable = new FeesTable(new Database());
 
 export default {
   name: "FeesCollection",
   mounted() {
-    feesDatabase
-      .fetchAll()
-      .then(result => {
-        this.feesData = result;
-        console.log(result);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.refreshFeesList();
   },
   components: {
     InfoBar,
@@ -116,10 +114,21 @@ export default {
       console.log("fee-id: ", id);
     },
     removeFee(_id) {
-      feesDatabase
+      feesTable
         .delete(_id)
         .then(result => {
           ipcRenderer.send("open-student-information-dialog");
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    refreshFeesList() {
+      feesTable
+        .fetchAll()
+        .then(result => {
+          this.feesData = result;
           console.log(result);
         })
         .catch(err => {
@@ -210,7 +219,7 @@ export default {
 .action-box {
   float: right;
   display: grid;
-  margin-right: 20px;
+  margin-right: 55px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 3px;
   padding: 2px;
@@ -262,7 +271,7 @@ table {
 th {
   padding: 10px;
   text-align: left;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
   color: #fff;
   border-bottom: 1px solid #f3f3f3;
@@ -274,8 +283,9 @@ td {
   text-align: left;
   vertical-align: middle;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
   color: #303030;
+  height: 30px;
   border-bottom: 1px solid #f3f3f3;
 }
 

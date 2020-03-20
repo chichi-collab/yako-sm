@@ -43,11 +43,16 @@ class FeesTable {
 
   // update total fees of all fees
   updateTotalFees(totalFees) {
-    return this.databaseConn.run(
+    return this.database.run(
       `UPDATE Fees
       SET total_fees = ?`,
       [totalFees]
     );
+  }
+
+  // get total fees
+  fetchTotalFees() {
+    return this.database.run(`SELECT total_fees FROM Fees`);
   }
 
   // add fee to the database

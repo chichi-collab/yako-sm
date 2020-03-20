@@ -11,12 +11,23 @@
             <div>
               <span>Total Fees</span>
               <br />
-              <input type="number" value="1000" class="total-fees" v-model="totalFees" />
+              <input
+                type="number"
+                value="1000"
+                class="total-fees"
+                v-model="totalFees"
+                min="0"
+              />
             </div>
             <div>
               <span></span>
               <br />
-              <input type="button" value="Update Fees" class="update-btn" />
+              <input
+                type="button"
+                value="Update Fees"
+                class="update-btn"
+                @click="updateTotalFee"
+              />
             </div>
           </div>
           <div class="line"></div>
@@ -33,28 +44,33 @@
             <div class="line"></div>
 
             <!-- form here -->
-            <form action>
+            <form>
               <div class="input-container">
                 <div>
                   <span>Student Id</span>
                   <br />
-                  <input type="number" v-model="studentId" />
+                  <input
+                    type="number"
+                    v-model="studentId"
+                    min="0"
+                    @change="getStudentDetails"
+                  />
                 </div>
                 <div>
                   <span>Student Name</span>
                   <br />
-                  <input type="text" v-model="studentName" />
+                  <input type="text" v-model="studentName" readonly />
                 </div>
 
                 <div>
                   <span>Class</span>
                   <br />
-                  <input type="text" v-model="studentClass" />
+                  <input type="text" v-model="studentClass" readonly />
                 </div>
                 <div>
                   <span>Fees Paid</span>
                   <br />
-                  <input type="number" v-model="feesPaid" />
+                  <input type="number" v-model="feesPaid" min="0" />
                 </div>
 
                 <div>
@@ -64,7 +80,12 @@
                 </div>
               </div>
               <div class="btn-container">
-                <input type="button" value="Save" class="save-btn" @click="addFees" />
+                <input
+                  type="button"
+                  value="Save"
+                  class="save-btn"
+                  @click="addFees"
+                />
                 <input type="reset" value="Reset" class="reset-btn" />
               </div>
             </form>
@@ -80,9 +101,13 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 
 // database scripts
-import FeesDatabase from "../../models/database/fees-database";
+import Database from "@/models/database/database";
+import FeesTable from "@/models/database/fees-table";
+import StudentsTable from "@/models/database/students-table";
 
-const feesDatabase = new FeesDatabase(); // initializes FeesDatabase
+// init FeesTable and StudentsTable
+const feesTable = new FeesTable(new Database());
+const studentsTable = new StudentsTable(new Database());
 
 export default {
   name: "AddFeesPayment",
@@ -90,33 +115,45 @@ export default {
     InfoBar,
     SideMenuBar
   },
+  mounted() {
+    feesTable
+      .fetchAll()
+      .then(result => {
+        if (result == undefined) {
+          this.totalFees = 0;
+        } else {
+          this.totalFees = result[0].total_fees;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   data() {
     return {
-      studentId: "",
+      studentId: 0,
       studentName: "",
       studentClass: "",
-      feesPaid: "",
+      feesPaid: 0,
       paidDate: "",
-      totalFees: ""
+      totalFees: 0,
+      studentDetails: {}
     };
   },
   methods: {
     addFees() {
       const feesData = {
-        studentId: this.studentId,
         studentName: this.studentName,
         studentClass: this.studentClass,
         feesPaid: this.feesPaid,
         paidDate: this.paidDate,
-        totalFees: this.totalFees
+        studentId: this.studentId
       };
-
-      console.log(feesData); // log fees details
 
       // insert fees details into the fees database
       // if error then show error message box
       // else show success message box
-      feesDatabase
+      feesTable
         .add(feesData)
         .then(result => {
           // ipcRenderer.send("open-fees-information-dialog");
@@ -124,6 +161,37 @@ export default {
         })
         .catch(err => {
           // ipcRenderer.send("open-fees-error-dialog");
+          console.log(err);
+        });
+
+      this.resetForm();
+    },
+    resetForm() {
+      this.studentName = "";
+      this.studentClass = "";
+      this.feesPaid = 0;
+      this.paidDate = "";
+      this.studentId = 0;
+    },
+    getStudentDetails() {
+      studentsTable
+        .fetchOne(this.studentId)
+        .then(result => {
+          this.studentName = result.first_name + " " + result.last_name;
+          this.studentClass = result.classroom;
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateTotalFee() {
+      feesTable
+        .updateTotalFees(this.totalFees)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
           console.log(err);
         });
     }
@@ -257,7 +325,8 @@ input[type="date"] {
   margin-top: 30px;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;

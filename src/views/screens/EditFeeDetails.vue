@@ -1,70 +1,70 @@
 <template>
   <div class="contain-area">
-    <p class="content-title">
-      <router-link to="/teachers">
-        <i class="fa fa-arrow-left"></i>
-      </router-link>
-    </p>
     <div class="content">
-      <!-- All Fees -->
+      <!-- Edit Fee Details -->
       <div class="container-for-table">
         <div class="title-bar">
           <span class="window-title">Edit Fee Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
 
         <!-- form here -->
-        <form action>
+        <form>
           <div class="input-container">
             <div>
-              <span>Id</span>
+              <span>Student Id</span>
               <br />
-              <input type="number" v-model="id" />
+              <input
+                type="number"
+                v-model="studentId"
+                min="0"
+                @change="getStudentDetails"
+              />
             </div>
             <div>
-              <span>Expense Type</span>
+              <span>Student Name</span>
               <br />
-              <input type="text" v-model="expenseType" />
+              <input type="text" v-model="studentName" readonly />
+            </div>
+
+            <div>
+              <span>Class</span>
+              <br />
+              <input type="text" v-model="studentClass" readonly />
             </div>
             <div>
-              <span>Name</span>
+              <span>Fees Paid</span>
               <br />
-              <input type="text" v-model="name" />
+              <input type="number" v-model="feesPaid" min="0" />
             </div>
-            <div>
-              <span>Status</span>
-              <br />
-              <select v-model="status">
-                <option disabled value>Please choose status...</option>
-                <option>Pending</option>
-                <option>Received</option>
-              </select>
-            </div>
-            <div>
-              <span>Amount Taken</span>
-              <br />
-              <input type="number" v-model="amountTaken" />
-            </div>
-            <div>
-              <span>Reason</span>
-              <br />
-              <input type="text" v-model="reason" />
-            </div>
+
             <div>
               <span>Date</span>
               <br />
-              <input type="date" v-model="takenDate" />
+              <input type="date" v-model="paidDate" />
             </div>
           </div>
           <div class="btn-container">
-            <input type="button" value="Save" class="save-btn" @click="addExpense" />
-            <input type="reset" value="Reset" class="reset-btn" />
+            <input
+              type="button"
+              value="Save"
+              class="save-btn"
+              @click="updateFeeDetails"
+            />
+            <input
+              type="button"
+              value="Revert Changes"
+              class="reset-btn"
+              @click="refreshFeeDetails"
+            />
           </div>
         </form>
       </div>
@@ -73,71 +73,53 @@
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
+import { ipcRenderer, remote } from "electron";
 
 // database scripts
-import FeeDatabase from "../../../models/database/teachers-database";
+import Database from "@/models/database/database";
+import FeesTable from "@/models/database/fees-table";
+import StudentsTable from "@/models/database/students-table";
 
-const teacherDatabase = new FeeDatabase();
+// init FeesTable and StudentsTable
+const feesTable = new FeesTable(new Database());
+const studentsTable = new StudentsTable(new Database());
 
 export default {
   name: "editFeeDetails",
-  created() {
-    ipcRenderer.on("teacher-id", (event, arg) => {
-      this.teacherId = arg;
+  mounted() {
+    ipcRenderer.on("fee-id", (event, arg) => {
+      this.feesId = arg;
 
-      teacherDatabase
-        .fetchOne(this.teacherId)
-        .then(result => {
-          this.teacherDetails = result;
-          // set default data values to teacherDetails
-          this.firstName = this.teacherDetails.firstName;
-          this.id = this.teacherDetails.id;
-          this.lastName = this.teacherDetails.lastName;
-          this.classroom = this.teacherDetails.classroom;
-          this.gender = this.teacherDetails.gender;
-          this.birthDate = this.teacherDetails.birthdate;
-          this.email = this.teacherDetails.email;
-          this.contact = this.teacherDetails.phoneNumber;
-          this.isHeadTutor = this.teacherDetails.isHeadTutor;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.refreshFeeDetails(this.feesId);
+
+      console.log("hello");
     });
   },
   data() {
     return {
-      teacherId: "",
-      teacherDetails: {},
-      id: "",
-      firstName: "",
-      lastName: "",
-      classroom: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      contact: "",
-      isHeadTutor: ""
+      feesId: 0,
+      studentId: 0,
+      studentName: "",
+      studentClass: "",
+      feesPaid: 0,
+      paidDate: "",
+      totalFees: 0,
+      feeDetails: {}
     };
   },
   methods: {
-    saveFeeDetails() {
-      const teacherNewDetails = {
-        id: this.id,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        classroom: this.classroom,
-        gender: this.gender,
-        birthDate: this.birthDate,
-        email: this.email,
-        contact: this.contact,
-        isHeadTutor: this.isHeadTutor,
-        _id: this.teacherId
+    updateFeeDetails() {
+      const feeNewDetails = {
+        feesId: this.feesId,
+        studentName: this.studentName,
+        studentClass: this.studentClass,
+        feesPaid: this.feesPaid,
+        paidDate: this.paidDate,
+        studentId: this.studentId
       };
 
-      teacherDatabase
-        .update(teacherNewDetails)
+      feesTable
+        .update(feeNewDetails)
         .then(result => {
           ipcRenderer.send("open-teacher-information-dialog");
           console.log(result);
@@ -145,6 +127,40 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    refreshFeeDetails(feesId) {
+      feesTable
+        .fetchOne(feesId)
+        .then(result => {
+          this.feeDetails = result;
+
+          // set default data values to feeDetails
+          this.feesId = this.feeDetails.fees_id;
+          this.studentName = this.feeDetails.student_name;
+          this.studentClass = this.feeDetails.student_class;
+          this.feesPaid = this.feeDetails.fees_paid;
+          this.paidDate = this.feeDetails.paid_date;
+          this.studentId = this.feeDetails.student_id;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getStudentDetails() {
+      studentsTable
+        .fetchOne(this.studentId)
+        .then(result => {
+          this.studentName = result.first_name + " " + result.last_name;
+          this.studentClass = result.classroom;
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
     }
   }
 };
@@ -154,21 +170,12 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
-  height: 530px;
 }
 
 .title-bar {
@@ -199,56 +206,17 @@ export default {
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
 }
 
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-}
-
 form {
-  margin: 10px;
+  margin: 30px;
   font-size: 15px;
   font-weight: 300;
   color: #303030;
@@ -285,7 +253,8 @@ input[type="number"] {
   margin-top: 30px;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
   border-radius: 5px;
   outline: none;
   border: none;

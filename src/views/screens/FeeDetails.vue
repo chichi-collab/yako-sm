@@ -4,12 +4,14 @@
       <!-- All Fees -->
       <div class="container-for-table">
         <div class="title-bar">
-          <span class="window-title">Teacher Details</span>
+          <span class="window-title">Fees Details</span>
           <!-- control box for window container -->
           <div class="control-box prevent-select">
-            <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-            <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-            <font-awesome-icon icon="times" class="fa fa-times" />
+            <font-awesome-icon
+              icon="times"
+              class="fa fa-times"
+              @click="closeCurrentWindow"
+            />
           </div>
         </div>
         <div class="line"></div>
@@ -21,49 +23,49 @@
               <span>Id Number</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.id }}</span>
+                <span>{{ feeDetails.fees_id }}</span>
               </div>
             </div>
             <div>
               <span>Total Fees</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.totalFees }}</span>
+                <span>{{ feeDetails.total_fees }}</span>
               </div>
             </div>
             <div>
               <span>Student Id</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.studentId }}</span>
+                <span>{{ feeDetails.student_id }}</span>
               </div>
             </div>
             <div>
               <span>Student Name</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.studentName }}</span>
+                <span>{{ feeDetails.student_name }}</span>
               </div>
             </div>
             <div>
               <span>Classroom</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.studentClass }}</span>
+                <span>{{ feeDetails.student_class }}</span>
               </div>
             </div>
             <div>
               <span>Fees paid</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.feesPaid }}</span>
+                <span>{{ feeDetails.fees_paid }}</span>
               </div>
             </div>
             <div>
               <span>Date</span>
               <br />
               <div class="info-card">
-                <span>{{ feeDetails.datePaid }}</span>
+                <span>{{ feeDetails.date_paid }}</span>
               </div>
             </div>
           </div>
@@ -75,21 +77,23 @@
 
 <script>
 // node_modules
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 // database scripts
-import FeesDatabase from "../../../models/database/fees-database";
+import Database from "@/models/database/database";
+import FeesTable from "@/models/database/fees-table";
 
-const feeDatabase = new FeesDatabase();
+// init FeesTable and StudentsTable
+const feesTable = new FeesTable(new Database());
 
 export default {
   name: "feeDetails",
-  created() {
+  mounted() {
     ipcRenderer.on("fee-id", (event, arg) => {
-      this.feeId = arg;
+      this.feesId = arg;
 
-      feeDatabase
-        .fetchOne(this.feeId)
+      feesTable
+        .fetchOne(this.feesId)
         .then(result => {
           this.feeDetails = result;
         })
@@ -99,13 +103,13 @@ export default {
     });
   },
   data() {
-    return { feeId: "", feeDetails: {} };
+    return { feesId: "", feeDetails: {} };
   },
   methods: {
-    goToFees() {
-      console.log("SERVER: ");
-      console.log(this.feeDetails);
-      // this.$router.push({ path: "/fees" });
+    closeCurrentWindow() {
+      let currentWindow = remote.getCurrentWindow();
+      currentWindow.close();
+      console.log("hey");
     }
   }
 };
@@ -115,21 +119,12 @@ export default {
 <style scoped>
 .contain-area {
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 15px;
   background: #e8e9ec;
-}
-
-.content-title {
-  color: #282639;
-  margin-bottom: 5px;
 }
 
 .container-for-table {
   background: #fff;
   width: 100%;
-  border-radius: 5px;
-  height: 400px;
 }
 
 .title-bar {
@@ -154,59 +149,18 @@ export default {
 .control-box {
   float: right;
   display: grid;
-  margin-right: 5px;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 2px;
   height: 20px;
 }
 
-.control-box .fa-sync-alt {
-  font-size: 10px;
-  margin-right: 5px;
-  color: rgb(16, 172, 24);
-}
-
 .control-box .fa-times {
   font-size: 12px;
-  margin-right: 2px;
   color: rgb(204, 34, 34);
-}
-
-.control-box .fa-angle-down {
-  font-size: 14px;
-  color: rgb(224, 203, 7);
 }
 
 .control-box .fa-times:hover {
   color: rgb(236, 16, 16);
-}
-
-.control-box .fa-angle-down:hover {
-  color: rgb(246, 222, 4);
-}
-
-.control-box .fa-sync-alt:hover {
-  color: rgb(14, 233, 25);
-}
-
-.profile-container {
-  display: grid;
-  grid-template-columns: 256px 1fr;
-}
-
-.user-img {
-  /* background: url("../img/me.jpg"); */
-  background: #192060;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-  margin-top: 25px;
 }
 
 .input-container {
@@ -223,11 +177,11 @@ export default {
   background: #e8e9ec;
   color: #303030;
   margin-top: 5px;
-  padding: 3px;
+  padding: 7px;
   font-weight: bold;
   font-size: 17px;
   border-radius: 5px;
   width: 100%;
-  height: 25px;
+  height: 35px;
 }
 </style>
