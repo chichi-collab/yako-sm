@@ -17,7 +17,8 @@ let teacherDetailsWin,
   editStudentDetailsWin,
   studentDetailsWin,
   expenseDetailsWin,
-  editExpenseDetailsWin, feeDetailsWin,
+  editExpenseDetailsWin,
+  feeDetailsWin,
   editFeeDetailsWin;
 
 // Scheme must be registered before the app is ready
@@ -30,7 +31,6 @@ protocol.registerSchemesAsPrivileged([
     }
   }
 ]);
-
 
 function createScreen() {
   return new BrowserWindow({
@@ -196,12 +196,12 @@ function createWindow() {
   // hides fee details and edit fee details window when it's close
   feeDetailsWin.on("close", e => {
     e.preventDefault();
-    expenseDetailsWin.hide();
+    feeDetailsWin.hide();
   });
 
   editFeeDetailsWin.on("close", e => {
     e.preventDefault();
-    editExpenseDetailsWin.hide();
+    editFeeDetailsWin.hide();
   });
 }
 
@@ -279,15 +279,15 @@ ipcMain.on("edit-expense-details-screen", (event, arg) => {
 // listens on fee-details-screen and sends the fee-id as arg
 // to the fee details window or screen
 ipcMain.on("fee-details-screen", (event, arg) => {
-  expenseDetailsWin.show();
-  expenseDetailsWin.webContents.send("fee-id", arg);
+  feeDetailsWin.show();
+  feeDetailsWin.webContents.send("fee-id", arg);
 });
 
 // listens on edit-fee-details-screen and sends the fee-id as arg
 // to the edit fee details window or screen
 ipcMain.on("edit-fee-details-screen", (event, arg) => {
-  editExpenseDetailsWin.show();
-  editExpenseDetailsWin.webContents.send("fee-id", arg);
+  editFeeDetailsWin.show();
+  editFeeDetailsWin.webContents.send("fee-id", arg);
 });
 
 // opens a dialog whenever a teacher is added to the database successfully
