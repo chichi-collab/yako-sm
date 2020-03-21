@@ -123,6 +123,8 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      this.refreshFeesList();
     },
     refreshFeesList() {
       feesTable
