@@ -3,54 +3,95 @@
     <InfoBar />
     <div class="split-screen">
       <SideMenuBar />
-      <div class="notice">
-        <div class="heading">
-          <p>Notice</p>
-        </div>
-        <div class="notice-area">
-          <div class="notice-board">
-            <div class="notice-section">
-              <div class="title-bar">
-                <span class="window-title">Notice information</span>
-                <div class="control-box prevent-select">
-                  <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
-                  <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
-                  <font-awesome-icon icon="times" class="fa fa-times" />
+      <div class="contain-area">
+        <p class="content-title">Notice Board</p>
+        <div class="content">
+          <!-- Add Notice -->
+          <div class="container-for-table">
+            <div class="title-bar">
+              <span class="window-title">Notice Board Information</span>
+              <!-- control box for window container -->
+              <div class="control-box prevent-select">
+                <font-awesome-icon icon="angle-down" class="fa fa-angle-down" />
+                <font-awesome-icon icon="sync-alt" class="fa fa-sync-alt" />
+                <font-awesome-icon icon="times" class="fa fa-times" />
+              </div>
+            </div>
+            <div class="line"></div>
+
+            <!-- form here -->
+            <form>
+              <div class="input-container">
+                <div>
+                  <span>Title</span>
+                  <br />
+                  <input type="text" v-model="title" />
+                </div>
+                <div>
+                  <span>Event Date</span>
+                  <br />
+                  <input type="date" v-model="noticeDate" />
+                </div>
+                <div class="btn-container">
+                  <input
+                    type="button"
+                    value="Save"
+                    class="save-btn"
+                    @click="addNotice"
+                  />
+                  <input type="reset" value="Reset" class="reset-btn" />
                 </div>
               </div>
-              <div class="line"></div>
-              <div>
-                <input type="text" placeholder="Title" v-model="noticeTitle" />
+              <div class="event">
+                <span>Event</span>
+                <br />
+                <textarea type="" v-model="event"> </textarea>
               </div>
-              <div class="text-area">
-                <textarea
-                  name="notice"
-                  id="notice"
-                  cols="78"
-                  rows="6"
-                  v-model="note"
-                  placeholder="Content"
-                ></textarea>
-              </div>
-              <div class="addNoticeBtn">
-                <button class="Btn" v-on:click="addNote">Add Notice</button>
-              </div>
-              <div v-if="!clicked && note != ''" class="notes-section">
-                <div class="card" v-for="anote in notes" :key="anote.id">
-                  <div class="delete-note">
-                    <font-awesome-icon icon="times" class="fa fa-times" />
-                  </div>
-                  <div class="notes">
-                    <p class="note-title">{{anote.title}}</p>
-                    <div class="note-content">{{anote.content}}</div>
-                  </div>
-                  <div class="line"></div>
-                  <span class="info">
-                    <h4 class="date-label">Posted date</h4>
-                    <h4 class="date-added">{{day}}-{{month}}-{{year}}</h4>
-                  </span>
-                </div>
-              </div>
+            </form>
+            <!-- Table for notices stored -->
+            <div class="tbl-header">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Event</th>
+                    <th>Event Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tbl-content">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr v-for="(notice, index) in noticesData" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ notice.title }}</td>
+                    <td>{{ notice.event }}</td>
+                    <td>{{ notice.notice_date }}</td>
+                    <td>
+                      <div class="action-box prevent-select">
+                        <font-awesome-icon
+                          icon="eye"
+                          @click="openNoticeDetails(notice.notice_board_id)"
+                          class="fa-eye"
+                        />
+                        <font-awesome-icon
+                          icon="user-edit"
+                          @click="openEditNoticeDetails(notice.notice_board_id)"
+                          class="fa-user-edit"
+                        />
+                        <font-awesome-icon
+                          icon="trash-alt"
+                          class="fa-trash-alt"
+                          @click="removeNotice(notice.notice_board_id)"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -65,169 +106,128 @@ import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
 import { day, month, year } from "../utils/date";
 
+// convert today's date to YYYY-MM-DD format
+let monthToString = month.toString();
+if (monthToString.length == 1) {
+  monthToString = `0${month}`;
+}
+
+let dayToString = day.toString();
+if (dayToString.length == 1) {
+  dayToString = `0${day}`;
+}
+
+const today = `${year}-${monthToString}-${dayToString}`;
+
+// database scripts
+import Database from "@/models/database/database";
+import NoticeBoard from "@/models/database/notice-board-table";
+
+// init TeachersTable
+const noticeBoardTable = new NoticeBoard(new Database());
+
 export default {
   name: "noticeBoard",
   components: {
     InfoBar,
     SideMenuBar
   },
+  mounted() {
+    this.refreshNoticeBoardData();
+  },
   data() {
     return {
-      note: "",
-      clicked: false,
-      dateAdded: null,
-      notes: [],
-      year,
-      month,
-      day,
-      noticeTitle: ""
+      title: "",
+      event: "",
+      noticeDate: `${today}`,
+      noticesData: []
     };
   },
   methods: {
-    addNote() {
+    addNotice() {
+      const noticeData = {
+        title: this.title,
+        event: this.event,
+        noticeDate: this.noticeDate
+      };
+
+      console.log(noticeData);
+
+      noticeBoardTable
+        .add(noticeData)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      this.refreshNoticeBoardData();
+      this.resetForm();
+    },
+    refreshNoticeBoardData() {
+      noticeBoardTable
+        .fetchAll()
+        .then(result => {
+          this.noticesData = result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    removeNotice(id) {
+      noticeBoardTable
+        .delete(id)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      this.refreshNoticeBoardData();
+    },
+    openNoticeDetails() {
       // when the button is clicked set the click variable to true
       // this.clicked = !this.clicked
-
-      var currentNote = {
-        title: this.noticeTitle,
-        content: this.note
-      };
-      this.notes.push(currentNote);
+    },
+    openEditNoticeDetails() {
+      // when the button is clicked set the click variable to true
+      // this.clicked = !this.clicked
+    },
+    resetForm() {
+      this.title = "";
+      this.event = "";
+      this.noticeDate = "";
     }
   }
 };
 </script>
 
 <style scoped>
-.notice {
-  margin-top: 5px;
+.contain-area {
+  margin-top: 10px;
   margin-left: 20px;
   margin-right: 15px;
   background: #f3f3f3;
 }
 
-.notice-board {
-  /* flex: 1; */
-  background: #fff;
-  overflow-y: scroll;
-  height: 579px;
-
-
-}
-
-
-.notice-board::-webkit-scrollbar {
-  display: none;
-}
-
-.heading {
+.content-title {
   margin-bottom: 5px;
-  margin-top: 5px;
 }
 
-.delete-note {
-  margin-left: -25px;
-  float: right;
-  height: 20px;
-  margin-top: -5px;
-}
-
-.delete-note .fa-times {
-  font-size: 14px;
-  margin-right: 2px;
-  color: rgb(204, 34, 34);
+.container-for-table {
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  height: 580px;
 }
 
 .title-bar {
   border-radius: 5px;
   background: rgb(255, 255, 255);
-  margin-bottom: 5.5px;
+  margin-bottom: 1.5px;
   height: 20px;
-}
-
-.addNoticeBtn {
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
-
-.Btn {
-  width: 15%;
-  font-size: 14px;
-  padding: 5px;
-  border: 1px solid #302d43;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  margin-left: 140px;
-}
-
-.notes-section {
-  margin-top: 10px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  height: 100%;
-  max-height: 450px;
-  display: flex;
-  flex-direction: column;
-}
-
-.notes {
-  margin-bottom: 40px;
-  margin-top: 15px;
-  break-after: auto;
-}
-
-.card {
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  margin-top: 4px;
-  margin-bottom: 5px;
-  word-wrap: break-word;
-  width: 68%;
-  padding: 5px;
-  background: #fff;
-  margin-left: 140px;
-}
-
-.date-added {
-  text-align: right;
-}
-
-.info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-textarea {
-  font-size: 14px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  margin-top: 10px;
-  padding: 5px;
-}
-
-.text-area {
-  margin-left: 140px;
-}
-
-/* for custom scrollbar for webkit browser */
-
-.notes-section::-webkit-scrollbar {
-  width: 6px;
-}
-.notes-section::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-.notes-section::-webkit-scrollbar-thumb {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-.top-line {
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-}
-
-.line {
-  border-top: 1px solid #eee;
 }
 
 .window-title {
@@ -236,6 +236,10 @@ textarea {
   color: #3d3c3c;
   margin-left: 5px;
   float: left;
+}
+
+.container-for-table .line {
+  border-top: 1px solid #eee;
 }
 
 .control-box {
@@ -276,29 +280,152 @@ textarea {
   color: rgb(14, 233, 25);
 }
 
-input[type="text"] {
-  /* border-radius: 5px; */
-  /* background: #f3f3f3; */
-  /* outline: none; */
-  border: 1px solid;
+form {
+  margin: 10px;
+  font-size: 15px;
+  font-weight: 300;
+  color: #303030;
+}
+
+.input-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 30px;
+  grid-row-gap: 20px;
+}
+
+input[type="text"],
+input[type="date"] {
+  border-radius: 5px;
+  background: #f3f3f3;
+  outline: none;
+  border: none;
   height: 30px;
   padding: 5px;
-  width: 67%;
+  color: #303030;
+  font-weight: 100;
+  width: 100%;
   margin-top: 5px;
-  margin-left: 140px;
+}
+
+.btn-container {
+  display: grid;
+  grid-template-columns: 113px 113px;
+  grid-column-gap: 30px;
+  margin-top: 17px;
+}
+
+input[type="button"],
+input[type="reset"] {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  height: 30px;
+  padding: 5px;
+  color: #fff;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 5px;
+}
+
+textarea {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #f3f3f3;
+  height: 60px;
+  padding: 5px;
+  color: #303030;
+  font-weight: bold;
+  width: 65.5%;
+  margin-top: 5px;
+}
+
+.event {
+  margin-top: 10px;
+}
+
+.reset-btn {
+  background: #ffe711;
+}
+
+.save-btn {
+  background: #3686ff;
+}
+
+.action-box .fa-trash-alt {
+  font-size: 12px;
+  color: rgb(204, 34, 34);
+}
+
+.action-box .fa-eye {
   font-size: 14px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  color: rgb(224, 203, 7);
 }
 
-.note-title {
+.action-box .fa-trash-alt:hover {
+  color: rgb(236, 16, 16);
+}
+
+.action-box .fa-eye:hover {
+  color: rgb(246, 222, 4);
+}
+
+.action-box .fa-user-edit:hover {
+  color: rgb(14, 233, 25);
+}
+
+.action-box .fa-user-edit {
+  color: rgb(16, 172, 24);
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tbl-header {
+  background-color: #302d43;
+}
+
+.tbl-content {
+  height: 300px;
+  overflow-x: auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+th {
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 12px;
+  border-bottom: 1px solid #f3f3f3;
   text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 5px;
-  padding: 4px;
 }
 
-.note-content {
-  padding: 4px;
-  font-weight: lighter;
+td {
+  padding-left: 10px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 14px;
+  color: #303030;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+/* for custom scrollbar for webkit browser*/
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 </style>
