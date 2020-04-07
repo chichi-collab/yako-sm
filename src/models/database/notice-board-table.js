@@ -21,32 +21,40 @@ class NoticeBoardTable {
     );
   }
 
+  // fetch notice by today's date
+  fetchByToday(date) {
+    return this.database.all(
+      `SELECT * FROM NoticeBoard WHERE notice_date = ?`,
+      [date]
+    );
+  }
+
   // update notice details where id: notice_board_id
   update(notice) {
-    const { noticeBoardId, name, event, noticeDate } = notice;
+    const { noticeBoardId, title, event, noticeDate } = notice;
 
     return this.database.run(
       `UPDATE NoticeBoard
-      SET name = ?,
+      SET title = ?,
         event = ?,
-        noticeDate = ?
+        notice_date = ?
       WHERE notice_board_id = ?`,
-      [name, event, noticeDate, noticeBoardId]
+      [title, event, noticeDate, noticeBoardId]
     );
   }
 
   // add notice to the database
   // param notice contains object of notice paid
   add(notice) {
-    const { name, event, noticeDate } = notice;
+    const { title, event, noticeDate } = notice;
 
     return this.database.run(
       `INSERT INTO NoticeBoard (
-        name,
+        title,
         event,
-        noticeDate)
+        notice_date)
       VALUES( ? , ? , ?)`,
-      [name, event, noticeDate]
+      [title, event, noticeDate]
     );
   }
 
@@ -62,7 +70,7 @@ class NoticeBoardTable {
 
 export default NoticeBoardTable;
 
-//   noticeBoardId,
-//   name,
+//   notice_board_id,
+//   title,
 //   event,
-//   noticeDate,
+//   notice_date,
