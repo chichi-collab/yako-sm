@@ -2,28 +2,25 @@
   <div class="event-calendar">
     <div class="timeline">
       <div class="column">
-        <div class="title">
-          <span>{{ weekday[actualDay] }}</span>, 
+        <div class="event-date">
+          <span>{{ weekday[actualDay] }}</span
+          >,
           <span>{{ day }}-{{ months[month] }}-{{ year }}</span>
         </div>
-        <div class="description">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam similique reprehenderit, asperiores rerum autem nihil laborum atque ducimus hic fuga perspiciatis dolor! In maiores ipsam facilis ipsum beatae accusantium nisi?</p>
+        <div v-if="isEventsAvailable">
+          <div
+            class="event-card"
+            v-for="event in eventsForToday"
+            :key="event.notice_board_id"
+          >
+            <span class="event-title">{{ event.title }}</span>
+            <p class="event-description">
+              {{ event.event }}
+            </p>
+          </div>
         </div>
-        <div class="description">
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium, consequuntur aspernatur voluptatibus asperiores suscipit laboriosam rem, fugit corporis commodi dolor tenetur tempora dignissimos laudantium illo! Beatae eveniet soluta repudiandae placeat?</p>
-        </div>
-
-        <div class="description">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur earum at ducimus quibusdam ipsa ullam quo fugiat eaque facere! Praesentium soluta autem similique perferendis veniam culpa ullam in odio sit.</p>
-        </div>
-        <div class="description">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo ullam molestias laboriosam, placeat temporibus quo quam vel mollitia, dolore nihil, asperiores error. Sequi neque libero aliquam ipsam amet, ea adipisci?</p>
-        </div>
-        <div class="description">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur earum at ducimus quibusdam ipsa ullam quo fugiat eaque facere! Praesentium soluta autem similique perferendis veniam culpa ullam in odio sit.</p>
-        </div>
-        <div class="description">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo ullam molestias laboriosam, placeat temporibus quo quam vel mollitia, dolore nihil, asperiores error. Sequi neque libero aliquam ipsam amet, ea adipisci?</p>
+        <div v-else>
+          <span>No event available</span>
         </div>
       </div>
     </div>
@@ -32,10 +29,33 @@
 
 <script>
 // date utils
-import { day, actualDay, weekday, month, months, year } from "../utils/date";
+import dateToStr from "@/utils/dateToStr";
+import { year, month, months, day, actualDay, weekday } from "@/utils/date";
+
+// database scripts
+import Database from "@/models/database/database";
+import NoticeBoard from "@/models/database/notice-board-table";
+
+// init TeachersTable
+const noticeBoardTable = new NoticeBoard(new Database());
 
 export default {
   name: "EventCalendar",
+  mounted() {
+    let todayDate = dateToStr.today();
+
+    noticeBoardTable
+      .fetchByToday(todayDate)
+      .then(result => {
+        if (result.length > 0) {
+          this.eventsForToday = result;
+          this.isEventsAvailable = true;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   data() {
     return {
       year,
@@ -43,7 +63,9 @@ export default {
       months,
       weekday,
       actualDay,
-      day
+      day,
+      eventsForToday: [],
+      isEventsAvailable: false
     };
   }
 };
@@ -78,7 +100,7 @@ export default {
   margin: 10px;
 }
 
-.timeline .column .title span {
+.timeline .column .event-date span {
   font-size: 20px;
   color: rgb(0, 0, 0);
   font-family: serif;
@@ -86,7 +108,7 @@ export default {
 }
 
 /* timeline box drawn */
-/* .timeline .column .description:before {
+/* .timeline .column .event:before {
   content: "";
   position: absolute;
   left: 725px;
@@ -96,19 +118,25 @@ export default {
   border: 3px solid #57f261;
 } */
 
-.timeline .column .description p {
+.timeline .column .event-card .event-description {
   font-size: 13px;
-  line-height: 20px;
-  margin-left: 20px;
-  margin-top: 10px;
+  line-height: 15px;
+  margin-left: 10px;
   font-family: serif;
 }
 
-.timeline .column .description {
+.timeline .column .event-card .event-title {
+  font-size: 20px;
+  font-family: serif;
+}
+
+.timeline .column .event-card {
   background: #f3f3f3;
   border-radius: 5px;
   margin-bottom: 10px;
   margin-left: 15px;
+  margin-top: 10px;
+  padding: 10px;
 }
 
 /* for custom scrollbar for webkit browser */
