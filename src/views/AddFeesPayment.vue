@@ -119,9 +119,7 @@ export default {
     feesTable
       .fetchAll()
       .then(result => {
-        if (result == undefined) {
-          this.totalFees = 0;
-        } else {
+        if (result.length > 0) {
           this.totalFees = result[0].total_fees;
         }
       })
