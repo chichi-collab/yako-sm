@@ -17,6 +17,7 @@ import AddMarks from "./views/AddMarks.vue";
 import PrintReport from "./views/PrintReport.vue";
 import Attendance from "./views/Attendance.vue";
 import NoticeBoard from "./views/NoticeBoard.vue";
+import Settings from "./views/Settings.vue";
 import Login from "./views/Login.vue";
 
 // screens to route
@@ -154,6 +155,11 @@ export default new Router({
       path: "/printReport",
       name: "printReport",
       component: PrintReport
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: Settings
     },
     {
       path: "/about",
