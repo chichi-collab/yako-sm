@@ -58,7 +58,7 @@
               <span>Date of Birth</span>
               <br />
               <div class="info-card">
-                <span>{{ studentDetails.date_of_birth }}</span>
+                <span>{{ studentDetails.birth_date }}</span>
               </div>
             </div>
             <div>
