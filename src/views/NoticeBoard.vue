@@ -104,20 +104,8 @@
 // @ is an alias to /src
 import InfoBar from "@/components/InfoBar.vue";
 import SideMenuBar from "@/components/SideMenuBar.vue";
-import { day, month, year } from "../utils/date";
 
-// convert today's date to YYYY-MM-DD format
-let monthToString = month.toString();
-if (monthToString.length == 1) {
-  monthToString = `0${month}`;
-}
-
-let dayToString = day.toString();
-if (dayToString.length == 1) {
-  dayToString = `0${day}`;
-}
-
-const today = `${year}-${monthToString}-${dayToString}`;
+import dateToStr from "@/utils/dateToStr";
 
 // database scripts
 import Database from "@/models/database/database";
@@ -134,12 +122,14 @@ export default {
   },
   mounted() {
     this.refreshNoticeBoardData();
+
+    this.noticeDate = dateToStr.today();
   },
   data() {
     return {
       title: "",
       event: "",
-      noticeDate: `${today}`,
+      noticeDate: "",
       noticesData: []
     };
   },
