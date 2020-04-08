@@ -31,18 +31,28 @@
         </div>
         <div class="dropdown">
           <font-awesome-icon
+            v-if="showMenu"
             icon="angle-down"
             @click="toggleShow"
             class="fa fa-color fa-angle-down"
             id="font-awesome"
           />
+          <font-awesome-icon
+            v-else
+            icon="angle-up"
+            @click="toggleShow"
+            class="fa fa-color fa-angle-down"
+            id="font-awesome"
+          />
           <div v-if="showMenu" class="menu">
-            <div
+            <router-link
               class="menu-item"
-              v-for="item in this.caretList"
-              v-bind:key="item"
-              @click="itemClicked(item)"
-            >{{item}}</div>
+              v-for="screen in screens"
+              :key="screen.name"
+              @click="toggleShow"
+              :to="screen.route"
+              >{{ screen.name }}</router-link
+            >
           </div>
         </div>
       </div>
@@ -73,21 +83,16 @@ export default {
   data() {
     return {
       showMenu: false,
-      caretItem: "Settings",
-      caretList: ["Profile", "Settings", "About software"],
+      screens: [
+        { name: "Settings", route: "/settings" },
+        { name: "About Software", route: "/about" }
+      ],
       adminName: ""
     };
   },
   methods: {
     toggleShow() {
       this.showMenu = !this.showMenu;
-    },
-    changeItem(item) {
-      this.caretItem = item;
-    },
-    itemClicked(item) {
-      this.toggleShow();
-      this.changeItem(item);
     }
   }
 };
@@ -306,8 +311,9 @@ export default {
 
 .menu-item {
   color: #212529;
-  padding: 10px 80px 0px 3px;
   font-size: 15px;
+  padding: 5px 10px;
+  text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
