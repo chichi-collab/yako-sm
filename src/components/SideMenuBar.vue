@@ -9,12 +9,16 @@
         <a href="#" v-on:click.prevent="toggleTeachersSubmenu">
           <font-awesome-icon icon="user-tie" class="fa fa-user-tie" />Teachers
           <font-awesome-icon
+            v-if="showTeachersSubmenu"
             icon="caret-down"
-            :class="{
-              'fa-caret-up': showTeachersSubmenu,
-              'fa-caret-down': !showTeachersSubmenu
-            }"
-            class="fa"
+            class="
+              fa fa-caret-down"
+            aria-hidden="true"
+          />
+          <font-awesome-icon
+            v-else
+            icon="caret-up"
+            class="fa fa-caret-down"
             aria-hidden="true"
           />
         </a>
@@ -36,12 +40,15 @@
             class="fa fa-user-graduate"
           />Students
           <font-awesome-icon
+            v-if="showStudentSubmenu"
             icon="caret-down"
-            :class="{
-              'fa-caret-up': showStudentSubmenu,
-              'fa-caret-down': !showStudentSubmenu
-            }"
-            class="fa"
+            class="fa caret-down"
+            aria-hidden="true"
+          />
+          <font-awesome-icon
+            v-else
+            icon="caret-up"
+            class="fa caret-up"
             aria-hidden="true"
           />
         </a>
@@ -66,12 +73,15 @@
             class="fa fa-credit-card"
           />Account
           <font-awesome-icon
+            v-if="showExpenseSubmenu"
             icon="caret-down"
-            :class="{
-              'fa-caret-up': showExpenseSubmenu,
-              'fa-caret-down': !showExpenseSubmenu
-            }"
-            class="fa"
+            class="fa caret-down"
+            aria-hidden="true"
+          />
+          <font-awesome-icon
+            v-else
+            icon="caret-up"
+            class="fa caret-up"
             aria-hidden="true"
           />
         </a>
@@ -103,12 +113,15 @@
         <a href="#" v-on:click.prevent="toggleExamReportSubmenu">
           <font-awesome-icon icon="file" class="fa fa-file" />Exam Report
           <font-awesome-icon
+            v-if="showExamReportSubmenu"
             icon="caret-down"
-            :class="{
-              'fa-caret-up': showExamReportSubmenu,
-              'fa-caret-down': !showExamReportSubmenu
-            }"
-            class="fa"
+            class="fa caret-down"
+            aria-hidden="true"
+          />
+          <font-awesome-icon
+            v-else
+            icon="caret-up"
+            class="fa caret-up"
             aria-hidden="true"
           />
         </a>
