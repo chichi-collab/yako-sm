@@ -19,22 +19,20 @@
         <form action>
           <div class="tfees-container">
             <div>
-              <span>Class</span>
+              <span>Classrooms</span>
               <br />
-              <div class="search-area">
-                <input type="search" v-model="searchItem" />
-                <font-awesome-icon
-                  class="fa fa-color fa-search"
-                  icon="search"
-                  @click="searchClassroom"
-                />
-              </div>
+              <select v-model="searchItem" @click="searchClassroom">
+                <option disabled value>Please choose classroom...</option>
+                <option v-for="(classroom, index) in classrooms" :key="index">
+                  {{ classroom }}
+                </option>
+              </select>
             </div>
             <div>
               <span>Head Teacher</span>
               <br />
               <div class="head-teacher-name">
-                <span>Okai Yeboah</span>
+                <span>{{ headTutor }}</span>
               </div>
             </div>
           </div>
@@ -56,25 +54,31 @@
         </div>
         <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr v-if="isStudentsAvailable">
-                <td>1</td>
-                <td>Random dude</td>
-                <td>None</td>
-                <td>None</td>
-                <td>+2.01</td>
+            <tbody v-if="isStudentsAvailable">
+              <tr v-for="student in studentsData" :key="student.id">
+                <td>{{ student.id }}</td>
+                <td>{{ student.first_name }} {{ student.last_name }}</td>
+                <td>{{ student.classroom }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ getFeesOwingByStudentId(student.id) }}</td>
                 <td>
                   <div class="action-box prevent-select">
                     <font-awesome-icon icon="save" class="fa fa-save" />
-                    <font-awesome-icon icon="user-edit" class="fa fa-user-edit" />
-                    <font-awesome-icon icon="trash-alt" class="fa fa-trash-alt" />
+                    <font-awesome-icon
+                      icon="user-edit"
+                      class="fa fa-user-edit"
+                    />
+                    <font-awesome-icon
+                      icon="trash-alt"
+                      class="fa fa-trash-alt"
+                    />
                   </div>
                 </td>
               </tr>
-              <tr v-else>
-                <td>Please search student...</td>
-              </tr>
             </tbody>
+            <tr v-else>
+              <td>Please search student...</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -84,35 +88,104 @@
 
 <script>
 // database scripts
-import StudentDatabase from "../../models/database/students-database";
+import Database from "@/models/database/database";
+import StudentsTable from "@/models/database/students-table";
+import TeachersTable from "@/models/database/teachers-table";
+import FeesTable from "@/models/database/fees-table";
 
-const studentDatabase = new StudentDatabase(); // initializes StudentDatabase
+// init StudentsTable and TeachersTable
+const studentsTable = new StudentsTable(new Database());
+const teachersTable = new TeachersTable(new Database());
+const feesTable = new FeesTable(new Database());
 
 export default {
   name: "AddFeesPayment",
+  mounted() {
+    this.fetchFees();
+  },
   data() {
     return {
       searchItem: "",
       sortBy: "Id",
       classMark: "",
       examMark: "",
+      classrooms: ["1A", "2B", "3C"],
+      headTutor: "",
       studentsData: [],
+      feesData: [],
+      studentFeesDetails: [],
       isStudentsAvailable: false
     };
   },
   methods: {
     searchClassroom() {
-      let classroom = this.searchItem;
-
-      studentDatabase
-        .fetchByClassroom(classroom)
+      studentsTable
+        .fetchAll()
         .then(result => {
-          this.studentsData = result;
-          this.isStudentsAvailable = true;
+          this.studentsData = result.filter(student => {
+            return student.classroom == this.searchItem;
+          });
+
+          // show students in that class
+          if (this.studentsData.length > 0) {
+            this.isStudentsAvailable = true;
+          } else {
+            this.isStudentsAvailable = false;
+          }
         })
         .catch(err => {
           console.log(err);
         });
+
+      // fetch corresponding teacher
+      this.getHeadTutor();
+    },
+    getHeadTutor() {
+      teachersTable
+        .fetchByClassroom(this.searchItem)
+        .then(result => {
+          this.headTutor = result.first_name + " " + result.last_name;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    fetchFees() {
+      feesTable
+        .fetchAll()
+        .then(result => {
+          if (result != undefined && result.length > 0) {
+            this.feesData = result;
+            this.studentFeesDetails = this.feesData.filter(fee => {
+              return fee.student_id == 2;
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      console.log("student fees details: " + this.studentFeesDetails);
+    },
+    getFeesOwingByStudentId(studentId) {
+      let result = [];
+
+      for (const key in this.feesData) {
+        if (this.feesData[key].student_id == studentId) {
+          console.log(this.feesData[key]);
+        }
+      }
+      // console.log(result);
+
+      // console.log(
+      //   studentId +
+      //     " student fees details: " +
+      //     this.feesData[0].total_fees +
+      //     " " +
+      //     this.feesData[0].fees_paid
+      // );
+
+      return studentId;
     }
   }
 };
@@ -199,12 +272,12 @@ export default {
   background: #282639;
   color: #fff;
   margin-top: 12px;
-  padding: 3px;
+  padding: 5px;
   font-weight: bold;
   font-size: 17px;
   border-radius: 5px;
   width: 100%;
-  height: 25px;
+  height: 30px;
 }
 
 form {
@@ -224,7 +297,7 @@ form {
 
 .tfees-container {
   display: grid;
-  grid-template-columns: 260px 113px;
+  grid-template-columns: 260px 260px;
   grid-column-gap: 30px;
   grid-row-gap: 20px;
   margin-bottom: 20px;
@@ -263,32 +336,15 @@ input[type="button"] {
   margin-top: 5px;
 }
 
-.search-area {
+select {
+  border-radius: 5px;
   background: #f3f3f3;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  width: 250px;
   height: 30px;
-  border-radius: 30px;
-  margin-top: 10px;
-  margin-right: 30px;
-  padding: 2px;
-}
-
-.search-area input[type="search"] {
+  padding: 5px;
   color: #303030;
-  background: transparent;
-  outline: none;
-  border: none;
-  width: 82%;
-  margin: 5px 5px 1px 10px;
-}
-
-.search-area .fa-search {
-  color: #192060;
-  margin-top: 5px;
+  font-weight: 100;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .reset-btn {
@@ -358,7 +414,7 @@ table {
 th {
   padding: 10px;
   text-align: left;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
   color: #fff;
   border-bottom: 1px solid #f3f3f3;
@@ -370,8 +426,9 @@ td {
   text-align: left;
   vertical-align: middle;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 13px;
   color: #303030;
+  height: 10px;
   border-bottom: 1px solid #f3f3f3;
 }
 
